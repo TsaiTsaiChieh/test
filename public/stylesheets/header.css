@@ -1,0 +1,78 @@
+/* global setting */
+@font-face {
+    font-family: 'MainText';
+    src: src('./fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
+}
+:root {
+    --main-color: #8FD3E8;
+    --light-gray: #F7F7F7;
+}
+* {
+    font-family: "MainText","Microsoft JhengHei" !important;
+}
+/* header setting */
+header {
+    display: flex;
+    flex-direction: column; 
+    height: auto;
+    text-align: center;
+}
+header #logo {
+    width: 15%;
+    align-self: center;
+    margin-top: 1em;
+}
+header h1 {
+    color: var(--main-color);
+    font-size: 2.5em;
+    letter-spacing: .15em;
+    line-height: 1.5;
+}
+header h4 {
+    color: var(--main-color);
+    font-size: 1em;
+    letter-spacing: .18em;
+    margin-bottom: 1em;
+}
+header nav {
+    background: var(--light-gray);
+    height: auto;
+}
+header nav ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0 15%;
+    padding: 1% 0;
+}
+header nav ul li{
+    letter-spacing: .15em;
+}
+header nav ul li a {
+    font-size: 1.2em;
+    color: black;
+    line-height: 1.5;
+}
+header nav ul li a:hover {
+    text-decoration: none;
+    color: var(--main-color);
+    transition: .5s;
+}
+@media (min-width: 800px) {
+    /* header setting */
+    header #logo {
+        width: 4%;
+        margin-top: 1.5%;
+    }
+    header h4 {
+        margin-bottom: 2%;
+    }
+    header nav ul{
+        padding: .3% 0;
+        margin: 0 20%;
+    }
+    header nav ul li{
+       cursor: point;
+      
+    }
+}

@@ -1,0 +1,50 @@
+/* global setting */
+@font-face {
+    font-family: 'MainText';
+    src: src('./fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
+}
+:root {
+    --main-color: #8FD3E8;
+    --light-gray: #F7F7F7;
+}
+* {
+    font-family: "MainText","Microsoft JhengHei" !important;
+}
+/* banner setting */
+
+.banner #carouselCaptions img{
+    height: 500px;
+    object-fit: cover;
+}
+.banner #carouselCaptions .carousel-indicators li{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    margin: 10px;
+}
+.carousel-indicators li.active{
+    height: 10px !important;
+    width: 10px !important;
+    background-color: var(--main-color);
+}
+.banner .carousel-caption {
+    position: absolute;
+    top: 40%;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.banner .carousel-item .full-width {
+    width: 100%;
+    text-align: left;
+    color: white;
+    line-height: 2;
+    text-shadow: 0px 0px 5px black;
+    letter-spacing: .3em;
+}
+.banner .carousel-item .full-width h3{
+    font-size: 2em;
+}
+.banner .carousel-item .full-width p{
+    font-size: 1.2em;
+}

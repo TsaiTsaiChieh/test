@@ -4,8 +4,8 @@
     src: src('./fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
 }
 :root {
-    --main-color: #8FD3E8;
-    --light-gray: #F7F7F7;
+    --main-color: #8FD3E8 !important;
+    --light-gray: #F7F7F7 !important;
 }
 * {
     font-family: "MainText","Microsoft JhengHei" !important;

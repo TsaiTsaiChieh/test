@@ -49,7 +49,7 @@ function crawler(species) {
         },
         function (contentURL, next) {
             for (let i = 0; i < 1; i++) {
-                console.log('url:', contentURL[i]);
+                // console.log('url:', contentURL[i]);
                 // modules.request({ url: `${url}${contentURL[i]}`, method: 'GET' }, function (err, response, body) {
 
                 // modules.request({ url: 'http://www.meetpets.org.tw/content/74351', method: 'GET' }, function (err, response, body) {
@@ -66,7 +66,7 @@ function crawler(species) {
                         var petName = $('.field-field-pet-name').children().children().text().replace('動物小名:', '').trim();
                         var petAge = $('.field-field-pet-age').children().children().text().replace('動物的出生日（年齡）:', '').replace('了', '').trim();
                         var neuter = $('.field-field-pet-medical').children().children().text().replace('結紮情況:', '').trim();
-                        var description = $('.field-field-pet-look').children().children().text().replace('簡單描述:', '').trim();
+                        var description = [$('.field-field-pet-look').children().children().text().replace('簡單描述:', '').trim()];
                         var habit = $('.field-field-pet-habitate').children().children().text().replace('動物個性略述:', '').trim();
                         // 認養資訊
                         // var limitation = $('.field-field-pet-limitation').children().children().text().replace('認養資訊:', '').trim();

@@ -32,7 +32,7 @@ function crawler(species) {
                 modules.request({ url: `${url}/pets/${species}?page=${i}`, method: 'GET' }, function (err, response, body) {
                     if (err) {
                         console.log('info function 失敗');
-                        return
+                        return;
                     }
                     else if (!err && response.statusCode == 200) {
                         var $ = modules.cheerio.load(body);
@@ -56,7 +56,7 @@ function crawler(species) {
                 modules.request({ url: 'http://www.meetpets.org.tw/content/74418', method: 'GET' }, function (err, response, body) {
                     if (err) {
                         console.log('contentURL function 失敗');
-                        return
+                        return;
                     }
                     else if (!err && response.statusCode == 200) {
                         var $ = modules.cheerio.load(body);

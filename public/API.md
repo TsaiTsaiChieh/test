@@ -28,7 +28,7 @@ Field | Type | Description
  data | Array | Array of `Pet Object`
  paging| Number | Next page number. If there are no more pages, server will not return paging parameter
 * **Success Response Example:**
-```JSON
+```js
 {
     paging: 2,
         data: [
@@ -65,4 +65,5 @@ Field | Type | Description
                 contentName: "傅小姐",
                 contentTel: "0989204468"
             }
+}
 ```

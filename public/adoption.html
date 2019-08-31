@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>讓愛不流浪</title>
+    <link rel="stylesheet" href="./stylesheets/reset.css">
+    <link rel="stylesheet" href="./stylesheets/header.css">
+    <link rel="stylesheet" href="./stylesheets/adoption.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <header><a href="./"><img id="logo" src="./imgs/logo.png" alt="logo" /></a>
+        <h1>讓愛不流浪</h1>
+        <h4>Love Never Stray</h4>
+        <nav>
+            <ul>
+                <li><a href="#">主頁</a></li>
+                <li><a href="#">認養</a></li>
+                <li><a href="#">協尋</a></li>
+                <li><a href="#">捐血</a></li>
+                <li><a href="#">須知</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="search">
+        <form action="/api/adoption" method="POST">
+            <div class="kind">
+                <h3>種類</h3>
+                <input type="checkbox" id="dog" value="dog" name="kind">
+                <label for="dog">汪</label>
+                <input type="checkbox" id="cat" value="cat" name="kind">
+                <label for="cat">喵</label>
+            </div>
+            <button type="submit">搜尋</button>
+        </form>
+    </div>
+    <!-- end search -->
+    <div class="pet">
+        <div class="item">
+            <div class="img-wrap">
+                <img src="http://asms.coa.gov.tw/amlapp/upload/pic/b315ba97-7798-4b52-bdf3-f3b54e64ae5a_org.JPG">
+            </div>
+            <div class="text-wrap">
+                <h2 class="title">高雄市壽山動物保護教育園區</h2>
+                <div class="profile">
+                    <div class="county">
+                        <h4>地區</h4><span>台中市</span>
+                    </div>
+                    <div class="age">
+                        <h4>年齡</h4><span>成貓</span>
+                    </div>
+
+                    <div class="name">
+                        <h4>姓名</h4><span></span>
+                    </div>
+
+                    <div class="sex">
+                        <h4>性別</h4><span>母</span>
+                    </div>
+                    <div class="color">
+                        <h4>顏色</h4><span>虎斑色</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="item">
+            <div class="img-wrap">
+                <img src="http://www.meetpets.org.tw/files_meetpets/imagecache/normal/IMG_1046.JPG">
+            </div>
+            <div class="text-wrap">
+                <h2 class="title">虎斑妹，可愛親人找家喔</h2>
+                <div class="profile">
+                    <div class="county">
+                        <h4>地區</h4><span>台北市</span>
+                    </div>
+                    <div class="age">
+                        <h4>年齡</h4><span>幼貓</span>
+                    </div>
+
+                    <div class="name">
+                        <h4>姓名</h4><span>虎斑妹</span>
+                    </div>
+
+                    <div class="sex">
+                        <h4>性別</h4><span></span>
+                    </div>
+                    <div class="color">
+                        <h4>顏色</h4><span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line"></div>
+    </div>
+
+    </div>
+    <!-- end pet list -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src=" https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

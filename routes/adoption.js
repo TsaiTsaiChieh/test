@@ -2,7 +2,10 @@ const modules = require('../util/modules');
 const adoptionController = require('../controller/adoptionController');
 const router = modules.express.Router();
 
+
+router.get('/details', adoptionController.get);
 router.get('/:category', adoptionController.list);
+router.post('/', adoptionController.post);
 // router.get('/:category', function (req, res) {
 //     let category = req.params.category;
 //     let paging = parseInt(req.query.paging);

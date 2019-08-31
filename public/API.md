@@ -6,9 +6,9 @@ tsaichieh.com
 ---
 ### Adoption List API
 * **End Point:** 
-`/adoption/all` for 全部
-`/adoption/cat` for 貓
-`/adoption/dog` for 狗
+ `/adoption/all` for 全部
+ `/adoption/cat` for 貓
+ `/adoption/dog` for 狗
 * **Method:** `GET`
 * **Query Parameters:**
 
@@ -16,9 +16,9 @@ Field | Type | Description
 ---------|----------|---------
  paging | String(Optional) | Paging for request next page
 * **Request Example:**
-`https://[Host_Name]/api/adoption/all`
-`https://[Host_Name]/api/adoption/cat`
-`https://[Host_Name]/api/adoption/dog?paging=1`
+ `https://[Host_Name]/api/adoption/all`
+ `https://[Host_Name]/api/adoption/cat`
+ `https://[Host_Name]/api/adoption/dog?paging=1`
 * **Success Response: 200**
 
 Field | Type | Description
@@ -68,7 +68,7 @@ Field | Type | Description
 ---
 ### Adoption details API
 * **End Point:** 
-`/adoption/details` 
+ `/adoption/details` 
 * **Method:** `GET`
 * **Query Parameters:**
 

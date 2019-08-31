@@ -1,0 +1,122 @@
+/* global setting */
+@font-face {
+    font-family: 'MainText';
+    src: src('./fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
+}
+:root {
+    --main-color: #8FD3E8 !important;
+    --light-gray: #F7F7F7 !important;
+    --second-color: #419FFF !important;
+    --third-color: #5868BA !important;
+}
+* {
+    font-family: "MainText","Microsoft JhengHei" !important;
+}
+/* search setting */
+.search {
+    margin-top: 1em;
+}
+.search h3{
+    padding: .5em .5em;
+    font-size: 1.5em;
+    margin-right: .5em;
+    color: var(--second-color);
+}
+.search .kind {
+    display: flex;
+    flex-direction: row;
+    padding-left: 10%;
+}
+.search input {
+    visibility: hidden;
+}
+.search label {
+    color: var(--third-color);
+    font-size: 1.2em;
+    border: 1px solid white;
+    cursor: pointer;
+    padding: .5em .5em;
+}
+
+.search input[type=checkbox]:checked + label{
+    color: white;
+    border: 1px solid var(--third-color);
+    background: var(--third-color);
+    border-radius: 100%;
+    padding: .5em .5em;
+}
+.search button {
+    background: var(--third-color);
+    color: white;
+    letter-spacing: 5px;
+    font-size: 1.2em;
+    width: 7em;
+    border-radius: 12px;
+    margin-left: 60%; 
+    padding: 1% 0;
+}
+/* pet setting */
+.pet {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+.pet .item{
+    display: flex;
+    flex-direction: row;
+    margin: 2% 7%;  
+}
+.pet .line {
+    margin: 0 auto;
+    width: 85%;
+    border-bottom: 1px solid black; 
+}
+
+.pet .item .img-wrap img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    cursor: pointer;
+    /* padding-bottom: 50px; */
+}
+.pet .item .img-wrap img:hover {
+    opacity: 0.7; 
+}
+.pet .item .text-wrap {
+    padding-left: 2.5%;
+    padding-top: 1.5%;
+}
+.pet .item .text-wrap h2 {
+    font-size: 1.5em;
+}
+.pet .item .text-wrap .profile {
+    padding-top: 3%;
+    display: flex;
+    flex-direction: row;
+}
+.pet .item .text-wrap .profile h4{
+    font-size: 1.2em;
+    padding-right:2em; 
+
+}
+
+
+@media (min-width: 800px) {
+    .search {
+        margin-top: 2em;
+    }
+    .search .kind {
+        padding-left: 15%;
+    }
+    .search button {
+        padding: .5% 0;
+    }
+    .pet .item {
+        margin: 2% 7.5%;  
+    }
+    .pet .item .text-wrap .profile h4{
+        padding-right:7.2em; 
+    
+    }
+    
+}

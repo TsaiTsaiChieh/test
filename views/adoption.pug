@@ -1,0 +1,13 @@
+link(rel='stylesheet' href='./stylesheets/adoption.css')
+include includes/header.pug
+block content
+  .search
+    form(action="/api/adoption" method="POST")
+      .kind
+        h3 種類
+        input#dog(type="checkbox" value="dog" name="kind")
+        label(for="dog") 汪
+        input#cat(type="checkbox" value="cat" name="kind")
+        label(for="cat") 喵
+      button(type="submit") 搜尋
+include includes/footer.pug

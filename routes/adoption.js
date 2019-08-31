@@ -2,7 +2,6 @@ const modules = require('../util/modules');
 const adoptionController = require('../controller/adoptionController');
 const router = modules.express.Router();
 
-// adoptionController = new AdoptionController();
 router.get('/:category', adoptionController.list);
 // router.get('/:category', function (req, res) {
 //     let category = req.params.category;

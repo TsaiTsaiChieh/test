@@ -122,7 +122,7 @@ function crawler(species) {
 
             for (let i = 0; i < contentURL.length; i++) {
                 setTimeout(function () {
-                    console.log(`${i} seconds...`);
+                    console.log(`${i} second...`);
                     // console.log('url:', `${i},${url}${contentURL[i]}`);
                     modules.request({ url: `${url}${contentURL[i]}`, method: 'GET' }, function (err, response, body) {
                         // modules.request({ url: 'http://www.meetpets.org.tw/content/74351', method: 'GET' }, function (err, response, body) {
@@ -168,14 +168,17 @@ function crawler(species) {
                             // 認養資訊
                             // var limitation = $('.field-field-pet-limitation').children().children().text().replace('認養資訊:', '').trim();
                             var story = $('.field-field-limitation-desc').children().children().text().slice(0, -1);
-                            var limitation = $('.field-field-pet-limitation').children().children().text().replace('認養條件:', '').trim().split('認養條件:');
-
+                            var limitation = $('.field-field-pet-limitation').children().children().text().replace('認養條件:', '').split('認養條件:');
+                            for (let j = 0; j < limitation.length; j++) {
+                                limitation[j] = limitation[j].trim();
+                            }
                             // 聯絡人資訊
                             var contentName = $('.field-field-contact').children().children().text();
                             var contentTel = $('.field-field-tel').children().children().text().substring(255, -1);
                             let packData = { link, kind, petName, age, neuter, county, title, image, description, habit, story, limitation, contentName, contentTel };
                             // console.log(packData);
                             loaded++;
+
                             data.push(packData);
                         }
                         if (loaded === contentURL.length) next(null, data);
@@ -221,105 +224,3 @@ function crawler(species) {
 }
 crawler('cat');
 crawler('dog');
-
-
-// function fintLastPage(species) {
-//     return new Promise(function (resolve, reject) {
-//         modules.request({ url: `${url}${species}`, method: 'GET' }, function (err, response, body) {
-//             if (err) {
-//                 reject('fintLastPage function 失敗');
-//                 return
-//             }
-//             else if (!err && response.statusCode == 200) {
-//                 var $ = modules.cheerio.load(body);
-//                 const pager_last = $('.pager-last');
-//                 var index = pager_last[0].attribs.href.search('page=');
-//                 resolve(pager_last[0].attribs.href.substr(index + 5));
-//             }
-//         });
-//     });
-// }
-
-// function info(lastPage, species) {
-//     var contentURL = [];
-//     // contentURL[contentURL.length - 1]
-//     // var flag = true;
-//     const x = new Promise(function (resolve, reject) {
-//         for (let i = 0; i <= lastPage; i++) {
-//             // console.log(`${url}${species}?page=${i}`);
-//             modules.request({ url: `${url}${species}?page=${i}`, method: 'GET' }, function (err, response, body) {
-//                 if (err) {
-//                     reject('info function 失敗');
-//                 }
-//                 else if (!err && response.statusCode == 200) {
-//                     var $ = modules.cheerio.load(body);
-//                     var titles = $('.view-data-node-title a');
-//                     for (let j = 0; j < titles.length; j++) {
-//                         contentURL.push(titles[j].attribs.href);
-//                     }
-//                 }
-//                 // resolve(contentURL);
-//                 // console.log(`${species} length: ${contentURL.length}`);
-//             });
-//             // console.log(i);
-//             // callback(resolve(contentURL));
-//             // console.log(`${species} length: ${contentURL.length}`);
-//             // resolve(contentURL);
-//         }
-//         x.then(function (contentURL) {
-//             console.log(contentURL);
-
-//             return resolve(contentURL);
-//         })
-//         // 
-//         // return resolve(contentURL);
-
-//     });
-
-// }
-// fintLastPage('cat').then(function (lastPage) {
-//     info(lastPage, 'cat').then(function (url) {
-//         console.log(`length:${url.length}`);
-//     });
-// }, function (err) {
-//     console.log(err);
-// });
-// fintLastPage('dog').then(function (lastPage) {
-//     info(lastPage, 'dog').then(function (url) {
-//         console.log(`length:${url.length}`);
-//     });
-// }, function (err) {
-//     console.log(err);
-// });
-
-// function test() {
-//     var a = [];
-//     for (let i = 0; i < 10; i++) {
-//         a.push(i);
-//     }
-//     console.log(a);
-// }
-// test();
-
-
-// fintLastPage('dog');
-// console.log(catLastPage);
-
-// modules.request({ url: `${url}cat`, method: "GET" }, function (err, response, body) {
-//     var result = [];
-//     if (!err && response.statusCode == 200) {
-//         // body 為原始碼，使用 cheerio.load 將字串轉換為 cheerio(jQuery) 物件
-//         // var $ = modules.cheerio.load(body, { decodeEntities: false });
-//         var $ = modules.cheerio.load(body);
-//         // 貓首頁的標題，一頁有 46 隻
-//         var titles = $(".view-data-node-title a");
-//         console.log(titles.length);
-
-//         // console.log(titles.text());
-//         // console.log('titles:', titles[0].attribs.href);
-//         for (let i = 0; i < titles.length; i++) {
-//             result.push(titles[i].attribs.href);
-//         }
-//     }
-//     console.log(result);
-// });

@@ -6,6 +6,7 @@ app.createElement = function (tagName, settings, parentElement) {
     let obj = document.createElement(tagName);
     if (settings.atrs) app.setAttributes(obj, settings.atrs);
     if (settings.stys) app.setStyles(obj, settings.stys);
+    if (settings.evts) app.setEventsHandlers(obj, settings.evts);
     if (parentElement instanceof Element) parentElement.appendChild(obj);
     return obj;
 }
@@ -16,6 +17,18 @@ app.setAttributes = function (obj, attributes) {
 }
 app.setStyles = function (obj, styles) {
     for (let name in styles) obj.styles[name] = styles[name];
+    return obj;
+}
+app.setEventsHandlers = function (obj, eventHandlers, useCapture) {
+    for (let name in eventHandlers) {
+        if (eventHandlers[name] instanceof Array) {
+            for (let i = 0; i < eventHandlers[name].length; i++) {
+                obj.addEventListener(name, eventHandlers[name][i], useCapture);
+            }
+        } else {
+            obj.addEventListener(name, eventHandlers[name], useCapture);
+        }
+    }
     return obj;
 }
 app.ajax = function (method, src, callback) {

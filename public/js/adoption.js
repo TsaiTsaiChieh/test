@@ -13,6 +13,11 @@ app.ajax('GET', `api/adoption/${kind}?paging=${paging}`, function (req) {
         let img_wrap = app.createElement('div', { atrs: { className: 'img-wrap' } }, item);
         if (data[i].image[0].length == 0) pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: './imgs/pet-null.jpg' } }, img_wrap);
         else pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: data[i].image[0] } }, img_wrap);
+        // pet_img.addEventListener('click', function () {
+        //     app.get('.details').style.display = 'flex';
+        // });
+
+
         let text_wrap = app.createElement('div', { atrs: { className: 'text-wrap' } }, item);
         if (data[i].title.length == 0) {
             let stayDay = app.dateConversion(data[i].opendate);
@@ -56,3 +61,6 @@ app.ajax('GET', `api/adoption/count?kind=${kind}`, function (req) {
     app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${paging < lastPage ? paging + 1 : lastPage}`, innerHTML: '下一頁›' } }, pagination);
     app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${lastPage}`, innerHTML: '最後一頁»' } }, pagination);
 });
+// app.pet_img.click = function () {
+//     app.get('.details').style.display = 'flex';
+// }

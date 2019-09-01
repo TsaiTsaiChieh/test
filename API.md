@@ -5,19 +5,21 @@ tsaichieh.com
 * `Pet Object`
 ---
 ### Adoption List API
-* **End Point:** 
- `/adoption/all` for 全部
- `/adoption/cat` for 貓
- `/adoption/dog` for 狗
+* **End Point:** <br>
+`/adoption/:category`<br>
+`/adoption/all` for 全部<br>
+`/adoption/cat` for 貓<br>
+`/adoption/dog` for 狗
 * **Method:** `GET`
 * **Query Parameters:**
 
 Field | Type | Description
 ---------|----------|---------
+ category | String | Category for pet kind
  paging | String(Optional) | Paging for request next page
-* **Request Example:**
- `https://[Host_Name]/api/adoption/all`
- `https://[Host_Name]/api/adoption/cat`
+* **Request Example:**<br>
+ `https://[Host_Name]/api/adoption/all`<br>
+ `https://[Host_Name]/api/adoption/cat`<br>
  `https://[Host_Name]/api/adoption/dog?paging=1`
 * **Success Response: 200**
 
@@ -120,5 +122,30 @@ Field | Type | Description
             contentName: "傅小姐",
             contentTel: "0989204468"
         }
+}
+```
+---
+### Adoption count API
+* **End Point:** <br>
+`/adoption/count?category` 
+* **Method:** `GET`
+* **Query Parameters:**
+
+Field | Type | Description
+---------|----------|---------
+category | String | Category for pet kind
+* **Request Example:**
+`https://[Host_Name]/api/adoption/count?cat`
+* **Success Response: 200**
+
+Field | Type | Description
+---------|----------|---------
+ total | Number | Total number of pet
+ lastPage | Number | Last page of pet
+* **Success Response Example:**
+```js
+{
+    total: 7250,
+    lastPage: 362
 }
 ```

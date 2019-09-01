@@ -40,7 +40,8 @@ function count(req, res) {
 }
 function post(req, res) {
     let { kind } = req.body;
-    if (kind.includes('cat') && kind.includes('dog')) res.redirect('/adoption?kind=all&paging=0');
+    if (!kind) res.redirect('/adoption?kind=all&paging=0');
+    else if (kind.includes('cat') && kind.includes('dog')) res.redirect('/adoption?kind=all&paging=0');
     else if (kind.includes('cat')) res.redirect('/adoption?kind=cat&paging=0');
     else if (kind.includes('dog')) res.redirect('/adoption?kind=dog&paging=0');
 }

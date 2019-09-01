@@ -12,6 +12,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 
 <body>
@@ -41,10 +42,11 @@
         </form>
     </div>
     <!-- end search -->
-    <div class="pet">
+    <div class="pet-list">
         <div class="item">
             <div class="img-wrap">
-                <img src="http://asms.coa.gov.tw/amlapp/upload/pic/b315ba97-7798-4b52-bdf3-f3b54e64ae5a_org.JPG">
+                <img class="pet-img"
+                    src="http://asms.coa.gov.tw/amlapp/upload/pic/b315ba97-7798-4b52-bdf3-f3b54e64ae5a_org.JPG">
             </div>
             <div class="text-wrap">
                 <h2 class="title">高雄市壽山動物保護教育園區</h2>
@@ -72,7 +74,7 @@
         <div class="line"></div>
         <div class="item">
             <div class="img-wrap">
-                <img src="http://www.meetpets.org.tw/files_meetpets/imagecache/normal/IMG_1046.JPG">
+                <img class="pet-img" src="http://www.meetpets.org.tw/files_meetpets/imagecache/normal/IMG_1046.JPG">
             </div>
             <div class="text-wrap">
                 <h2 class="title">虎斑妹，可愛親人找家喔</h2>
@@ -99,9 +101,17 @@
         </div>
         <div class="line"></div>
     </div>
-
-    </div>
     <!-- end pet list -->
+    <div class="pagination">
+        <a href="#">«第一頁</a>
+        <a href="#"> ‹上一頁</a>
+        <div class="paging-list">
+            <a href="/adoption/all?paging=1">1</a>
+            <a href="/adoption/all?paging=2">2</a>
+        </div>
+        <a href="#"> 下一頁›</a>
+        <a href="#">最後一頁»</a>
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src=" https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -113,6 +123,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <script src="./js/lib.js"></script>
+    <script src="./js/adoption.js"></script>
 </body>
 
 </html>

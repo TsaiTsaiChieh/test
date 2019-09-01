@@ -17,20 +17,10 @@ function get(id) {
 }
 function list(category, paging, size) {
     let offset = paging * size;
-    let filter = '';
+    let filter;
     return new Promise(function (resolve, reject) {
-        switch (category) {
-            case 'all':
-                break;
-            case 'cat':
-                filter = `WHERE kind = '貓'`;
-                break;
-            case 'dog':
-                filter = `WHERE kind = '狗'`;
-                break;
-            default:
-                reject({ error: "Wrong Request" });
-        }
+        filter = parseKind(category);
+        if (filter == null) reject({ error: "Wrong Request" });
         mysql.con.query(`SELECT COUNT(id) AS total FROM pet ${filter}`, function (err, result) {
             let body = {};
             if (err) reject(`Query Error in Table pet: ${err}`);
@@ -55,6 +45,28 @@ function list(category, paging, size) {
         });
     });
 }
+function count(kind, size) {
+    if (kind == undefined) kind = '';
+    return new Promise(function (resolve, reject) {
+        let filter = parseKind(kind);
+        mysql.con.query(`SELECT COUNT(id) AS count FROM pet ${filter}`, function (err, result) {
+            if (err) reject(`Query Error in Table pet: ${err}`);
+            else resolve({ total: result[0].count, lastPage: Math.floor(result[0].count / size) });
+        });
+    });
+}
+function parseKind(kind) {
+    switch (kind) {
+        case 'all': case '':
+            return '';
+        case 'cat':
+            return `WHERE kind = '貓'`;
+        case 'dog':
+            return `WHERE kind = '狗'`;
+        default:
+            return null;
+    }
+}
 function parseResult(result) {
     for (let i = 0; i < result.length; i++) {
         result[i].image = JSON.parse(result[i].image);
@@ -65,4 +77,4 @@ function parseResult(result) {
     }
     return result;
 }
-module.exports = { list, get }
+module.exports = { list, get, count }

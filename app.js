@@ -13,4 +13,4 @@ app.use('/api/adoption', adoptionRouters);
 app.set('views', './views');
 app.set('view engine', 'pug');
 
-app.listen(3000, () => console.log('Love Never Stray at port 3000.'));
+app.listen(3000, () => console.log('讓愛不流浪 at port 3000.'));

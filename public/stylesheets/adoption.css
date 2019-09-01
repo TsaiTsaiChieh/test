@@ -56,51 +56,82 @@
     padding: 1% 0;
 }
 /* pet setting */
-.pet {
+.pet-list {
     display: flex;
     flex-direction: column;
     /* align-items: center; */
 }
-.pet .item{
+.pet-list .item{
     display: flex;
     flex-direction: row;
     margin: 2% 7%;  
 }
-.pet .line {
+.pet-list .line {
     margin: 0 auto;
     width: 85%;
     border-bottom: 1px solid black; 
 }
 
-.pet .item .img-wrap img {
+.pet-list .item .img-wrap .pet-img {
     width: 150px;
     height: 150px;
     object-fit: cover;
     cursor: pointer;
     /* padding-bottom: 50px; */
 }
-.pet .item .img-wrap img:hover {
+.pet-list .item .img-wrap .pet-img:hover {
     opacity: 0.7; 
 }
-.pet .item .text-wrap {
+.pet-list .item .text-wrap {
     padding-left: 2.5%;
     padding-top: 1.5%;
 }
-.pet .item .text-wrap h2 {
+.pet-list .item .text-wrap h2 {
     font-size: 1.5em;
 }
-.pet .item .text-wrap .profile {
+.pet-list .item .text-wrap .profile {
     padding-top: 3%;
     display: flex;
     flex-direction: row;
 }
-.pet .item .text-wrap .profile h4{
+.pet-list .item .text-wrap .profile h4{
     font-size: 1.2em;
     padding-right:2em; 
 
 }
+/* pagination setting */
+.pagination {
+    margin: 2% 0;
+    justify-content: center;
+    
+}
+.pagination a{
+    padding: 0 .4em;
+    color: var(--third-color);
+    font-size: 1.2em;
+    font-weight: 500;
+}
 
+.pagination a.active{
+    color: white;
+    background: var(--third-color);
+    border-radius:50%; 
+}
+.pagination a.active:hover{
+    color: white;
+    background: var(--main-color);
+}
+.pagination a:hover {
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--third-color);
+}
 
+.pagination .paging-list a:hover {
+    color: white;
+    border-radius:50%;
+    background: var(--main-color);
+}
 @media (min-width: 800px) {
     .search {
         margin-top: 2em;
@@ -111,10 +142,10 @@
     .search button {
         padding: .5% 0;
     }
-    .pet .item {
+    .pet-list .item {
         margin: 2% 7.5%;  
     }
-    .pet .item .text-wrap .profile h4{
+    .pet-list .item .text-wrap .profile h4{
         padding-right:7.2em; 
     
     }

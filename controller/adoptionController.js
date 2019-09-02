@@ -13,7 +13,7 @@ function get(req, res) {
             res.status(404);
             res.send(err);
         });
-    // res.send(id);
+
 }
 function list(req, res) {
     let category = req.params.category;

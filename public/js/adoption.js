@@ -16,8 +16,6 @@ app.ajax('GET', `api/adoption/${kind}?paging=${paging}`, function (req) {
         // pet_img.addEventListener('click', function () {
         //     app.get('.details').style.display = 'flex';
         // });
-
-
         let text_wrap = app.createElement('div', { atrs: { className: 'text-wrap' } }, item);
         if (data[i].title.length == 0) {
             let stayDay = app.dateConversion(data[i].opendate);

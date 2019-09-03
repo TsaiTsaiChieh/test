@@ -20,7 +20,7 @@ html(lang="en")
                 h1 讓愛不流浪
                 h4 Love Never Stray
               .login
-                img(src="./imgs/login.jpg" alt="login")
+                img(src="./imgs/login_big.jpg" alt="login")
                 p Log in
             nav
                 ul
@@ -60,7 +60,15 @@ html(lang="en")
             input(type="password" class="password" name="password" placeholder="Password" required)
             span.message Message
             button(type="submit" onclick="login()") 登入
+            .line-wrap
+              .line
+              p or
+              .line
+            .fb-login-button(data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState()")
         script(src="./js/lib.js")
         script(src="./js/user.js")
+        #fb-root
+        script(async="" defer="" crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&autoLogAppEvents=1&version=v4.0&appId=2263463080567166")
+
         block content
         

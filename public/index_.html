@@ -33,7 +33,7 @@
                 <h1>讓愛不流浪</h1>
                 <h4>Love Never Stray</h4>
             </div>
-            <div class="login"><img src="./imgs/login.jpg" alt="login">
+            <div class="login"><img src="./imgs/login_big.jpg" alt="login">
                 <p>Log in</p>
             </div>
         </div>
@@ -77,8 +77,18 @@
             <input type="password" class='password' name='password' placeholder="Password" required>
             <span class="message">Message</span>
             <button type="submit">登入</button>
+            <div class="line-wrap">
+                <div class="line"></div>
+                <p>or</p>
+                <div class="line"></div>
+            </div>
+            <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with"
+                data-auto-logout-link="false" data-use-continue-as="false" onclick="checkLoginState()"></div>
         </div>
     </div>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&autoLogAppEvents=1&version=v4.0&appId=2263463080567166"></script>
     <div class="banner">
         <div class="carousel slide" id="carouselCaptions" data-ride="carousel">
             <ol class="carousel-indicators">

@@ -13,8 +13,8 @@ function signup(req, res) {
         });
 }
 function login(req, res) {
-    let { email, password, provider } = req.body;
-    userModel.login(email, password, provider).then(function (body) {
+    let { email, password, provider, name, picture } = req.body;
+    userModel.login(provider, email, password, name, picture).then(function (body) {
         console.log(body);
         res.json(body);
     }).catch(function (err) {

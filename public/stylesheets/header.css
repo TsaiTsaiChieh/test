@@ -86,7 +86,10 @@ header .wrap .login:hover {
 header .wrap .login p {
    margin: auto 0 auto 10px;
 }
-
+header .wrap .login img {
+    width: 35px;
+    border-radius: 50%;
+}
 /* login page setting */
 
 .login-page,
@@ -162,7 +165,26 @@ header .wrap .login p {
     opacity: 0;
     color: var(--red-color);
 }
-
+/* login-page line setting */
+.login-page .line-wrap {
+    margin-top: 1%; 
+    display: flex;
+    flex-direction: row;
+}
+.login-page .line-wrap .line {
+    width: 130px;
+    border-top: 1px solid black; 
+    margin-top: 5%;
+}
+.login-page .line-wrap p {
+    font-size: 1em;
+    letter-spacing: 4px;
+    padding: 0 10px;
+}
+/* FB login button */
+.login-page .fb-login-button {
+    /* margin-top: 2%;  */
+}
 /* close setting */
 .close {
     position: absolute;

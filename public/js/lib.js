@@ -1,4 +1,8 @@
-let app = {};
+let app = {
+    state: {
+        auth: null, picture: null
+    }
+};
 app.get = function (selector) {
     return document.querySelector(selector);
 }
@@ -134,3 +138,5 @@ app.sexTable = function (sex) {
             return '';
     }
 }
+
+

@@ -23,13 +23,13 @@ function list(category, paging, size) {
         if (filter == null) reject({ error: "Wrong Request" });
         mysql.con.query(`SELECT COUNT(id) AS total FROM pet ${filter}`, function (err, result) {
             let body = {};
-            if (err) reject(`Query Error in Table pet: ${err}`);
+            if (err) reject(`Query Error in pet Table: ${err}`);
             else {
                 maxPage = Math.floor(result[0].total / size);
                 if (paging < maxPage) body.paging = paging + 1;
 
                 mysql.con.query(`SELECT * FROM pet ${filter} LIMIT ${offset},${size}`, function (err, result) {
-                    if (err) reject(`Query Error in Table pet: ${err}`);
+                    if (err) reject(`Query Error in pet Table: ${err}`);
                     else {
                         if (result.length == 0) {
                             body.data = [];
@@ -50,7 +50,7 @@ function count(kind, size) {
     return new Promise(function (resolve, reject) {
         let filter = parseKind(kind);
         mysql.con.query(`SELECT COUNT(id) AS count FROM pet ${filter}`, function (err, result) {
-            if (err) reject(`Query Error in Table pet: ${err}`);
+            if (err) reject(`Query Error in pet Table: ${err}`);
             else resolve({ total: result[0].count, lastPage: Math.floor(result[0].count / size) });
         });
     });

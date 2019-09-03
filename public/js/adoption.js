@@ -3,7 +3,8 @@ let kind = urlParams.get('kind');
 let paging = parseInt(urlParams.get('paging'));
 if (paging == null) paging = 0;
 
-app.ajax('GET', `api/adoption/${kind}?paging=${paging}`, function (req) {
+// app.ajax('GET', `api/adoption/${kind}?paging=${paging}`, {}, function (req) {
+app.ajax('GET', `api/adoption/${kind}`, `paging=${paging}`, {}, function (req) {
     let data = JSON.parse(req.responseText).data;
     const pet_list = app.get('.pet-list');
     for (let i = 0; i < data.length; i++) {
@@ -46,7 +47,8 @@ app.ajax('GET', `api/adoption/${kind}?paging=${paging}`, function (req) {
     }
 });
 
-app.ajax('GET', `api/adoption/count?kind=${kind}`, function (req) {
+// app.ajax('GET', `api/adoption/count?kind=${kind}`, {}, function (req) {
+app.ajax('GET', 'api/adoption/count', `kind=${kind}`, {}, function (req) {
     let lastPage = JSON.parse(req.responseText).lastPage;
     const pagination = app.get('.pagination');
     app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=0`, innerHTML: '«第一頁' } }, pagination);

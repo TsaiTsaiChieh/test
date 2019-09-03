@@ -31,16 +31,36 @@ app.setEventsHandlers = function (obj, eventHandlers, useCapture) {
     }
     return obj;
 }
-app.ajax = function (method, src, callback) {
+app.ajax = function (method, src, args, headers, callback) {
     let req = new XMLHttpRequest();
-    req.open(method, src);
-    req.onreadystatechange = function () {
-        req.onload = function () {
-            callback(this);
+    if (method == 'POST') {
+        req.open(method, src);
+        req.setRequestHeader("Content-Type", "application/json");
+        app.setRequestHeaders(req, headers);
+        req.onreadystatechange = function () {
+            req.onload = function () {
+                callback(this);
+            }
         }
+        req.send(JSON.stringify(args));
     }
-    req.send();
+    else {
+        req.open(method, `${src}?${args}`);
+        app.setRequestHeaders(req, headers);
+        req.onreadystatechange = function () {
+            req.onload = function () {
+                callback(this);
+            }
+        }
+        req.send();
+    }
 }
+app.setRequestHeaders = function (req, headers) {
+    // console.log(headers);
+    for (let key in headers) {
+        req.setRequestHeader(key, headers[key]);
+    }
+};
 app.dateConversion = function (opendate) {
     opendate = Date.parse(opendate);
     return Math.ceil((Date.now() - opendate) / (1000 * 60 * 60 * 24));

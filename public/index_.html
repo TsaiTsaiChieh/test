@@ -15,9 +15,29 @@
 </head>
 
 <body>
-    <header><a href="./"><img id="logo" src="./imgs/logo.png" alt="logo" /></a>
-        <h1>讓愛不流浪</h1>
-        <h4>Love Never Stray</h4>
+
+    <!-- <script>
+        function signup() {
+            console.log('signup123');
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "api/user/signup");
+            xmlhttp.setRequestHeader("Content-Type", "application/json;");
+            xmlhttp.send();
+        }
+    </script> -->
+
+    <header>
+        <div class="wrap">
+            <div class="logo-wrap">
+                <a href="./"><img id="logo" src="./imgs/logo.png" alt="logo" /></a>
+                <h1>讓愛不流浪</h1>
+                <h4>Love Never Stray</h4>
+            </div>
+            <div class="login"><img src="./imgs/login.jpg" alt="login">
+                <p>Log in</p>
+            </div>
+        </div>
+
         <nav>
             <ul>
                 <li><a href="#">主頁</a></li>
@@ -28,6 +48,37 @@
             </ul>
         </nav>
     </header>
+
+    <div class="signup-page">
+        <div class="close signup"></div>
+        <div class="form">
+            <div class="title">註冊</div>
+            <div class="subtitle"><span>已有帳號？</span>
+                <p class="change-login">登入</p>
+            </div>
+            <span>Email</span>
+            <input type="text" class='email' name='email' placeholder="Email" required>
+            <span>Password</span>
+            <input type="password" class='password' name='password' placeholder="Password" required>
+            <span class="message">Message</span>
+            <button type="submit" onclick="signup()">註冊</button>
+        </div>
+    </div>
+    <div class="login-page">
+        <div class="close login"></div>
+        <div class="form">
+            <div class="title">登入</div>
+            <div class="subtitle"><span>未有帳號？</span>
+                <p class="change-signup">註冊</p>
+            </div>
+            <span>Email</span>
+            <input type="text" class='email' name='email' placeholder="Email" required>
+            <span>Password</span>
+            <input type="password" class='password' name='password' placeholder="Password" required>
+            <span class="message">Message</span>
+            <button type="submit">登入</button>
+        </div>
+    </div>
     <div class="banner">
         <div class="carousel slide" id="carouselCaptions" data-ride="carousel">
             <ol class="carousel-indicators">
@@ -58,6 +109,7 @@
                     class="sr-only">Next</span></a>
         </div>
     </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -69,6 +121,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/lib.js"></script>
+    <script type="text/javascript" src="js/user.js"></script>
 </body>
 
 </html>

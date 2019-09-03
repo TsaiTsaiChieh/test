@@ -13,10 +13,15 @@ html(lang="en")
         link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
     body
         header
-            a(href="./")
-                img#logo(src="./imgs/logo.png", alt="logo")
-            h1 讓愛不流浪
-            h4 Love Never Stray
+            .wrap
+              .logo-wrap
+                a(href="./")
+                  img#logo(src="./imgs/logo.png" alt="logo")
+                h1 讓愛不流浪
+                h4 Love Never Stray
+              .login
+                img(src="./imgs/login.jpg" alt="login")
+                p Log in
             nav
                 ul
                     li
@@ -29,5 +34,33 @@ html(lang="en")
                         a(href="#") 捐血
                     li
                         a(href="#") 須知
+        .signup-page
+          .close.signup
+          .form
+            .title 註冊
+            .subtitle
+                span 已有帳號？
+                p.change-login 登入
+            span Email
+            input(type="text" class="email" name="email" placeholder="Email" required)
+            span Password
+            input(type="password" class="password" name="password" placeholder="Password" required)
+            span.message Message
+            button(type="submit" onclick="signup()") 註冊
+        .login-page
+          .close.login
+          .form
+            .title 登入
+            .subtitle
+              span 未有帳號？
+              p.change-signup 註冊
+            span Email
+            input(type="text" class="email" name="email" placeholder="Email" required)
+            span Password
+            input(type="password" class="password" name="password" placeholder="Password" required)
+            span.message Message
+            button(type="submit" onclick="login()") 登入
+        script(src="./js/lib.js")
+        script(src="./js/user.js")
         block content
         

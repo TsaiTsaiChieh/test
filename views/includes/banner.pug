@@ -6,17 +6,19 @@ link(rel='stylesheet' href='./stylesheets/banner.css')
       li(data-target='#carouselCaptions' data-slide-to='1')
     .carousel-inner
       .carousel-item.active
-        img.d-block.w-100(src='./imgs/dog_banncer.jpeg')
+        a.dog-link(href="")
+          img.d-block.w-100(src='./imgs/dog_banncer.jpeg')
         .carousel-caption.d-none.d-md-block
-          .full-width
+          .full-width.dog
             h3 給我一個家
-            p 目前有 7654 隻狗狗等待認領養
+            p 目前有 隻狗狗等待認領養
       .carousel-item
-        img.d-block.w-100(src='./imgs/cat_banncer.jpeg')
+        a.cat-link(href="")
+          img.d-block.w-100.cat-img(src='./imgs/cat_banncer.jpeg')
         .carousel-caption.d-none.d-md-block
-          .full-width
+          .full-width.cat
             h3 毛小孩是家人
-            p 目前有 4567 隻喵喵等待認領養
+            p 目前有 隻喵喵等待認領養
     //- a.carousel-control-prev(href='#carouselCaptions' role='button' data-slide='prev')
     //-   span.carousel-control-prev-icon(aria-hidden='true')
     //-   span.sr-only Previous
@@ -29,3 +31,4 @@ link(rel='stylesheet' href='./stylesheets/banner.css')
 script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
 script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
 script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+script(src='./js/banner.js')

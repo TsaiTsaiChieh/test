@@ -63,7 +63,7 @@ header nav ul li a:hover {
     font-weight: bold;
     transition: .5s;
 }
-/* login setting */
+/* member setting */
 header .wrap {
     display: flex;
     flex-direction:row; 
@@ -71,7 +71,7 @@ header .wrap {
     justify-content: center;
     position: relative;
 }
-header .wrap .login{
+header .wrap .member{
     position: absolute;
     top: 18%;
     right: 15%;
@@ -80,14 +80,16 @@ header .wrap .login{
     color: var(--main-color);
     font-size: 1.2em;
 }
-header .wrap .login:hover {
+header .wrap .member:hover {
     opacity: .8;
 }
-header .wrap .login p {
+header .wrap .member p {
    margin: auto 0 auto 10px;
+   letter-spacing: 3px;
 }
-header .wrap .login img {
+header .wrap .member img {
     width: 35px;
+    height: 35px;
     border-radius: 50%;
 }
 /* login page setting */

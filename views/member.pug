@@ -1,0 +1,42 @@
+link(rel='stylesheet' href='./stylesheets/member.css')
+include includes/header.pug
+block content
+.member-wrap
+  .left-wrap
+    .left-profile
+      img(src="./imgs/login_big.jpg")
+      .left-name 編輯姓名
+    .menu
+      ul
+        li
+          a.change.active(href="") 修改資料
+        li
+          a.adopt(href="") 送養訊息
+        li
+          a.blood(href="") 捐血需求
+        li
+          a.logout(href="adoption?kind=all&paging=0") 登出
+  .right-wrap
+    .info-wrap
+      .title-wrap 個人資料
+      .subtitle-wrap 查看和編輯您的個人資料
+      .right-line
+      .login-info
+        span 登入的電子郵件：
+        p
+        p#user-id
+      // bootstrap button
+      label.btn.btn-info
+        input.upload-img(style="display:none;" type="file" accept=".png, .jpg, .jpeg" name="upload-img")
+        i 上傳新照片
+      .personal-info
+        span 姓名
+        input.name(type="text" name="name" placeholder="編輯姓名" required="") 
+        span 手機
+        input.phone(type="text" name="phone" placeholder="ex: 0987654321" required="")
+      button.profile-btn(type="submit" onclick="updateProfile()") 確認修改
+//- script(type="text/javascript" src="js/user.js")
+script(type="text/javascript" src="js/lib.js")
+script(type="text/javascript" src="js/member.js")
+
+include includes/footer.pug

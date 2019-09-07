@@ -1,0 +1,176 @@
+/* global setting */
+@font-face {
+    font-family: 'MainText';
+    src: src('./fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
+}
+:root {
+    --main-color: #8FD3E8 !important;
+    --light-gray: #F7F7F7 !important;
+    --second-color: #419FFF !important;
+    --third-color: #5868BA !important;
+    --fourth-color: #6B9EAE !important;
+    --red-color: #FF4651 !important;
+}
+* {
+    font-family: "MainText","Microsoft JhengHei" !important;
+}
+
+/* wrap left setting */
+.member-wrap {
+    margin: 5% 12% 0; 
+    display: flex;
+    flex: row;
+}
+.member-wrap .left-wrap {
+    flex-grow: 2;
+}
+.member-wrap .left-profile  {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5% 0 12%;
+    border: 1px solid black;
+    border-bottom: none; 
+}
+.member-wrap .left-wrap .left-name{
+    margin-top: 5%;
+    font-size: 1.2em;
+    letter-spacing: 2px;
+} 
+.member-wrap .left-profile img {
+    margin-top: 10%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius:50%;
+    
+}
+
+.member-wrap .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5%; 
+}
+.member-wrap .menu ul {
+    border: 1px solid black;
+    display: inline-block;
+    width: 100%;
+}
+.member-wrap .menu a{
+    display: inline-block;
+    width: 100%;
+    font-size: 1.3em;
+    letter-spacing: 3px;
+    line-height: 1.5;
+    color: black;
+    text-align: center;
+    padding: 3% 0;
+}
+.member-wrap .menu a:hover,
+.member-wrap .menu a.active:hover{
+    text-decoration: none;
+    font-weight: bold;
+    transition: .5s;
+    opacity: .6;
+    background: var(--main-color);
+    color: white;
+}
+.member-wrap .menu li{
+    display: inline-block;
+    width: 100%;    
+}
+.member-wrap .menu li a.active {
+    color: white;
+    background: var(--main-color);
+}
+.member-wrap .right-wrap {
+    flex-grow: 10;
+    margin-left: 5%; 
+}
+.member-wrap .left-wrap,
+.member-wrap .right-wrap {
+    width: 200px;
+}
+
+
+/* wrap right setting */
+.member-wrap .right-wrap {
+    border: 1px solid black;
+}
+.member-wrap .right-wrap .info-wrap {
+    display: flex;
+    flex-direction: column;
+    margin: 4% 5%;
+}
+.member-wrap .title-wrap {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--main-color);
+    letter-spacing: .15em;
+
+}
+.member-wrap .title-wrap {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--main-color);
+    letter-spacing: .15em;
+}
+.member-wrap .subtitle-wrap {
+    font-size: 1.2em;
+    margin: 3% 0;
+    letter-spacing: .1em;
+}
+.member-wrap .right-line {
+    width: 100%;
+    border-bottom: 1px solid black;
+    margin-bottom: 3%; 
+}
+.member-wrap .login-info {
+    font-size: 1em;
+    letter-spacing: .1em;
+    line-height: 2;
+}
+.member-wrap .upload {
+    letter-spacing: .15em;
+    font-size: 1.1em;
+    margin-bottom: 2%;
+    cursor: pointer;
+}
+
+/* personal-info setting */
+.personal-info  {
+    display: flex;
+    flex-direction: column;
+    line-height: 2.5;
+    letter-spacing: .1em;
+}
+.personal-info input {
+    border: 1px solid black;
+    letter-spacing: .15em;
+}
+/* button setting */
+.profile-btn {
+    margin-top: 5%; 
+    width: 35%;
+    font-size: 1.2em;
+    letter-spacing: .15em;
+    padding: 1.5% 0;
+    background: var(--main-color);
+    color: white;
+    border: none;
+}
+.profile-btn:hover {
+    transition: .5;
+    opacity: .8;
+}
+
+/* upload picture setting */
+.btn-info {
+    letter-spacing: .15em;
+}
+
+/* user-id setting */
+.login-info #user-id {
+    display: none;
+}

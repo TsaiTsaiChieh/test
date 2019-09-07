@@ -7,5 +7,8 @@ router.get('/', (req, res) => {
 router.get('/adoption', (req, res) => {
     res.render('adoption');
 });
+router.get('/member', (req, res) => {
+    res.render('member');
+});
 
 module.exports = router;

@@ -1,6 +1,20 @@
-app.get('.login').addEventListener('click', function () {
+// 註冊登入或 profile 按鈕
+// 因為要在調用 removeEventListener 確實抓到 loginEvent function
+function memberEvent() {
     app.get('.login-page').style.display = 'block';
-});
+    app.get('.member p').innerHTML = '登入';
+}
+// 若沒有 auth(token)，使用者可開啟登入/註冊頁面
+// 所以 token 過期後，要去清 localStorage
+if (!window.localStorage.getItem('auth')) {
+    app.get('.member').addEventListener('click', memberEvent);
+}
+else if (window.localStorage.getItem('auth')) {
+    app.get('.member p').innerHTML = '會員';
+    app.get('.member').addEventListener('click', function () {
+        window.location.href = 'member';
+    });
+}
 // 登入註冊切換
 app.get('.change-signup').addEventListener('click', function () {
     app.get('.login-page').style.display = 'none';
@@ -57,10 +71,7 @@ function signup() {
                 // app.get('.signup-page .message').style.opacity = '1';
             }
             else {
-                app.state.auth = JSON.parse(req.responseText).token.access_token;
-                app.get('.signup-page .message').innerHTML = '註冊成功';
-                app.get('.signup-page').style.display = 'none';
-                // window.location.href = 'adoption?kind=all&paging=0';
+                loginSuccessEvent('signup-page', 'native', req);
             }
         });
 
@@ -88,32 +99,56 @@ function login() {
                 app.get('.login-page .message').style.opacity = '1';
             }
             else {
-                app.state.auth = JSON.parse(req.responseText).token.access_token;
-                app.get('.login-page .message').innerHTML = '登入成功';
-                app.get('.login-page .message').style.opacity = '1';
-                app.get('.login-page').style.display = 'none';
-                // window.location.href = 'adoption?kind=all&paging=0';
+                loginSuccessEvent('login-page', 'native', req);
+                // app.get('.login-page .message').style.color = 'black';
+                // app.get('.login-page .message').innerHTML = '登入成功';
+                // app.get('.login-page .message').style.opacity = '1';
+                // app.get('.login-page').style.display = 'none';
+                // window.localStorage.setItem('auth', JSON.parse(req.responseText).token.access_token);
+                // // 登入成功後要把可開啟登入註冊頁面的監聽器拿掉
+                // app.get('.member').removeEventListener('click', memberEvent);
+                // app.get('.member p').innerHTML = '會員';
             }
         });
     }
 }
-app.user.init = function () {
-    let picture = window.localStorage.getItem('picture');
-    if (picture) {
-        app.get('.login img').src = picture;
-    }
-}();
-// facebook login
-
-function checkLoginState() {               // Called when a person is finished with the Login Button.
-    FB.getLoginStatus(function (response) {   // See the onlogin handler
-        statusChangeCallback(response);
+function loginSuccessEvent(className, provider, req) {
+    let data = JSON.parse(req.responseText);
+    app.get(`.${className} .message`).style.color = 'black';
+    app.get(`.${className} .message`).innerHTML = '登入成功';
+    app.get(`.${className} .message`).style.opacity = '1';
+    app.get(`.${className}`).style.display = 'none';
+    window.localStorage.setItem('auth', data.token.access_token);
+    window.localStorage.setItem('provider', provider);
+    // 登入成功後要把可開啟登入註冊頁面的監聽器拿掉
+    app.get('.member').removeEventListener('click', memberEvent);
+    app.get('.member p').innerHTML = '會員';
+    app.get('.member').addEventListener('click', function () {
+        window.location.href = 'member';
     });
 }
+function userInit() {
+    let picture = window.localStorage.getItem('picture');
+    if (picture) {
+        app.get('.member img').src = picture;
+    }
+};
+userInit();
+// facebook login
+
+function checkLoginState() {           // Called when a person is finished with the Login Button.
+    FB.login(function (response) {
+        statusChangeCallback(response);
+    }, { scope: "public_profile,email" });
+    // FB.getLoginStatus(function (response) {   // See the onlogin handler
+
+    // });
+}
 function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+
     // The current login status of the person.
     if (response.status === 'connected') {   // Logged into your webpage and Facebook.
-        app.state.auth = response.authResponse;
+        // app.state.auth = response.authResponse;
         FB.api('/me?fields=name,email,picture.width(500)', function (response) {
             saveFBtoDB(response);
             // console.log(response);
@@ -133,7 +168,6 @@ window.fbAsyncInit = function () {
     });
 };
 
-
 (function (d, s, id) {                      // Load the SDK asynchronously
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -152,17 +186,11 @@ function saveFBtoDB(response) {
             app.get('login-page .message').style.opacity = '1';
         } else {
             let data = JSON.parse(req.responseText);
-            app.state.auth = data.token.access_token;
             if (data.user.picture) {
-                // app.state.picture = data.user.picture;
-                // console.log(JSON.parse(req.responseText).user.picture);
-                // app.get('.login img').src = JSON.parse(req.responseText).user.picture;
+                app.get('.member img').src = data.user.picture;
                 window.localStorage.setItem('picture', data.user.picture);
             }
-            app.get('.login-page .message').innerHTML = '登入成功';
-            app.get('.login-page .message').style.opacity = '1';
-            app.get('.login-page').style.display = 'none';
-            // window.location.href = 'adoption?kind=all&paging=0';
+            loginSuccessEvent('login-page', 'facebook', req);
         }
     });
 

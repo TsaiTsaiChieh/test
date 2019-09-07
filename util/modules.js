@@ -6,9 +6,10 @@ const xmlhttprequest = require('xmlhttprequest');
 const fs = require('fs');
 const bodyparser = require('body-parser');
 const crypto = require('crypto');
+const multer = require('multer');
 
 module.exports = {
     express, request, cheerio,
     async, xmlhttprequest, fs,
-    bodyparser, crypto
+    bodyparser, crypto, multer
 };

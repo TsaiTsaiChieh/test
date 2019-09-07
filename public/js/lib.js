@@ -59,6 +59,17 @@ app.ajax = function (method, src, args, headers, callback) {
         req.send();
     }
 }
+app.ajaxFormData = function (src, args, callback) {
+    let req = new XMLHttpRequest();
+    req.open('POST', src);
+    // req.setRequestHeader("Content-Type", "multipart/form-data");
+    req.onreadystatechange = function () {
+        req.onload = function () {
+            callback(this);
+        }
+    }
+    req.send(args);
+}
 app.setRequestHeaders = function (req, headers) {
     // console.log(headers);
     for (let key in headers) {

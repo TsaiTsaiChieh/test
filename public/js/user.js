@@ -143,7 +143,7 @@ userInit();
 function checkLoginState() {           // Called when a person is finished with the Login Button.
     FB.login(function (response) {
         statusChangeCallback(response);
-    }, { scope: "public_profile,email" });
+    }, { scope: "email" });
     // FB.getLoginStatus(function (response) {   // See the onlogin handler
 
     // });
@@ -184,11 +184,12 @@ function saveFBtoDB(response) {
     let { name, email, picture } = response;
     picture = picture.data.url;
     let provider = 'facebook';
-    app.ajax('POST', 'api/user/login', { email, name, picture, provider }, {}, function (req) {
-        if (req.status === 500) {
-            app.get('.login-page .message').innerHTML = '伺服器錯誤，請稍後再試';
-            app.get('login-page .message').style.opacity = '1';
-        } else loginSuccessEvent('login-page', 'facebook', req);
-    });
+    if (email)
+        app.ajax('POST', 'api/user/login', { email, name, picture, provider }, {}, function (req) {
+            if (req.status === 500) {
+                app.get('.login-page .message').innerHTML = '伺服器錯誤，請稍後再試';
+                app.get('login-page .message').style.opacity = '1';
+            } else loginSuccessEvent('login-page', 'facebook', req);
+        });
 
 }

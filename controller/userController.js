@@ -27,7 +27,6 @@ function profile(req, res) {
     if (authorization) {
         let token = authorization.replace('Bearer ', '');
         userModel.profile(token).then(function (body) {
-            console.log(body);
             res.json(body);
         })
             .catch(function (err) {
@@ -52,8 +51,6 @@ function update(req, res) {
     let imageLoad = upload.fields([{ name: 'upload-img', maxCount: 1 }]);
     imageLoad(req, res, function (err) {
         let { inputName, inputPhone, userId } = req.body;
-        console.log(inputName, inputPhone, userId);
-
         if (JSON.stringify(req.files) === JSON.stringify({})) inputPiture = 'null';
         // else console.log('::::', req.files['upload-img'][0].filename);
         else inputPiture = req.files['upload-img'][0].filename;

@@ -120,17 +120,21 @@ function loginSuccessEvent(className, provider, req) {
     app.get(`.${className}`).style.display = 'none';
     window.localStorage.setItem('auth', data.token.access_token);
     window.localStorage.setItem('provider', provider);
+    window.localStorage.setItem('picture', data.user.picture);
     // 登入成功後要把可開啟登入註冊頁面的監聽器拿掉
     app.get('.member').removeEventListener('click', memberEvent);
     app.get('.member p').innerHTML = '會員';
     app.get('.member').addEventListener('click', function () {
         window.location.href = 'member';
     });
+    location.reload(); // 才會更新會員圖片
 }
 function userInit() {
     let picture = window.localStorage.getItem('picture');
     if (picture) {
-        app.get('.member img').src = picture;
+        if (picture.substring(0, 5) === 'https')
+            app.get('.member img').src = picture;
+        else app.get('.member img').src = `./user-pic/${picture}`;
     }
 };
 userInit();
@@ -184,14 +188,7 @@ function saveFBtoDB(response) {
         if (req.status === 500) {
             app.get('.login-page .message').innerHTML = '伺服器錯誤，請稍後再試';
             app.get('login-page .message').style.opacity = '1';
-        } else {
-            let data = JSON.parse(req.responseText);
-            if (data.user.picture) {
-                app.get('.member img').src = data.user.picture;
-                window.localStorage.setItem('picture', data.user.picture);
-            }
-            loginSuccessEvent('login-page', 'facebook', req);
-        }
+        } else loginSuccessEvent('login-page', 'facebook', req);
     });
 
 }

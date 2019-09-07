@@ -21,8 +21,9 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
         app.get('.personal-info input.phone').placeholder = user.phone;
     }
     if (user.picture) {
-        if (user.provider === 'native') app.get('.left-profile img').src = `./user-pic/${user.picture}`;
-        else app.get('.left-profile img').src = user.picture;
+        if (user.picture.substring(0, 5) === 'https')
+            app.get('.left-profile img').src = user.picture;
+        else app.get('.left-profile img').src = `./user-pic/${user.picture}`;
     }
     app.get('.login-info p').innerHTML = user.email;
     app.get('.login-info #user-id').innerHTML = user.id;
@@ -34,6 +35,7 @@ function logout() {
     app.get('.logout').addEventListener('click', function () {
         window.localStorage.removeItem('auth');
         window.localStorage.removeItem('picture');
+        window.localStorage.removeItem('provider');
         if (window.localStorage.getItem('provider') === 'facebook') {
             FB.api('/me/permissions', 'delete', function (res) {
             });
@@ -57,6 +59,8 @@ function updateProfile() {
         if (inputPhone) formData.append('inputPhone', inputPhone);
         formData.append('userId', id);
         app.ajaxFormData('api/user/update', formData, function (req) {
+            console.log(req.responseText);
+
             if (req.status === 500) console.log(`error happen: error code is ${req.status}`);
             else location.reload('member');
         });

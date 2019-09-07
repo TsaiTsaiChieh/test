@@ -51,9 +51,7 @@ function login(provider, email, password, name, picture) {
         }
         else if (provider === 'facebook') {
             // 搜尋有無使用 FB 註冊過
-            console.log(email, provider);
-
-            mysql.con.query(`SELECT id FROM user WHERE provider = '${provider}' AND email='${email}'`, function (err, result) {
+            mysql.con.query(`SELECT id,picture,name FROM user WHERE provider='${provider}' AND email='${email}'`, function (err, result) {
                 if (err) reject({ code: 500, error: `Query Error in user Table: ${err}` });
                 // 代表未使用 FB 註冊過
                 else if (result.length === 0) {
@@ -72,17 +70,20 @@ function login(provider, email, password, name, picture) {
                 }
                 else if (result.length !== 0) { // 曾經用過 FB 註冊
                     let user_id = result[0].id;
-                    mysql.con.query(`UPDATE user SET name='${name}',picture='${picture}' WHERE id=${user_id}`, function (err, result) {
-                        if (err) reject({ code: 500, error: `Query Error in user Table: ${err}` });
-                        else {
-                            let access_token = modules.crypto.createHash('sha256').update(email + name + Date.now(), 'utf8').digest('hex');
-                            let token = { user_id, access_token, access_expired: 3600 };
-                            mysql.con.query('INSERT INTO token SET ?', token, function (err, result) {
-                                if (err) reject({ code: 500, error: `Query Error in token Table: ${err}` });
-                                else resolve({ token: { access_token, access_expired: 3600 }, user: { id: user_id, provider, name, email, picture } });
-                            });
-                        }
+                    let name_ = result[0].name;
+                    let picture_ = result[0].picture;
+                    // 不要登入時每次更新資料庫
+                    // mysql.con.query(`UPDATE user SET name='${name}',picture='${picture}' WHERE id=${user_id}`, function (err, result) {
+                    //     if (err) reject({ code: 500, error: `Query Error in user Table: ${err}` });
+                    //     else {
+                    let access_token = modules.crypto.createHash('sha256').update(email + name + Date.now(), 'utf8').digest('hex');
+                    let token = { user_id, access_token, access_expired: 3600 };
+                    mysql.con.query('INSERT INTO token SET ?', token, function (err, result) {
+                        if (err) reject({ code: 500, error: `Query Error in token Table: ${err}` });
+                        else resolve({ token: { access_token, access_expired: 3600 }, user: { id: user_id, provider, name: name_, email, picture: picture_ } });
                     });
+                    // }
+                    // });
                 }
             });
         }
@@ -117,14 +118,19 @@ function profile(token) {
     });
 }
 function update(userId, inputName, inputPhone, inputPicture) {
+    console.log(userId, inputName, inputPhone, inputPicture);
     return new Promise(function (resolve, reject) {
         let update_sql = {};
         if (inputName) update_sql.name = inputName;
         if (inputPhone) update_sql.phone = inputPhone;
         if (inputPicture !== 'null') update_sql.picture = inputPicture;
+        console.log(update_sql);
 
-        query(`UPDATE user SET ? WHERE id=${userId}`, update_sql, function (err, result) {
-            if (err) reject({ code: 500, error: `Query Error in user Table: ${err}` });
+        mysql.con.query(`UPDATE user SET ? WHERE id=${userId}`, update_sql, function (err, result) {
+            if (err) {
+                reject({ code: 500, error: `Query Error in user Table: ${err}` });
+                throw err;
+            }
             else resolve('Update successful.');
         });
     });

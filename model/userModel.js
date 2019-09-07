@@ -118,19 +118,15 @@ function profile(token) {
     });
 }
 function update(userId, inputName, inputPhone, inputPicture) {
-    console.log(userId, inputName, inputPhone, inputPicture);
     return new Promise(function (resolve, reject) {
         let update_sql = {};
         if (inputName) update_sql.name = inputName;
         if (inputPhone) update_sql.phone = inputPhone;
         if (inputPicture !== 'null') update_sql.picture = inputPicture;
-        console.log(update_sql);
 
         mysql.con.query(`UPDATE user SET ? WHERE id=${userId}`, update_sql, function (err, result) {
-            if (err) {
+            if (err)
                 reject({ code: 500, error: `Query Error in user Table: ${err}` });
-                throw err;
-            }
             else resolve('Update successful.');
         });
     });

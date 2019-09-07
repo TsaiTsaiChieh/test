@@ -2,13 +2,10 @@
 app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.localStorage.getItem('auth')}` }, function (req) {
     // token 無效或過期，要重新登入
     if (req.status !== 200) {
-        console.log(`error happen: error code is ${req.status}`);
         window.localStorage.removeItem('auth');
-        window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉
+        window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
     }
     let user = JSON.parse(req.responseText).user;
-    console.log(user);
-
 
     if (user.picture) {
         app.get('.left-profile img').src = user.picture;
@@ -31,7 +28,6 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
 // logout setting
 logout();
 function logout() {
-    console.log(app.get('.logout'));
     app.get('.logout').addEventListener('click', function () {
         window.localStorage.removeItem('auth');
         window.localStorage.removeItem('picture');
@@ -52,17 +48,18 @@ function updateProfile() {
     if (inputName || inputPhone || uploadImg) {
         let formData = new FormData();
         if (uploadImg) {
-            var newfile = new File([uploadImg], id + ".jpg", { type: "image/jpeg" });
-            formData.append('upload-img', newfile);
+            uploadImg = new File([uploadImg], id + ".jpg", { type: "image/jpeg" });
+            formData.append('upload-img', uploadImg);
         }
         if (inputName) formData.append('inputName', inputName);
         if (inputPhone) formData.append('inputPhone', inputPhone);
         formData.append('userId', id);
         app.ajaxFormData('api/user/update', formData, function (req) {
-            console.log(req.responseText);
-
             if (req.status === 500) console.log(`error happen: error code is ${req.status}`);
-            else location.reload('member');
+            else {
+                if (uploadImg) window.localStorage.setItem('picture', uploadImg.name);
+                location.reload('member');
+            }
         });
     }
 

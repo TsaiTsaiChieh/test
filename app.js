@@ -9,7 +9,8 @@ app.use(modules.express.static('public'));
 const mainRouter = require('./routes');
 const adoptionRouters = require('./routes/adoption');
 const userRouters = require('./routes/user');
-// const controller = require();
+
+
 
 app.use(mainRouter);
 app.use('/api/adoption', adoptionRouters);

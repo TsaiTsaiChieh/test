@@ -60,7 +60,7 @@ function countyTable(countyString) {
 function neuterTable(neuterString) {
     switch (neuterString) {
         case '是':
-            return 'F';
+            return 'T';
         case '否':
             return 'F';
         default:
@@ -173,9 +173,9 @@ function crawler(species) {
                                 limitation[j] = limitation[j].trim();
                             }
                             // 聯絡人資訊
-                            var contentName = $('.field-field-contact').children().children().text();
-                            var contentTel = $('.field-field-tel').children().children().text().substring(255, -1);
-                            let packData = { link, kind, petName, age, neuter, county, title, image, description, habit, story, limitation, contentName, contentTel };
+                            var contactName = $('.field-field-contact').children().children().text();
+                            var contactMethod = $('.field-field-tel').children().children().text().substring(255, -1);
+                            let packData = { link, kind, petName, age, neuter, county, title, image, description, habit, story, limitation, contactName, contactMethod };
                             // console.log(packData);
                             loaded++;
 
@@ -197,8 +197,8 @@ function crawler(species) {
                     neuter: data[i].neuter, county: data[i].county, title: data[i].title,
                     image: JSON.stringify(data[i].image), description: JSON.stringify(data[i].description),
                     habit: JSON.stringify(data[i].habit), story: JSON.stringify(data[i].story),
-                    limitation: JSON.stringify(data[i].limitation), contentName: data[i].contentName,
-                    contentTel: data[i].contentTel
+                    limitation: JSON.stringify(data[i].limitation), contactName: data[i].contactName,
+                    contactMethod: data[i].contactMethod
                 });
                 // console.log(insert_pet);
 

@@ -79,7 +79,7 @@ modules.async.waterfall([
                         bacterin: data[j].animal_bacterin, county: data[j].animal_area_pkid, foundplace: data[j].animal_foundplace,
                         title: data[j].animal_title, image: JSON.stringify([data[j].album_file]),
                         description: JSON.stringify(data[j].animal_remark), opendate: opendateTable(data[j].animal_opendate),
-                        contentName: data[j].shelter_name, contentTel: data[j].shelter_tel
+                        contactName: data[j].shelter_name, contactMethod: data[j].shelter_tel
                     });
                 } // end for /** data.length */ loop
                 loaded++;

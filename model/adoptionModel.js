@@ -51,7 +51,7 @@ function count(kind, size) {
         let filter = parseKind(kind);
         mysql.con.query(`SELECT COUNT(id) AS count FROM pet ${filter}`, function (err, result) {
             if (err) reject(`Query Error in pet Table: ${err}`);
-            else resolve({ total: result[0].count, lastPage: Math.floor(result[0].count / size) });
+            else resolve({ total: result[0].count, lastPage: Math.ceil(result[0].count / size) - 1 });
         });
     });
 }

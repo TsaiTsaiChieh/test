@@ -64,6 +64,54 @@ INSERT INTO `pet` VALUES (4261,1,'108-L059 D','狗',NULL,'F','C','黑色','T','F
 UNLOCK TABLES;
 
 --
+-- Table structure for table `pet_1`
+--
+
+DROP TABLE IF EXISTS `pet_1`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `pet_1` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `db` tinyint(4) DEFAULT NULL,
+  `db_link` varchar(64) DEFAULT NULL,
+  `user_id` bigint(20) unsigned DEFAULT NULL,
+  `kind` varchar(4) DEFAULT NULL,
+  `petName` varchar(255) DEFAULT NULL,
+  `microchip` varchar(32) DEFAULT NULL,
+  `sex` varchar(1) DEFAULT NULL,
+  `age` varchar(1) DEFAULT NULL,
+  `color` varchar(8) DEFAULT NULL,
+  `neuter` varchar(1) DEFAULT NULL,
+  `bacterin` varchar(1) DEFAULT NULL,
+  `county` tinyint(4) DEFAULT NULL,
+  `foundplace` varchar(64) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `image` json DEFAULT NULL,
+  `description` json DEFAULT NULL,
+  `habit` json DEFAULT NULL,
+  `story` json DEFAULT NULL,
+  `opendate` date DEFAULT NULL,
+  `limitation` json DEFAULT NULL,
+  `contactName` varchar(255) DEFAULT NULL,
+  `contactMethod` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `kind` (`kind`),
+  KEY `db` (`db`),
+  KEY `age` (`age`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pet_1`
+--
+
+LOCK TABLES `pet_1` WRITE;
+/*!40000 ALTER TABLE `pet_1` DISABLE KEYS */;
+INSERT INTO `pet_1` VALUES (1,3,NULL,2,'狗','小花','087r','M','C','綠','F',NULL,2,NULL,'可愛吉米送養','[\"2_1567926107435.jpg\", \"2_1567926107436.jpg\"]','\"在路上撿的\"',NULL,NULL,NULL,'[\"年滿20歲\", \"同意絕育\", \"家人同意\"]','蔡采潔',NULL),(2,3,NULL,2,'狗','小黑','986543','M','C','黑色','F',NULL,2,NULL,'小貓送養','[\"2_1567926290473.jpg\", \"2_1567926290473.jpg\", \"2_1567926290474.jpg\"]','\"很可愛喔\"',NULL,NULL,NULL,'[\"年滿20歲\", \"同意絕育\", \"家人同意\"]','蔡采潔','0953508900');
+/*!40000 ALTER TABLE `pet_1` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `token`
 --
 
@@ -84,7 +132,7 @@ CREATE TABLE `token` (
 
 LOCK TABLES `token` WRITE;
 /*!40000 ALTER TABLE `token` DISABLE KEYS */;
-INSERT INTO `token` VALUES (1,'53832cc4322dd2614116749057558d165b1494846f2949861b7703eb71278fc9',3600,'2019-09-07 00:22:04'),(1,'af60dfa720b438835d7bcb2cd0bf1ebdd94d955440fd0191d3d0507bba5e9b1b',3600,'2019-09-07 00:42:27');
+INSERT INTO `token` VALUES (2,'29f438f846923af90516528e4035866b4426905dfdb3528a6c82ef7b34dd9537',3600,'2019-09-08 14:21:04');
 /*!40000 ALTER TABLE `token` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,7 +152,7 @@ CREATE TABLE `user` (
   `phone` varchar(16) DEFAULT NULL,
   `picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +161,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'native','jije','jecica196@gmail.com','0000','38idj3','1.jpg'),(2,'facebook','蔡采潔','jecica196@gmail.com',NULL,NULL,'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=2252592508181751&width=500&ext=1570372628&hash=AeSKJJayiPgxl0xp'),(3,'native','道湧','test','0000','098765432','3.jpg');
+INSERT INTO `user` VALUES (1,'facebook','蔡采潔','jecica196@gmail.com',NULL,NULL,'1.jpg'),(2,'native',NULL,'test','0000',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -126,4 +174,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-07 10:38:04
+-- Dump completed on 2019-09-08 15:18:22

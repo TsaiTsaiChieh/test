@@ -52,7 +52,6 @@ function update(req, res) {
     imageLoad(req, res, function (err) {
         let { inputName, inputPhone, userId } = req.body;
         if (JSON.stringify(req.files) === JSON.stringify({})) inputPiture = 'null';
-        // else console.log('::::', req.files['upload-img'][0].filename);
         else inputPiture = req.files['upload-img'][0].filename;
         userModel.update(userId, inputName, inputPhone, inputPiture).then(function (body) {
             res.send(body);
@@ -61,10 +60,35 @@ function update(req, res) {
             res.send(err.error);
         });
     });
+}
 
+function postPet(req, res) {
+    let upload = modules.multer({
+        storage: modules.multer.diskStorage({
+            destination: './public/pet-img',
+            filename: function (req, files, cb) {
+                cb(null, files.originalname);
+            }
+        })
+    });
+    let imageLoad = upload.fields([{ name: 'petImgs', maxCount: 3 }]);
+    imageLoad(req, res, function (err) {
+        if (err) {
+            res.status(500);
+            res.send('Server error, please try again later.');
+        }
+
+        userModel.postPet(req.body, req.files.petImgs).then(function (body) {
+            res.send(body);
+        })
+            .catch(function () {
+                res.status(err.code);
+                res.send(err.error);
+            });
+    });
 
 }
 
 module.exports = {
-    signup, login, profile, update
+    signup, login, profile, update, postPet
 }

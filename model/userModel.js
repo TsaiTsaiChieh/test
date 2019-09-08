@@ -127,8 +127,29 @@ function update(userId, inputName, inputPhone, inputPicture) {
         mysql.con.query(`UPDATE user SET ? WHERE id=${userId}`, update_sql, function (err, result) {
             if (err)
                 reject({ code: 500, error: `Query Error in user Table: ${err}` });
-            else resolve('Update successful.');
+            else resolve('Update into user table successful.');
         });
     });
 }
-module.exports = { signup, login, profile, update }
+function postPet(req, petImgs) {
+    return new Promise(function (resolve, reject) {
+        let image = [];
+        for (let i = 0; i < petImgs.length; i++) image.push(petImgs[i].filename);
+        let { petTitle, userId, kind, sex, age, neuter, county, petColor, petName, description, microchip, limitation, contactName, contactMethod } = req;
+        let insert_sql = {
+            db: 3, title: petTitle, user_id: userId, image: JSON.stringify(image),
+            kind, sex, age, neuter, county, description: JSON.stringify(description),
+            limitation: JSON.stringify(limitation.split(',')), contactName, contactMethod
+        };
+        if (petColor) insert_sql.color = petColor;
+        if (petName) insert_sql.petName = petName;
+        if (microchip) insert_sql.microchip = microchip;
+
+        mysql.con.query('INSERT INTO pet SET ?', insert_sql, function (err, result) {
+            if (err) reject({ code: 500, error: `Query Error in pet Table: ${err}` });
+            else resolve('Insert into pet table successful.');
+        });
+
+    });
+}
+module.exports = { signup, login, profile, update, postPet }

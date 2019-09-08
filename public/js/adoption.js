@@ -13,7 +13,10 @@ app.ajax('GET', `api/adoption/${kind}`, `paging=${paging}`, {}, function (req) {
         let item = app.createElement('div', { atrs: { className: 'item' } }, pet_list);
         let img_wrap = app.createElement('div', { atrs: { className: 'img-wrap' } }, item);
         if (data[i].image[0].length == 0) pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: './imgs/pet-null.jpg' } }, img_wrap);
-        else pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: data[i].image[0] } }, img_wrap);
+        else {
+            if (data[i].db === 3) pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: `./pet-img/${data[i].image[0]}` } }, img_wrap);
+            else pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: data[i].image[0] } }, img_wrap);
+        }
         // pet_img.addEventListener('click', function () {
         //     app.get('.details').style.display = 'flex';
         // });
@@ -54,13 +57,10 @@ app.ajax('GET', 'api/adoption/count', `kind=${kind}`, {}, function (req) {
     app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=0`, innerHTML: '«第一頁' } }, pagination);
     app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${paging > 0 ? paging - 1 : 0}`, innerHTML: '«上一頁' } }, pagination);
     let paging_list = app.createElement('div', { atrs: { className: 'paging-list' } }, pagination);
-    for (let i = Math.floor(paging / 10) * 10; i < Math.floor(paging / 10) * 10 + 10 && i < lastPage; i++) {
+    for (let i = Math.floor(paging / 10) * 10; i < Math.floor(paging / 10) * 10 + 10 && i <= lastPage; i++) {
         if (i == paging) app.createElement('a', { atrs: { className: 'active', href: `/adoption?kind=${kind}&paging=${i}`, innerHTML: i + 1 } }, paging_list);
         else app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${i}`, innerHTML: i + 1 } }, paging_list);
     }
     app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${paging < lastPage ? paging + 1 : lastPage}`, innerHTML: '下一頁›' } }, pagination);
     app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${lastPage}`, innerHTML: '最後一頁»' } }, pagination);
 });
-// app.pet_img.click = function () {
-//     app.get('.details').style.display = 'flex';
-// }

@@ -12,7 +12,7 @@ if (!window.localStorage.getItem('auth')) {
 else if (window.localStorage.getItem('auth')) {
     app.get('.member p').innerHTML = '會員';
     app.get('.member').addEventListener('click', function () {
-        window.location.href = 'member';
+        window.location.href = 'member?profile';
     });
 }
 // 登入註冊切換
@@ -121,6 +121,7 @@ function loginSuccessEvent(className, provider, req) {
     window.localStorage.setItem('auth', data.token.access_token);
     window.localStorage.setItem('provider', provider);
     window.localStorage.setItem('picture', data.user.picture);
+    window.localStorage.setItem('user-id', data.user.id);
     // 登入成功後要把可開啟登入註冊頁面的監聽器拿掉
     app.get('.member').removeEventListener('click', memberEvent);
     app.get('.member p').innerHTML = '會員';
@@ -131,7 +132,7 @@ function loginSuccessEvent(className, provider, req) {
 }
 function userInit() {
     let picture = window.localStorage.getItem('picture');
-    if (picture) {
+    if (picture !== 'null') {
         if (picture.substring(0, 5) === 'https')
             app.get('.member img').src = picture;
         else app.get('.member img').src = `./user-pic/${picture}`;
@@ -184,7 +185,7 @@ function saveFBtoDB(response) {
     let { name, email, picture } = response;
     picture = picture.data.url;
     let provider = 'facebook';
-    if (email)
+    if (email) // 確定有撈到電子郵件才進資料庫
         app.ajax('POST', 'api/user/login', { email, name, picture, provider }, {}, function (req) {
             if (req.status === 500) {
                 app.get('.login-page .message').innerHTML = '伺服器錯誤，請稍後再試';

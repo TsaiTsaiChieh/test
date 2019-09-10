@@ -5,6 +5,9 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
     // token 無效或過期，要重新登入
     if (req.status !== 200) {
         window.localStorage.removeItem('auth');
+        window.localStorage.removeItem('picture');
+        window.localStorage.removeItem('provider');
+        window.localStorage.removeItem('user-id');
         window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
     }
     let user = JSON.parse(req.responseText).user;

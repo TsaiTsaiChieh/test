@@ -14,7 +14,6 @@ block content
           a.adopt(href="member?adoption") 送養訊息
         li
           a.logout(href="adoption?kind=all&paging=0") 登出
-        button.adoption-btn(type='submit' onclick="adoptionPost()") 確認送養
   .right-wrap
     .info-wrap
       .title-wrap 個人資料
@@ -123,8 +122,8 @@ block content
         span 聯絡方式
           p.need *
         input.contact-method(type="text" name="contact-method" required="" placeholder="聯絡人電話或電子郵件等")
-      //- button.adoption-btn(type='submit' onclick="adoptionPost()") 確認送養
-        // 2. END adoption-wrap
+      button.adoption-btn(type='submit' onclick="adoptionPost()") 確認送養
+      // 2. END adoption-wrap
 
 script(type="text/javascript" src="js/lib.js")
 script(type="text/javascript" src="js/member.js")

@@ -10,7 +10,7 @@ function get(id) {
                 reject('id Error in pet Table');
             }
             else {
-                resolve(parseResult(result));
+                resolve(parseResult(result)[0]);
             }
         });
     });

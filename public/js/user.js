@@ -133,7 +133,7 @@ function loginSuccessEvent(className, provider, req) {
 function userInit() {
     let picture = window.localStorage.getItem('picture');
     if (picture !== 'null') {
-        if (picture.substring(0, 5) === 'https')
+        if (picture.substring(0, 4) === 'http')
             app.get('.member img').src = picture;
         else app.get('.member img').src = `./user-pic/${picture}`;
     }

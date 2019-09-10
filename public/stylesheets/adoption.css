@@ -97,7 +97,9 @@
 .pet-list .item .text-wrap .profile h4{
     font-size: 1.2em;
     padding-right:2em; 
-
+    display:flex;
+    flex-wrap: nowrap; /* will prevent flex items on the same line from wrapping */  
+    white-space: nowrap; /* will prevent text from wrapping */
 }
 /* pagination setting */
 .pagination {
@@ -132,16 +134,7 @@
     border-radius:50%;
     background: var(--main-color);
 }
-/* details setting */
-.details {
-    width: 100%;
-    height: 100%;
-    background: white;
-    position: fixed;
-    top:0;
-    right: 0;
-    display: none;
-}
+
 @media (min-width: 800px) {
     .search {
         margin-top: 2em;
@@ -160,4 +153,97 @@
     
     }
     
+}
+/* close setting */
+.close {
+    position: absolute;
+    right: 10%;
+    top: 2%;
+    width: 32px;
+    height: 32px;
+    opacity: 0.3;
+  }
+  .close:hover {
+    opacity: 1;
+  }
+  .close:before, .close:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 150%;
+    width: 2px;
+    background-color: #333;
+  }
+  .close:before {
+    transform: rotate(45deg);
+  }
+  .close:after {
+    transform: rotate(-45deg);
+  }
+/* pet-details setting*/
+.pet-details {
+    padding-top: 0%; 
+    width: 100%;
+    height: 100%;
+    background: white;
+    position: fixed;
+    top:0;
+    right: 0;
+    display: none; 
+}
+.pet-details .pet-title {
+    margin: 1% 7%;
+    letter-spacing: .1em;
+    font-size: 2.2em;
+
+}
+.details-wrap {
+    display: flex;
+    flex-direction: row;
+    margin: 0 5%;
+    height: 100%;
+}
+
+.details-wrap .img-wrap {
+    height: 100%;
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    flex-wrap: wrap;
+}
+.details-wrap .img-wrap img {
+    /* width: 70%; */
+    width: 300px;
+    height: 250px;
+    object-fit: cover;
+    padding: 1% 0;
+    align-self: center;
+}
+.details-wrap .info-wrap {
+    flex: 2;
+    margin-left: 2%; 
+}
+.details-wrap .info-wrap .item {
+    display: flex;
+    flex-direction: row;
+    line-height: 1.5;
+}
+.details-wrap .info-wrap .item h4 {
+    color: var(--main-color);
+    font-size: 1.2em;
+    letter-spacing: .05em;
+    font-weight: normal;
+    display:flex;
+    flex-wrap: nowrap; /* will prevent flex items on the same line from wrapping */  
+    white-space: nowrap; /* will prevent text from wrapping */
+}
+.details-wrap .info-wrap .item p {
+    padding-left: .1em; 
+    font-size: 1em;
+}
+.details-wrap .info-wrap .story p {
+    height: 250px;
+    overflow: auto;
 }

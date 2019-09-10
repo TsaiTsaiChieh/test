@@ -3,6 +3,9 @@ let app = {
         auth: null, picture: null
     }
 };
+app.getAll = function (selector) {
+    return document.querySelectorAll(selector);
+};
 app.get = function (selector) {
     return document.querySelector(selector);
 }
@@ -147,6 +150,17 @@ app.sexTable = function (sex) {
             return '不確定';
         default:
             return '';
+    }
+}
+app.neuterTable = function (neuter) {
+    switch (neuter) {
+        case 'T':
+            return '有';
+        case 'F':
+            return '否';
+        default:
+            return '未確定';
+
     }
 }
 

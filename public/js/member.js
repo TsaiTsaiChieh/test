@@ -134,7 +134,10 @@ function adoptionPost() {
     if (flag) {
         app.get('.warning-msg').style.display = 'none';
         app.ajaxFormData('api/user/postPet', formData, function (req) {
-            console.log(req.responseText);
+            if (req.status === 500) {
+                app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
+            }
+            else window.location.href = './adoption?kind=all&paging=0';
         });
     }
 }

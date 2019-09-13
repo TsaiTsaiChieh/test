@@ -2,9 +2,9 @@ const mysql = require('../util/db');
 
 function get(id) {
     return new Promise(function (resolve, reject) {
-        mysql.con.query(`SELECT * FROM pet WHERE id=${id}`, function (err, result) {
+        mysql.con.query(`SELECT * FROM pet WHERE id=${id} AND status = 0`, function (err, result) {
             if (err) {
-                reject(`Query Error in Table pet: ${err}`);
+                reject(`Query Error in Table pet: ${err}, line number is 5`);
             }
             else if (result.length == 0) {
                 reject('id Error in pet Table');
@@ -23,13 +23,13 @@ function list(category, paging, size) {
         if (filter == null) reject({ error: "Wrong Request" });
         mysql.con.query(`SELECT COUNT(id) AS total FROM pet ${filter}`, function (err, result) {
             let body = {};
-            if (err) reject(`Query Error in pet Table: ${err}`);
+            if (err) reject(`Query Error in pet Table: ${err}, line number is 24`);
             else {
                 maxPage = Math.floor(result[0].total / size);
                 if (paging < maxPage) body.paging = paging + 1;
 
                 mysql.con.query(`SELECT * FROM pet ${filter} LIMIT ${offset},${size}`, function (err, result) {
-                    if (err) reject(`Query Error in pet Table: ${err}`);
+                    if (err) reject(`Query Error in pet Table: ${err}, line number is 31`);
                     else {
                         if (result.length == 0) {
                             body.data = [];
@@ -50,7 +50,7 @@ function count(kind, size) {
     return new Promise(function (resolve, reject) {
         let filter = parseKind(kind);
         mysql.con.query(`SELECT COUNT(id) AS count FROM pet ${filter}`, function (err, result) {
-            if (err) reject(`Query Error in pet Table: ${err}`);
+            if (err) reject(`Query Error in pet Table: ${err}, line number is 52`);
             else resolve({ total: result[0].count, lastPage: Math.ceil(result[0].count / size) - 1 });
         });
     });
@@ -58,11 +58,11 @@ function count(kind, size) {
 function parseKind(kind) {
     switch (kind) {
         case 'all': case '':
-            return '';
+            return 'WHERE status = 0';
         case 'cat':
-            return `WHERE kind = '貓'`;
+            return `WHERE kind = '貓' AND status = 0`;
         case 'dog':
-            return `WHERE kind = '狗'`;
+            return `WHERE kind = '狗' AND status = 0`;
         default:
             return null;
     }

@@ -72,6 +72,7 @@ function ageTable(ageString) {
     else return 'C';
 }
 function crawler(species) {
+    console.log(`update Map(${species}) start...`);
     modules.async.waterfall([
         // 先爬各種類的最後 page 數
         function (next) {
@@ -97,7 +98,7 @@ function crawler(species) {
                 // console.log(`${url}/pets/${species}?page=${i}`);
                 modules.request({ url: `${url}/pets/${species}?page=${i}`, method: 'GET' }, function (err, response, body) {
                     if (err) {
-                        console.log('info function 失敗');
+                        console.log(err, 'info function 失敗');
                         return;
                     }
                     else if (!err && response.statusCode == 200) {
@@ -115,20 +116,20 @@ function crawler(species) {
         },
         // 將撈好的全部 URL 開始抓取每筆資料，並 push 在 data
         function (contentURL, next) {
-            console.log(contentURL.length);
+            // console.log(contentURL.length);
             var data = [];
             var loaded = 0;
             var kind = '';
 
             for (let i = 0; i < contentURL.length; i++) {
                 setTimeout(function () {
-                    console.log(`${i} second...`);
+                    // console.log(`${i} item...`);
                     // console.log('url:', `${i},${url}${contentURL[i]}`);
                     modules.request({ url: `${url}${contentURL[i]}`, method: 'GET' }, function (err, response, body) {
                         // modules.request({ url: 'http://www.meetpets.org.tw/content/74351', method: 'GET' }, function (err, response, body) {
                         // modules.request({ url: 'http://www.meetpets.org.tw/content/74418', method: 'GET' }, function (err, response, body) {
                         if (err) {
-                            // console.log(err);
+                            console.log(err);
                             console.log(`${i},${url}${contentURL[i]} contentURL function 失敗`);
                             return;
                         }
@@ -207,20 +208,54 @@ function crawler(species) {
             }
         },
         function (pet_data, next) {
-            console.log(pet_data.length);
+            let loaded = 0;
             pet_data.forEach(element => {
-                mysql.con.query('INSERT INTO pet SET ?', element, function (err, result) {
-                    if (err) {
-                        throw err;
-                    }
-                    console.log(result);
-                });
-            });
+
+                element = checkTitle(element);
+                // if (element.status === 1) console.log(element.title);
+                mysql.con.getConnection(function (err, connection) {
+                    if (err) modules.errorInsert(err, 217);
+                    else {
+                        connection.query(`SELECT db_link FROM pet WHERE db_link=${element.db_link} AND db=2`, function (err, result) {
+                            if (err) modules.errorInsert(err, 219);
+                            else {
+                                loaded++;
+                                if (result.length === 0) {
+                                    connection.query(`INSERT INTO pet SET ?`, element, function (err, result) {
+                                        if (err) modules.errorInsert(err, 224);
+                                        // console.log('insert', result);
+
+                                    }); // INSERT query
+                                } // result.length === 0 'if', should insert data
+                                else if (result.length !== 0) {
+                                    connection.query(`UPDATE pet SET ? WHERE db_link=${element.db_link} AND db=2`, element, function (err, result) {
+                                        if (err) modules.errorInsert(err, 231);
+                                        // console.log('update', result);
+                                    }); // UPDATE query
+                                } // result.length !== 0 'else if', should insert data
+                                connection.release();
+                            } // first connection.query 'else' 
+                        }); // first connection.query
+                    } // mysql.con.getConnection 'else'
+                    if (loaded === pet_data.length) console.log('Adoption map update finish.');
+                }); // mysql.con.getConnection
+            }); // pet_data.forEach
         }
-    ], function (err, result) {
-        if (err) throw err;
-        // else console.log(result);
-    });
+    ], function (err, result) { });
 }
-crawler('cat');
-crawler('dog');
+function checkTitle(ele) {
+    let title = ele.title;
+    if (title.includes('已送養') || title.includes('已送出') || title.includes('暫停送養') || title.includes('已去新家') || title.includes('已出養') ||
+        title.includes('已認養') || title.includes('已領養') || title.includes('已被') || title.includes('已經找到') || title.includes('暫停送養') ||
+        title.includes('結案') || title.includes('目前已去') || title.includes('暫不開放') || title.includes('已被預定') || title.includes('已有人認養') ||
+        title.includes('結束') || title.includes('已找到') || title.includes('已經') || title.includes('已有緣')) {
+        ele.status = 1;
+    }
+    return ele;
+}
+function updateAdoptionMap() {
+    crawler('cat');
+    crawler('dog');
+}
+
+module.exports = { updateAdoptionMap };

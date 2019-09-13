@@ -81,7 +81,7 @@ function postPet(req, res) {
         userModel.postPet(req.body, req.files.petImgs).then(function (body) {
             res.send(body);
         })
-            .catch(function () {
+            .catch(function (err) {
                 res.status(err.code);
                 res.send(err.error);
             });

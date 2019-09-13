@@ -206,7 +206,7 @@
 }
 
 .adoption-info .subset-1 input[type="radio"] {
-    margin: 0 auto;
+    margin: 0 0;
 }
 .adoption-info .subset-2 {
     display: flex;
@@ -216,9 +216,11 @@
 .adoption-info .subset-2 span{
     flex-grow: 1;
     text-align: center;
+    margin: 0 0;
 }
 .adoption-info .subset-2 span:first-child{
     text-align: left;
+
 }
 .adoption-info .requirement{
     line-height: 2;
@@ -229,7 +231,7 @@
     letter-spacing: .12em;
 }
 .adoption-info .requirement input[type="checkbox"]{
-    margin: 0 auto;
+    margin: 0 0;
 }
 .adoption-wrap .warning-msg {
     color:var(--red-color);

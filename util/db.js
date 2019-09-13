@@ -17,7 +17,9 @@ const mysqlCon = mysql.createPool({
     password: "0000",
     database: "pet_home"
 });
+// mysqlCon.getConnection(function (err, connection) {
 
+// });
 // mysqlCon.connect(function (err) {
 //     if (err) {
 //         throw err;

@@ -53,13 +53,14 @@ modules.async.waterfall([
         // 抓 skip 總共有多少資料，i == 7 時，就沒資料了，所以 next()
         async function getFeedback() {
             let flag;
-            for (let i = 1; ; i++) {
+            for (let i = 1; ; i++) { //****
+                // for (let i = 1; i <= 1; i++) {
                 flag = await ajaxReturn(i);
-                if (flag) {
+                if (flag) { //****
+                    // if (true) {
                     next(null, i);
                     break;
                 }
-                // console.log(i, flag);
             }
         }
         getFeedback();
@@ -82,18 +83,91 @@ modules.async.waterfall([
                         contactName: data[j].shelter_name, contactMethod: data[j].shelter_tel
                     });
                 } // end for /** data.length */ loop
+
                 loaded++;
                 if (loaded == lastPage) next(null, insert_pet);
             }
             xmlhttp.send();
         }
     },
+    function (insert_pet, next) { // 如何判斷資料在資料庫，卻沒在收容所資料庫
+        // let db_link = [];
+        // insert_pet.forEach(element => db_link.push(element.db_link));
+        // mysql.con.query('SELECT db_link FROM pet_1 WHERE db=1 AND status=0', function (err, result) {
+        //     if (err) throw err;
+        //     else {
+        //         let found = result.map(data => db_link.includes(data.db_link));
+        //         mysql.con.getConnection(function (err, connection) {
+        //             if (err) throw err;
+        //             else {
+        //                 found.forEach(function (ele, index) {
+        //                     if (!ele) { // gov data be removed, so mysql data status should updata to 1
+        //                         connection.query(`UPDATE pet_1 SET status=1 WHERE db_link=${result[index].db_link}`, function (err, result) {
+        //                             if (err) throw err;
+        //                             else {
+        //                                 // console.log(`status ${index},${insert_pet[index].db_link} 成功`, result);
+
+        //                             }
+        //                         });
+        //                     }
+        //                 });
+        next(null, insert_pet);
+        //             }
+        //             connection.release();
+        //         });
+        //     }
+        // });
+    },
     function (insert_pet, next) {
-        insert_pet.forEach(element => {
-            mysql.con.query('INSERT INTO pet SET ?', element, function (err, result) {
-                if (err) throw err;
-                else console.log(result);
+        let a = 0;
+        let b = 0;
+        console.log(insert_pet.length);
+        // insert_pet.forEach(element => {
+        for (let i = 0; i < insert_pet.length; i++) {
+            // console.log(insert_pet[i]);
+            mysql.con.query(`SELECT db_link FROM pet_1 WHERE db_link=${insert_pet[i].db_link} AND status=0 AND db =1`, function (err, result) {
+                if (err) console.log(err);
+                else if (result.length === 0) {
+
+                }
+                else if (result.length !== 0) {
+                    a++;
+                    console.log(a);
+
+                    // mysql.con.query(`UPDATE pet_1 SET ? WHERE db_link=${insert_pet[i].db_link}`, insert_pet[i], function (err, result) {
+                    //     if (err) console.log(err);
+                    //     else console.log(result);
+                    // });
+                }
             });
-        });
+
+
+            // mysql.con.query(`SELECT db_link FROM pet_1 WHERE db_link = ${element.db_link} AND status = 0 AND db = 1`, function (err, result) {
+            //     if (err) throw err;
+            //     console.log(result);
+
+
+            // else if (result.length !== 0) { // 資料有在資料庫，更新
+            //     // console.log('資料有在資料庫，更新');
+            //     mysql.con.query(`UPDATE pet_1 SET ? WHERE db_link=${element.db_link}`, element, function (err, result) {
+            //         a++;
+            //         if (err) throw err;
+            //         // else console.log('update 成功', element.db_link, a);
+            //     });
+            // }
+            // else if (result.length === 0) { // 資料沒在資料庫，新增
+            //     a++;
+            //     console.log(a);
+            //     // console.log('資料沒在資料庫，新增');
+            //     mysql.con.query('INSERT INTO pet_1 SET ?', element, function (err, result) {
+            //         if (err) throw err;
+            //         // else console.log('insert 成功', result);
+            //     });
+            // }
+            // });
+            // });
+        }
+
     }
+
 ], function (err, result) { });

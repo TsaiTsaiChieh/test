@@ -6,5 +6,5 @@ const router = modules.express.Router();
 router.get('/details', adoptionController.get);
 router.get('/count', adoptionController.count);
 router.get('/:category', adoptionController.list);
-router.post('/', adoptionController.post);
+router.post('/', adoptionController.search);
 module.exports = router;

@@ -22,7 +22,8 @@
     margin-right: .5em;
     color: var(--second-color);
 }
-.search .kind {
+.search .kind,
+.search .sex {
     display: flex;
     flex-direction: row;
     padding-left: 10%;
@@ -139,7 +140,8 @@
     .search {
         margin-top: 2em;
     }
-    .search .kind {
+    .search .kind,
+    .search .sex {
         padding-left: 15%;
     }
     .search button {

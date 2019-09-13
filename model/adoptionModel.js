@@ -15,11 +15,12 @@ function get(id) {
         });
     });
 }
-function list(category, paging, size) {
+function list(category, sex, paging, size) {
     let offset = paging * size;
-    let filter;
+    console.log(category, sex);
     return new Promise(function (resolve, reject) {
-        filter = parseKind(category);
+        // filter = parseKind(category);
+        let filter = parseFilter(category, sex);
         if (filter == null) reject({ error: "Wrong Request" });
         mysql.con.query(`SELECT COUNT(id) AS total FROM pet ${filter}`, function (err, result) {
             let body = {};
@@ -45,15 +46,27 @@ function list(category, paging, size) {
         });
     });
 }
-function count(kind, size) {
+function count(kind, sex, size) {
     if (kind == undefined) kind = '';
     return new Promise(function (resolve, reject) {
-        let filter = parseKind(kind);
+        let filter = parseFilter(kind, sex);
         mysql.con.query(`SELECT COUNT(id) AS count FROM pet ${filter}`, function (err, result) {
             if (err) reject(`Query Error in pet Table: ${err}, line number is 52`);
             else resolve({ total: result[0].count, lastPage: Math.ceil(result[0].count / size) - 1 });
         });
     });
+}
+function parseFilter(kind, sex) {
+    console.log(`in filter: kind=${kind},sex=${sex}`);
+    let filter;
+    if (kind === '' || kind === 'all') filter = 'WHERE status = 0';
+    else if (kind === 'cat') filter = `WHERE status = 0 AND kind='貓'`;
+    else if (kind === 'dog') filter = `WHERE status = 0 AND kind='狗'`;
+    // sex
+    if (sex) filter = filter.concat(` AND sex='${sex}'`);
+    console.log(filter);
+    return filter;
+
 }
 function parseKind(kind) {
     switch (kind) {

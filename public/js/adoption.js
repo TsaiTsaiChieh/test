@@ -2,9 +2,14 @@ const urlParams = new URLSearchParams(window.location.search);
 let kind = urlParams.get('kind');
 let paging = parseInt(urlParams.get('paging'));
 if (paging == null) paging = 0;
+let sex = urlParams.get('sex');
+function queryString(sex, paging) {
+    if (sex) return `sex=${sex}&paging=${paging}`
+    else return `paging=${paging}`
+}
+console.log(queryString(sex, paging));
 
-// app.ajax('GET', `api/adoption/${kind}?paging=${paging}`, {}, function (req) {
-app.ajax('GET', `api/adoption/${kind}`, `paging=${paging}`, {}, function (req) {
+app.ajax('GET', `api/adoption/${kind}`, queryString(sex, paging), {}, function (req) {
     let data = JSON.parse(req.responseText).data;
     const pet_list = app.get('.pet-list');
     for (let i = 0; i < data.length; i++) {
@@ -50,6 +55,8 @@ app.ajax('GET', `api/adoption/${kind}`, `paging=${paging}`, {}, function (req) {
         app.createElement('div', { atrs: { className: 'line' } }, pet_list);
     }
 });
+
+
 function loadPetDetails(petId) {
     console.log(petId);
     let details_wrap = app.get('.details-wrap');
@@ -181,16 +188,16 @@ function loadPetDetails(petId) {
 
 }
 // app.ajax('GET', `api/adoption/count?kind=${kind}`, {}, function (req) {
-app.ajax('GET', 'api/adoption/count', `kind=${kind}`, {}, function (req) {
+app.ajax('GET', 'api/adoption/count', queryString(sex, paging), {}, function (req) {
     let lastPage = JSON.parse(req.responseText).lastPage;
     const pagination = app.get('.pagination');
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=0`, innerHTML: '«第一頁' } }, pagination);
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${paging > 0 ? paging - 1 : 0}`, innerHTML: '«上一頁' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, paging)}`, innerHTML: '«第一頁' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, paging > 0 ? paging - 1 : 0)}`, innerHTML: '«上一頁' } }, pagination);
     let paging_list = app.createElement('div', { atrs: { className: 'paging-list' } }, pagination);
     for (let i = Math.floor(paging / 10) * 10; i < Math.floor(paging / 10) * 10 + 10 && i <= lastPage; i++) {
-        if (i == paging) app.createElement('a', { atrs: { className: 'active', href: `/adoption?kind=${kind}&paging=${i}`, innerHTML: i + 1 } }, paging_list);
-        else app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${i}`, innerHTML: i + 1 } }, paging_list);
+        if (i === paging) app.createElement('a', { atrs: { className: 'active', href: `/adoption?kind=${kind}&${queryString(sex, i)}`, innerHTML: i + 1 } }, paging_list);
+        else app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, i)}`, innerHTML: i + 1 } }, paging_list);
     }
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${paging < lastPage ? paging + 1 : lastPage}`, innerHTML: '下一頁›' } }, pagination);
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&paging=${lastPage}`, innerHTML: '最後一頁»' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, paging < lastPage ? paging + 1 : lastPage)}`, innerHTML: '下一頁›' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, lastPage)}`, innerHTML: '最後一頁»' } }, pagination);
 });

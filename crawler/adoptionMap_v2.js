@@ -194,7 +194,8 @@ function crawler(species) {
             var loaded = 0;
             for (let i = 0; i < data.length; i++) {
                 insert_pet.push({
-                    db: 2, status: 0, db_link: data[i].link, kind: data[i].kind, petName: data[i].petName, age: data[i].age,
+                    db: 2, status: 0, db_link: data[i].link, kind: data[i].kind, petName: data[i].petName,
+                    age: data[i].age, sex: 'N',
                     neuter: data[i].neuter, county: data[i].county, title: data[i].title,
                     image: JSON.stringify(data[i].image), description: JSON.stringify(data[i].description),
                     habit: JSON.stringify(data[i].habit), story: JSON.stringify(data[i].story),

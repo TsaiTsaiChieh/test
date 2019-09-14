@@ -23,7 +23,8 @@
     color: var(--second-color);
 }
 .search .kind,
-.search .sex {
+.search .sex,
+.search .county {
     display: flex;
     flex-direction: row;
     padding-left: 10%;
@@ -38,8 +39,13 @@
     cursor: pointer;
     padding: .5em .5em;
 }
-
-.search input[type=checkbox]:checked + label{
+.search label.active {
+    border: 3px dotted var(--main-color);
+    border-radius: 100%;
+    padding: .5em .5em;
+}
+.search input[type=checkbox]:checked + label
+{
     color: white;
     border: 1px solid var(--third-color);
     background: var(--third-color);
@@ -141,7 +147,8 @@
         margin-top: 2em;
     }
     .search .kind,
-    .search .sex {
+    .search .sex,
+    .search .county {
         padding-left: 15%;
     }
     .search button {
@@ -241,7 +248,9 @@
     flex-wrap: nowrap; /* will prevent flex items on the same line from wrapping */  
     white-space: nowrap; /* will prevent text from wrapping */
 }
-.details-wrap .info-wrap .item p {
+.details-wrap .info-wrap .item p,
+.details-wrap .info-wrap .item a
+ {
     padding-left: .1em; 
     font-size: 1em;
 }

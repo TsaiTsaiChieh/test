@@ -3,13 +3,31 @@ let kind = urlParams.get('kind');
 let paging = parseInt(urlParams.get('paging'));
 if (paging == null) paging = 0;
 let sex = urlParams.get('sex');
-function queryString(sex, paging) {
-    if (sex) return `sex=${sex}&paging=${paging}`
-    else return `paging=${paging}`
+let region = urlParams.get('region');
+console.log(kind, sex, region);
+function searchActive(kind, sex, region) {
+    if (kind && kind !== 'all') {
+        console.log('test:', app.get(`.kind #${kind} label`));
+        app.get(`.kind label.${kind}`).classList.add('active');
+    }
+    if (sex) app.get(`.sex label.${sex}`).classList.add('active');
+    if (region) {
+        region = region.split(',');
+        region.forEach(function (element) {
+            app.get(`.county label._${element}`).classList.add('active');
+        });
+    }
 }
-console.log(queryString(sex, paging));
+searchActive(kind, sex, region);
+function queryString(sex, region, paging) {
+    if (region && sex) return `sex=${sex}&region=${region}&paging=${paging}`;
+    else if (region) return `region=${region}&paging=${paging}`;
+    else if (sex) return `sex=${sex}&paging=${paging}`;
+    else return `paging=${paging}`;
+}
 
-app.ajax('GET', `api/adoption/${kind}`, queryString(sex, paging), {}, function (req) {
+
+app.ajax('GET', `api/adoption/${kind}`, queryString(sex, region, paging), {}, function (req) {
     let data = JSON.parse(req.responseText).data;
     const pet_list = app.get('.pet-list');
     for (let i = 0; i < data.length; i++) {
@@ -53,12 +71,12 @@ app.ajax('GET', `api/adoption/${kind}`, queryString(sex, paging), {}, function (
         app.createElement('h4', { atrs: { innerHTML: '顏色' } }, color);
         app.createElement('span', { atrs: { innerHTML: data[i].color } }, color);
         app.createElement('div', { atrs: { className: 'line' } }, pet_list);
+        // app.createElement('button', { arts: { innerHTML: '認養我', type: 'submit' } }, pet_list);
     }
 });
 
 
 function loadPetDetails(petId) {
-    console.log(petId);
     let details_wrap = app.get('.details-wrap');
     let img_wrap = app.get('.details-wrap .img-wrap');
     // let info_wrap = app.get('.pet-details .info-wrap');
@@ -86,7 +104,7 @@ function loadPetDetails(petId) {
         console.log(data);
         if (data.title.length == 0) {
             let stayDay = app.dateConversion(data.opendate);
-            app.get('h1.pet-title').innerHTML = `在收容所待 ${stayDay} 天，可以帶我回家嗎？`;
+            app.get('h1.pet-title').innerHTML = `在收容所待${stayDay}天，可以帶我回家嗎？`;
 
         }
         else app.get('h1.pet-title').innerHTML = data.title;
@@ -184,20 +202,27 @@ function loadPetDetails(petId) {
         let contactMethodItem = app.createElement('div', { atrs: { className: 'contactMethod item' } }, info_wrap);
         app.createElement('h4', { atrs: { innerHTML: '聯絡方式' } }, contactMethodItem);
         app.createElement('p', { atrs: { innerHTML: data.contactMethod } }, contactMethodItem);
+        // link
+        if (data.db_link.length !== null) {
+            let linkItem = app.createElement('div', { atrs: { className: 'link item' } }, info_wrap);
+            app.createElement('h4', { atrs: { innerHTML: '連結' } }, linkItem);
+            if (data.db === 1) app.createElement('a', { atrs: { innerHTML: '全國推廣動物認領養平台', target: '_blank', href: `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${data.db_link}&AcceptNum=${data.link_id}&PageType=Adopt` } }, linkItem);
+            else if (data.db === 2) app.createElement('a', { atrs: { innerHTML: '台灣認養地圖', target: '_blank', href: `http://www.meetpets.org.tw/content/${data.db_link}` } }, linkItem);
+        }
     });
 
 }
 // app.ajax('GET', `api/adoption/count?kind=${kind}`, {}, function (req) {
-app.ajax('GET', 'api/adoption/count', queryString(sex, paging), {}, function (req) {
+app.ajax('GET', 'api/adoption/count', `kind=${kind}&${queryString(sex, region, paging)}`, {}, function (req) {
     let lastPage = JSON.parse(req.responseText).lastPage;
     const pagination = app.get('.pagination');
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, paging)}`, innerHTML: '«第一頁' } }, pagination);
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, paging > 0 ? paging - 1 : 0)}`, innerHTML: '«上一頁' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, 0)}`, innerHTML: '«第一頁' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, paging > 0 ? paging - 1 : 0)}`, innerHTML: '«上一頁' } }, pagination);
     let paging_list = app.createElement('div', { atrs: { className: 'paging-list' } }, pagination);
     for (let i = Math.floor(paging / 10) * 10; i < Math.floor(paging / 10) * 10 + 10 && i <= lastPage; i++) {
-        if (i === paging) app.createElement('a', { atrs: { className: 'active', href: `/adoption?kind=${kind}&${queryString(sex, i)}`, innerHTML: i + 1 } }, paging_list);
-        else app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, i)}`, innerHTML: i + 1 } }, paging_list);
+        if (i === paging) app.createElement('a', { atrs: { className: 'active', href: `/adoption?kind=${kind}&${queryString(sex, region, i)}`, innerHTML: i + 1 } }, paging_list);
+        else app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, i)}`, innerHTML: i + 1 } }, paging_list);
     }
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, paging < lastPage ? paging + 1 : lastPage)}`, innerHTML: '下一頁›' } }, pagination);
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, lastPage)}`, innerHTML: '最後一頁»' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, paging < lastPage ? paging + 1 : lastPage)}`, innerHTML: '下一頁›' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, lastPage)}`, innerHTML: '最後一頁»' } }, pagination);
 });

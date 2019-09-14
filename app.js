@@ -7,7 +7,7 @@ const update = {
 };
 // const x = require('./crawler/conGov_v3')
 
-app.use(modules.bodyparser.json()); // 否則 Ajax Post 直傳不到後端
+app.use(modules.bodyparser.json()); // 否則 Ajax Post 值傳不到後端
 app.use(modules.bodyparser.urlencoded({ extended: true }));
 
 app.use(modules.express.static('public'));
@@ -23,13 +23,15 @@ app.use('/api/user', userRouters);
 app.set('views', './views');
 app.set('view engine', 'pug');
 
-var rule2 = new modules.schedule.RecurrenceRule();
-var times2 = [0, 5, 10, 15, 25, 30, 35, 40, 45, 50, 55];
-rule2.minute = times2;
-modules.schedule.scheduleJob(rule2, function () { //秒、分、時、日、月、周幾
+let rule = new modules.schedule.RecurrenceRule();
+// let times = [0, 1, 2, 3, 4, 5, 15, 16];
+let times = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+// rule.hour = times;
+rule.minute = times;
+modules.schedule.scheduleJob(rule, function () { //秒、分、時、日、月、周幾
     console.log('scheduleCronstyle:' + new Date());
     update.map.updateAdoptionMap();
-    update.gov.updateGov();
+    setTimeout(function () { update.gov.updateGov(); }, 300000); // 五分鐘
 });
 
 

@@ -1,4 +1,33 @@
+link(rel="stylesheet", href="./stylesheets/index.css")
 include includes/header.pug
 block content
 include includes/banner.pug
+.content
+  h1 領養代替購買
+  .content-wrap
+    .about.item
+      img(src="./imgs/about.png" alt="about")
+      h4 關於我
+      .text-wrap
+        | Tsai, Tsai-Chieh
+        br
+        |                     逢甲大學 資訊工程學系
+        br
+        |                     交通大學 生物資訊及系統生物研究所
+        br
+        |                     AppWorks School #2 Web Backend
+    .adoption.item
+      img(src="./imgs/adoption.png" alt="adoption")
+      h4 認領養
+      .text-wrap
+        | 本網站整合
+        a(href="https://asms.coa.gov.tw/Amlapp/App/AnnounceMent.aspx?PageType=Announce") 全國收容管理系統
+        | 和
+        a(href="http://www.meetpets.org.tw/pets/cat") 台灣認養地圖
+        | 的毛孩資訊供搜尋和連結，本網站也提供送養資訊的刊登
+    .notice.item
+      img(src="./imgs/notice.png" alt="notice")
+      h4 飼主須知
+      .text-wrap
+        | 本區提供認養毛孩前需要具備的知識影片供瀏覽，希望領養前作好正確的心理準備和充分的功課，再評估自己是否真的準備好飼養毛孩
 include includes/footer.pug

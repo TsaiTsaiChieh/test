@@ -1,0 +1,56 @@
+/* global setting */
+@font-face {
+    font-family: 'MainText';
+    src: src('./fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
+}
+:root {
+    --main-color: #8FD3E8 !important;
+    --light-gray: #F7F7F7 !important;
+    --second-color: #419FFF !important;
+    --third-color: #5868BA !important;
+}
+* {
+    font-family: "MainText","Microsoft JhengHei" !important;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin: 4% auto;
+    align-items: center;
+}
+.content h1 {
+    color: var(--main-color);
+    letter-spacing: .15em;
+    font-size: 2.5em;
+}
+.content-wrap {
+    display: flex;
+    flex-direction: row;
+}
+.content-wrap .item {
+    flex-grow:1;
+    width: 450px;
+    margin: 6% 0;
+    letter-spacing: .12em;
+    font-size: 1.5em;
+    text-align: center;
+}
+.content-wrap .item img {
+    width: 80px;
+    margin-bottom: 8%; 
+}
+.content-wrap .item h4 {
+    color:var(--main-color);
+}
+
+.content-wrap .item .text-wrap {
+    width: 80%;
+    font-size: .8em;
+    letter-spacing: 0;
+    margin: 5% auto;
+    line-height: 1.5;
+    text-align: center;
+    
+}
+

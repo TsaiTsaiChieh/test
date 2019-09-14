@@ -6,15 +6,27 @@ block content
       .kind
         h3 種類
         input#dog(type="checkbox" value="dog" name="kind")
-        label(for="dog") 汪
+        label.dog(for="dog") 汪
         input#cat(type="checkbox" value="cat" name="kind")
-        label(for="cat") 喵
+        label.cat(for="cat") 喵
       .sex
         h3 性別
         input#male(type="checkbox" value="M" name="sex")
-        label(for="male") 公
+        label.M(for="male") 公
         input#female(type="checkbox" value="F" name="sex")
-        label(for="female") 母
+        label.F(for="female") 母
+      .county
+        h3 地區
+        input#north(type="checkbox" value="1" name="region")
+        label._1(for="north") 北
+        input#middle(type="checkbox" value="2" name="region")
+        label._2(for="middle") 中
+        input#south(type="checkbox" value="3" name="region")
+        label._3(for="south") 南
+        input#east(type="checkbox" value="4" name="region")
+        label._4(for="east") 東
+        input#outer(type="checkbox" value="5" name="region")
+        label._5(for="outer") 外島
       button(type="submit") 搜尋
   .pet-list
   .pet-details

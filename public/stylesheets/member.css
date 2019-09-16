@@ -167,7 +167,7 @@
     width: 100%;
     font-size: 1em;
     letter-spacing: .15em;
-    padding: 1.3% 0;
+    padding: .8% 0;
     background: var(--main-color);
     color: white;
     border: none;
@@ -247,4 +247,35 @@
     padding: 0;
     margin:  0;
     color: var(--red-color);
+}
+
+.adoption-wrap .img-preview {
+    width: 200px;
+    height: 200px;
+    background: green;
+}
+
+/* edit setting */
+.edit-wrap{
+    display: flex;
+    margin: 3% 3%; 
+}
+.edit-wrap .item-list {
+    width: 100%;
+}
+.edit-wrap .pet-img {
+    width: 30%;
+    padding-right: 3%;
+}
+.edit-wrap h4 {
+    margin: auto 0;
+}
+.edit-wrap .item{
+    display: flex;
+    flex-direction: row;
+}
+
+.edit-wrap .line {
+    border: 1px solid black;
+    width: 100%;
 }

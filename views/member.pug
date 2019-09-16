@@ -1,4 +1,5 @@
 link(rel='stylesheet' href='./stylesheets/member.css')
+//- link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet")
 include includes/header.pug
 block content
 .member-wrap
@@ -13,117 +14,122 @@ block content
         li
           a.adopt(href="member?adoption") 送養訊息
         li
+          a.edit(href="member?edit") 編輯送養
+        li
           a.logout(href="adoption?kind=all&paging=0") 登出
   .right-wrap
-    .info-wrap
-      .title-wrap 個人資料
-      .subtitle-wrap 查看和編輯您的個人資料
-      .right-line
-      .login-info
-        span 登入的電子郵件：
-        p
-        p#user-id
-      // bootstrap button
-      label.btn.btn-info
-        input.upload-img(style="display:none;" type="file" accept=".png, .jpg, .jpeg" name="upload-img")
-        i 上傳新照片
-      .personal-info
-        span 姓名
-        input.name(type="text" name="name" placeholder="編輯姓名") 
-        span 手機
-        input.phone(type="text" name="phone" placeholder="ex: 0987654321")
-      button.profile-btn(type="submit" onclick="updateProfile()") 確認修改
-    .adoption-wrap
-      .title-wrap 送養資訊
-      .subtitle-wrap 填寫寵物的基本資料，請務必詳實填寫
-      .warning-msg
-      .right-line
-      label.btn.btn-info
-        input.pet-img(style="display:none;" type="file" accept=".png, .jpg, .jpeg" name="pet-img" multiple)
-        i 上傳寵物的照片
-      .adoption-info
-        span 標題 
-          p.need *
-        input.title(type="text" name="title" required="required" placeholder="會出現在搜尋列表的大標題" )
-        .subset-1
-          span 種類
-          input(type="radio" name="kind" value="狗" checked="")
-          | 狗
-          input(type="radio" name="kind" value="貓")
-          | 貓
-          span |性別
-          input(type="radio" name="sex" value="M" checked="")
-          | 公
-          input(type="radio" name="sex" value="F")
-          | 母
-          input(type="radio" name="sex" value="N")
-          | 未知
-          span |年齡
-          input(type="radio" name="age" value="C" checked="")
-          | 幼體
-          input(type="radio" name="age" value="A")
-          | 成體
-          span |結紮
-          input(type="radio" name="neuter" value="F")
-          | 無
-          input(type="radio" name="neuter" value="T" checked="")
-          | 有
-        .subset-2
-          span 所在縣市
-            p.need *
-          select(name="county")
-            option(value="2") 台北市
-            option(value="3") 新北市
-            option(value="4") 基隆市
-            option(value="5") 宜蘭縣
-            option(value="6") 桃園縣
-            option(value="7") 新竹縣
-            option(value="8") 新竹市
-            option(value="9") 苗栗縣
-            option(value="10") 台中市
-            option(value="11") 彰化縣
-            option(value="12") 南投縣
-            option(value="13") 雲林縣
-            option(value="14") 嘉義縣
-            option(value="15") 嘉義市
-            option(value="16") 台南市
-            option(value="17") 高雄市
-            option(value="18") 屏東縣
-            option(value="19") 花蓮縣
-            option(value="20") 台東縣
-            option(value="21") 澎湖縣
-            option(value="22") 金門縣
-            option(value="23") 連江縣
-          span 花色
-          input.pet-color(type="text" name="pet-color")
-          span 小名
-          input.pet-name(type="text" name="pet-name")
-        // END subsetting-2
-        span 寵物描述
-          p.need *
-        textarea(class="description" cols="60" rows="8" placeholder="可以在此欄敘述寵物的個性喜好或者由來")
-        span 晶片號碼
-        input.pet-microchip(type="text" name="pet-microchip" placeholder="若有寵物晶片號碼可填入")
-        span 認養條件
-        .requirement
-          input(type="checkbox" class="limitation" name="limitation" value="年滿20歲" checked="")
-          | 年滿20歲
-          input(type="checkbox" class="limitation" name="limitation" value="同意絕育" checked="")
-          | 同意絕育
-          input(type="checkbox" class="limitation" name="limitation" value="家人同意" checked="")
-          | 家人同意
-          input(type="checkbox" class="limitation" name="limitation" value="同意簽認養切結書")
-          | 同意簽認養切結書
-          input(type="checkbox" class="limitation" name="limitation" value="同意後續追蹤")
-          | 同意後續追蹤
-        span 聯絡人
-          p.need *
-        input.contact-name(type="text" name="contact-person" required="" placeholder="聯絡人姓名或稱呼")
-        span 聯絡方式
-          p.need *
-        input.contact-method(type="text" name="contact-method" required="" placeholder="聯絡人電話或電子郵件等")
-      button.adoption-btn(type='submit' onclick="adoptionPost()") 確認送養
-      // 2. END adoption-wrap
+    //- .info-wrap
+    //-   .title-wrap 個人資料
+    //-   .subtitle-wrap 查看和編輯您的個人資料
+    //-   .right-line
+    //-   .login-info
+    //-     span 登入的電子郵件：
+    //-     p
+    //-     p#user-id
+    //-   // bootstrap button
+    //-   label.btn.btn-info
+    //-     input.upload-img(style="display:none;" type="file" accept=".png, .jpg, .jpeg" name="upload-img")
+    //-     i 上傳新照片
+    //-   .personal-info
+    //-     span 姓名
+    //-     input.name(type="text" name="name" placeholder="編輯姓名") 
+    //-     span 手機
+    //-     input.phone(type="text" name="phone" placeholder="ex: 0987654321")
+    //-   button.profile-btn(type="submit" onclick="updateProfile()") 確認修改
+    include member-info.pug
+    include member-adoption.pug
+    include member-edit.pug
+    //- .adoption-wrap
+    //-   .title-wrap 送養資訊
+    //-   .subtitle-wrap 填寫寵物的基本資料，請務必詳實填寫
+    //-   .warning-msg
+    //-   .right-line
+    //-   label.btn.btn-info
+    //-     input.pet-img(style="display:none;" type="file" accept=".png, .jpg, .jpeg" name="pet-img" multiple)
+    //-     i 上傳寵物的照片
+    //-   .adoption-info
+    //-     span 標題 
+    //-       p.need *
+    //-     input.title(type="text" name="title" required="required" placeholder="會出現在搜尋列表的大標題" )
+    //-     .subset-1
+    //-       span 種類
+    //-       input(type="radio" name="kind" value="狗" checked="")
+    //-       | 狗
+    //-       input(type="radio" name="kind" value="貓")
+    //-       | 貓
+    //-       span |性別
+    //-       input(type="radio" name="sex" value="M" checked="")
+    //-       | 公
+    //-       input(type="radio" name="sex" value="F")
+    //-       | 母
+    //-       input(type="radio" name="sex" value="N")
+    //-       | 未知
+    //-       span |年齡
+    //-       input(type="radio" name="age" value="C" checked="")
+    //-       | 幼體
+    //-       input(type="radio" name="age" value="A")
+    //-       | 成體
+    //-       span |結紮
+    //-       input(type="radio" name="neuter" value="F")
+    //-       | 無
+    //-       input(type="radio" name="neuter" value="T" checked="")
+    //-       | 有
+    //-     .subset-2
+    //-       span 所在縣市
+    //-         p.need *
+    //-       select(name="county")
+    //-         option(value="2") 台北市
+    //-         option(value="3") 新北市
+    //-         option(value="4") 基隆市
+    //-         option(value="5") 宜蘭縣
+    //-         option(value="6") 桃園縣
+    //-         option(value="7") 新竹縣
+    //-         option(value="8") 新竹市
+    //-         option(value="9") 苗栗縣
+    //-         option(value="10") 台中市
+    //-         option(value="11") 彰化縣
+    //-         option(value="12") 南投縣
+    //-         option(value="13") 雲林縣
+    //-         option(value="14") 嘉義縣
+    //-         option(value="15") 嘉義市
+    //-         option(value="16") 台南市
+    //-         option(value="17") 高雄市
+    //-         option(value="18") 屏東縣
+    //-         option(value="19") 花蓮縣
+    //-         option(value="20") 台東縣
+    //-         option(value="21") 澎湖縣
+    //-         option(value="22") 金門縣
+    //-         option(value="23") 連江縣
+    //-       span 花色
+    //-       input.pet-color(type="text" name="pet-color")
+    //-       span 小名
+    //-       input.pet-name(type="text" name="pet-name")
+    //-     // END subsetting-2
+    //-     span 寵物描述
+    //-       p.need *
+    //-     textarea(class="description" cols="60" rows="8" placeholder="可以在此欄敘述寵物的個性喜好或者由來")
+    //-     span 晶片號碼
+    //-     input.pet-microchip(type="text" name="pet-microchip" placeholder="若有寵物晶片號碼可填入")
+    //-     span 認養條件
+    //-     .requirement
+    //-       input(type="checkbox" class="limitation" name="limitation" value="年滿20歲" checked="")
+    //-       | 年滿20歲
+    //-       input(type="checkbox" class="limitation" name="limitation" value="同意絕育" checked="")
+    //-       | 同意絕育
+    //-       input(type="checkbox" class="limitation" name="limitation" value="家人同意" checked="")
+    //-       | 家人同意
+    //-       input(type="checkbox" class="limitation" name="limitation" value="同意簽認養切結書")
+    //-       | 同意簽認養切結書
+    //-       input(type="checkbox" class="limitation" name="limitation" value="同意後續追蹤")
+    //-       | 同意後續追蹤
+    //-     span 聯絡人
+    //-       p.need *
+    //-     input.contact-name(type="text" name="contact-person" required="" placeholder="聯絡人姓名或稱呼")
+    //-     span 聯絡方式
+    //-       p.need *
+    //-     input.contact-method(type="text" name="contact-method" required="" placeholder="聯絡人電話或電子郵件等")
+    //-   button.adoption-btn(type='submit' onclick="adoptionPost()") 確認送養
+    //-   // 2. END adoption-wrap
 
 script(type="text/javascript" src="js/lib.js")
 script(type="text/javascript" src="js/member.js")

@@ -8,7 +8,7 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
         window.localStorage.removeItem('picture');
         window.localStorage.removeItem('provider');
         window.localStorage.removeItem('user-id');
-        window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
+        // window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
     }
     let user = JSON.parse(req.responseText).user;
 
@@ -23,7 +23,7 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
         app.get('.personal-info input.phone').placeholder = user.phone;
     }
     if (user.picture) {
-        if (user.picture.substring(0, 5) === 'https')
+        if (user.picture.substring(0, 4) === 'http')
             app.get('.left-profile img').src = user.picture;
         else app.get('.left-profile img').src = `./user-pic/${user.picture}`;
     }
@@ -33,6 +33,8 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
 function initMenu(menu) {
     let change = app.get('.menu .change');
     let adopt = app.get('.menu .adopt');
+    let edit = app.get('.menu .edit');
+
     if (menu === 'profile') {
         change.classList.add('active');
         app.get('.info-wrap').style.display = 'flex';
@@ -40,6 +42,10 @@ function initMenu(menu) {
     else if (menu === 'adoption') {
         adopt.classList.add('active');
         app.get('.adoption-wrap').style.display = 'flex';
+    }
+    else if (menu === 'edit') {
+        edit.classList.add('active');
+        app.get('.edit-wrap').style.display = 'flex';
     }
 
 }
@@ -127,19 +133,44 @@ function adoptionPost() {
     formData.append('limitation', limitation);
     formData.append('contactName', contactName);
     formData.append('contactMethod', contactMethod);
-    for (let i = 0; i < petImgs.files.length; i++) {
-        petImg = new File([petImgs.files[i]], `${userId}_${Date.now()}.jpg`, { type: "image/jpeg" });
-        formData.append('petImgs', petImg);
-    }
+    let fileAppend = new Promise(function (resolve, reject) {
+        let loaded = 0;
+        for (let i = 0; i < petImgs.files.length; i++) {
+            petImg = new File([petImgs.files[i]], `${userId}_${Date.now()}.jpg`, { type: "image/jpeg" });
+            let canvasBlob = compressFile(petImg);
+
+
+            canvasBlob.then(function (blob) {
+                loaded++;
+                let myFile = blobToFile(blob, `${userId}_${Date.now()}.jpg`);
+                formData.append('petImgs', myFile);
+                if (loaded === petImgs.files.length) resolve(formData);
+            }, function (err) {
+                // console.log(err);
+                // formData.append('petImgs', petImg);
+            });
+
+        }
+
+    });
+
     if (flag) {
         app.get('.warning-msg').style.display = 'none';
-        app.ajaxFormData('api/user/postPet', formData, function (req) {
-            if (req.status === 500) {
-                app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
-            }
-            else window.location.href = './adoption?kind=all&paging=0';
+        fileAppend.then(function (formData) {
+            app.ajaxFormData('api/user/postPet', formData, function (req) {
+                if (req.status === 500) {
+                    app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
+                }
+                // else window.location.href = `./adoption?kind=${kind === '狗' ? 'dog' : 'cat'}&sex=${sex}&paging=0`;
+            });
         });
+
     }
+}
+function blobToFile(theBlob, fileName) {
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    var file = new File([theBlob], fileName, { type: 'image/jpg', lastModified: Date.now() });
+    return file;
 }
 function fileLimitCheck(files, max, flag) {
     let warningMsg = app.get('.warning-msg');
@@ -167,4 +198,75 @@ function printFormData(formData) {
     for (let pair of formData.entries()) {
         console.log(pair[0] + ', ' + pair[1]);
     }
+}
+
+// jQuery 壓縮圖片
+function compressFile(file) {
+    return new Promise(function (resolve, reject) {
+        let compressRatio = 0.8; // 圖片壓縮比例
+        let imgNewWidth = 400; // 圖片新寬度
+        let fileReader = new FileReader();
+        let img = new Image();
+        let canvas = document.createElement("canvas");
+        let context = canvas.getContext("2d"); // 返回一個用於在畫布上繪圖的環境
+        fileReader.onload = function (e) {
+            dataUrl = e.target.result;
+            // 取得圖片
+            img.src = dataUrl;
+        }; //於讀取完成時觸發
+        fileReader.readAsDataURL(file);
+        // 圖片載入後
+        img.onload = function () {
+            let width = this.width; // 圖片原始寬度
+            let height = this.height; // 圖片原始高度
+            let imgNewHeight = imgNewWidth * height / width; // 圖片新高度
+            // 使用 canvas 調整圖片寬高
+            canvas.width = imgNewWidth;
+            canvas.height = imgNewHeight;
+            context.clearRect(0, 0, imgNewWidth, imgNewHeight);
+
+            // 調整圖片尺寸
+            context.drawImage(img, 0, 0, imgNewWidth, imgNewHeight);
+
+
+            // canvas 轉換為 blob 格式、上傳
+
+            canvas.toBlob(function (blob) {
+                if (blob) resolve(blob);
+                // 輸入上傳程式碼
+            }, "image/jpg", compressRatio);
+
+
+        };
+    });
+
+}
+function downscaleImage(dataUrl, newWidth, imageType, imageArguments) {
+    console.log(dataUrl);
+
+    var image, oldWidth, oldHeight, newHeight, canvas, ctx, newDataUrl;
+
+    // Provide default values
+    imageType = imageType || "image/jpg";
+    imageArguments = imageArguments || 0.7;
+
+    // Create a temporary image so that we can compute the height of the downscaled image.
+    image = new Image();
+    image.src = dataUrl;
+    oldWidth = image.width;
+    oldHeight = image.height;
+    newHeight = Math.floor(oldHeight / oldWidth * newWidth);
+
+    // Create a temporary canvas to draw the downscaled image on.
+    canvas = document.createElement("canvas");
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+
+    // Draw the downscaled image on the canvas and return the new data URL.
+    ctx = canvas.getContext("2d");
+    ctx.drawImage(image, 0, 0, newWidth, newHeight);
+    newDataUrl = canvas.toDataURL(imageType, imageArguments);
+    console.log(newDataUrl);
+
+    return newDataUrl;
 }

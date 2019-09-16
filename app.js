@@ -28,11 +28,15 @@ let rule = new modules.schedule.RecurrenceRule();
 let times = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 // rule.hour = times;
 rule.minute = times;
-modules.schedule.scheduleJob(rule, function () { //秒、分、時、日、月、周幾
-    console.log('scheduleCronstyle:' + new Date());
-    update.map.updateAdoptionMap();
-    setTimeout(function () { update.gov.updateGov(); }, 300000); // 五分鐘
-});
+// modules.schedule.scheduleJob(rule, function () { //秒、分、時、日、月、周幾
+//     console.log('scheduleCronstyle:' + new Date());
+//     update.gov.updateGov();
+
+//     setTimeout(function () {
+//         console.log(new Date());
+//         update.map.updateAdoptionMap();
+//     }, 60000); // 五分鐘
+// });
 
 
 

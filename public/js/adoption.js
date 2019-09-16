@@ -157,7 +157,7 @@ function loadPetDetails(petId) {
         // neuter
         let neuterItem = app.createElement('div', { atrs: { className: 'neuter item' } }, info_wrap);
         app.createElement('h4', { atrs: { innerHTML: '結紮' } }, neuterItem);
-        app.createElement('p', { atrs: { innerHTML: app.neuterTable(app.neuter) } }, neuterItem);
+        app.createElement('p', { atrs: { innerHTML: app.neuterTable(data.neuter) } }, neuterItem);
         // bacterin
         if (data.bacterin !== null) {
             let bacterinItem = app.createElement('div', { atrs: { className: 'bacterin item' } }, info_wrap);

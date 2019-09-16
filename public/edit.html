@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>讓愛不流浪</title>
+    <link rel="stylesheet" href="./stylesheets/reset.css">
+    <link rel="stylesheet" href="./stylesheets/header.css">
+    <link rel="stylesheet" href="./stylesheets/banner.css">
+    <link rel="stylesheet" href="./stylesheets/member.css">
+    <link rel="stylesheet" href="./stylesheets/footer.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <style>
+        a-upload {
+            padding: 4px 10px;
+            height: 20px;
+            line-height: 20px;
+            position: relative;
+            cursor: pointer;
+            color: #888;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            display: inline-block;
+            *display: inline;
+            *zoom: 1
+        }
+
+        .a-upload input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            cursor: pointer
+        }
+
+        .a-upload:hover {
+            color: #444;
+            background: #eee;
+            border-color: #ccc;
+            text-decoration: none
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="wrap">
+            <div class="logo-wrap">
+                <a href="./"><img id="logo" src="./imgs/logo.png" alt="logo" /></a>
+                <h1>讓愛不流浪</h1>
+                <h4>Love Never Stray</h4>
+            </div>
+            <div class="member"><img src="./imgs/login_big.jpg" alt="login">
+                <p></p>
+            </div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#">主頁</a></li>
+                <li><a href="#">認養</a></li>
+                <li><a href="#">協尋</a></li>
+                <li><a href="#">捐血</a></li>
+                <li><a href="#">須知</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="member-wrap">
+        <div class="left-wrap">
+            <div class="left-profile"><img src="./imgs/login_big.jpg" />
+                <div class="left-name">編輯姓名</div>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a class="change" href="">修改資料</a></li>
+                    <li><a class="adopt active" href="">送養訊息</a></li>
+                    <li><a class="blood" href="">捐血需求</a></li>
+                    <li><a class="logout" href="adoption?kind=all&amp;paging=0">登出</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="right-wrap">
+            <div class="edit-wrap">
+                <div class="item-list">
+                    <div class="item">
+                        <img src="pet-img/1_1568610411446.jpg" class="pet-img">
+                        <h4>大貓咪送養</h4>
+                    </div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div> <!-- END right-wrap -->
+    </div> <!-- END member-list -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/lib.js"></script>
+    <script type="text/javascript" src="js/user.js"></script>
+    <script type="text/javascript" src="js/member.js"></script>
+    <div class="footer">Copyright &copy; 2019 Tsai,Tsai-Chieh All rights reserved</div>
+</body>
+
+</html>

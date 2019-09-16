@@ -12,7 +12,7 @@
 * {
     font-family: "MainText","Microsoft JhengHei" !important;
 }
-
+/* content setting */
 .content {
     display: flex;
     flex-direction: column;

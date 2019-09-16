@@ -116,7 +116,6 @@ function crawler(species) {
         },
         // 將撈好的全部 URL 開始抓取每筆資料，並 push 在 data
         function (contentURL, next) {
-            // console.log(contentURL.length);
             var data = [];
             var loaded = 0;
             var kind = '';
@@ -184,7 +183,7 @@ function crawler(species) {
                         }
                         if (loaded === contentURL.length) next(null, data);
                     });
-                }, 100 * i);
+                }, 500 * i);
             } // end for loop
         },
         // 將全部資料開始餵入資料庫
@@ -211,6 +210,7 @@ function crawler(species) {
         function (pet_data, next) {
             let loaded = 0;
             pet_data.forEach(element => {
+                // console.log(element, pet_data.length);
 
                 element = checkTitle(element);
                 // if (element.status === 1) console.log(element.title);

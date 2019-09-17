@@ -62,7 +62,7 @@ function update(req, res) {
     });
 }
 
-function postPet(req, res) {
+function postAdoption(req, res) {
     let upload = modules.multer({
         storage: modules.multer.diskStorage({
             destination: './public/pet-img',
@@ -77,18 +77,72 @@ function postPet(req, res) {
             res.status(500);
             res.send('Server error, please try again later.');
         }
+        else {
+            userModel.postAdoption(req.body, req.files.petImgs).then(function (body) {
+                res.send(body);
+            })
+                .catch(function (err) {
+                    res.status(err.code);
+                    res.send(err.error);
+                });
+        }
+    });
 
-        userModel.postPet(req.body, req.files.petImgs).then(function (body) {
-            res.send(body);
+}
+function getAdoptionList(req, res) {
+    let { authorization } = req.headers;
+    if (authorization) {
+        let token = authorization.replace('Bearer ', '');
+        userModel.getAdoptionList(token).then(function (body) {
+            res.json(body)
         })
             .catch(function (err) {
                 res.status(err.code);
                 res.send(err.error);
             });
+
+    }
+}
+function deleteAdoption(req, res) {
+    let { petId } = req.body;
+    userModel.deleteAdoption(petId).then(function (body) {
+
+        console.log(body);
+        res.send(body);
+
+    }).catch(function (err) {
+        res.status(err.code);
+        res.send(err.error);
+    })
+}
+function updateAdoption(req, res) {
+    let upload = modules.multer({
+        storage: modules.multer.diskStorage({
+            destination: './public/pet-img',
+            filename: function (req, files, cb) {
+                cb(null, files.originalname);
+            }
+        })
+    });
+    let imageLoad = upload.fields([{ name: 'petImgs', maxCount: 3 }]);
+    imageLoad(req, res, function (err) {
+        if (err) {
+            res.status(500);
+            res.send('Server error, please try again later.');
+        }
+        else {
+            userModel.updateAdoption(req.body, req.files.petImgs).then(function (body) {
+                res.send(body);
+            }).catch(function () {
+
+            });
+        }
+        // console.log('controller',req.body);
+        // console.log('controller',req.files);
+
     });
 
 }
-
 module.exports = {
-    signup, login, profile, update, postPet
+    signup, login, profile, update, postAdoption, getAdoptionList, deleteAdoption, updateAdoption
 }

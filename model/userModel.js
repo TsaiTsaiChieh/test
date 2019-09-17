@@ -41,7 +41,7 @@ function login(provider, email, password, name, picture) {
                     let access_token = modules.crypto.createHash('sha256').update(string_data, 'utf8').digest('hex');
                     let token = { user_id, access_token, access_expired: 3600 };
                     mysql.con.query('INSERT token SET ?', token, function (err, result) {
-                        if (err) throw reject({ code: 500, error: `Query Error in token Table: ${err}` });
+                        if (err) reject({ code: 500, error: `Query Error in token Table: ${err}` });
                         else {
                             resolve({ token: { access_token, access_expired: 3600 }, user: { id: user_id, provider, name, email, picture } });
                         }
@@ -127,12 +127,12 @@ function update(userId, inputName, inputPhone, inputPicture) {
         mysql.con.query(`UPDATE user SET ? WHERE id=${userId}`, update_sql, function (err, result) {
             if (err)
                 reject({ code: 500, error: `Query Error in user Table: ${err}` });
-            else resolve('Update into user table successful.');
+            else resolve('Update user table successful.');
         });
     });
 }
-function postPet(req, petImgs) {
-    console.log('model', petImgs);
+function postAdoption(req, petImgs) {
+    // console.log('model', petImgs);
 
     return new Promise(function (resolve, reject) {
         let image = [];
@@ -154,4 +154,98 @@ function postPet(req, petImgs) {
 
     });
 }
-module.exports = { signup, login, profile, update, postPet }
+function getAdoptionList(token) {
+    let sql_search_user = `SELECT u.id, IF(TIMESTAMPDIFF(SECOND, t.created, CURRENT_TIMESTAMP)>t.access_expired,'YES','NO') AS expired_result FROM user AS u LEFT JOIN token AS t ON u.id = t.user_id WHERE t.access_token = '${token}'`;
+    return new Promise(function (resolve, reject) {
+        mysql.con.query(sql_search_user, function (err, result) {
+            if (err) reject({ code: 500, error: `Query Error in user Table, line number is 160: ${err}` });
+            else {
+                if (result.length === 0) reject({ code: 406, error: 'Invalid token.' });
+                else if (result[0].expired_result === 'YES') reject({ code: 408, error: 'Token expired.' });
+                else {
+                    mysql.con.query(`SELECT pet.* from pet LEFT JOIN user ON pet.user_id=user.id WHERE pet.user_id=${result[0].id} ORDER BY pet.id DESC `, function (err, result) {
+                        let body = {};
+                        if (err) reject({ code: 500, error: `Query Error in user&pet Table, line number is 166: ${err}` });
+                        else {
+                            if (result.length === 0) body.data = [];
+                            else body.data = parseResult(result);
+                            resolve(body);
+                        }
+                    });
+                }
+            }
+        });
+    });
+}
+function parseResult(result) {
+    for (let i = 0; i < result.length; i++) {
+        result[i].image = JSON.parse(result[i].image);
+        result[i].description = JSON.parse(result[i].description);
+        result[i].habit = JSON.parse(result[i].habit);
+        result[i].story = JSON.parse(result[i].story);
+        result[i].limitation = JSON.parse(result[i].limitation);
+    }
+    return result;
+}
+
+function deleteAdoption(petId) {
+    return new Promise(function (resolve, reject) {
+        mysql.con.query(`SELECT image FROM pet WHERE id = ${petId}`, function (err, result) {
+            if (err) reject({ code: 500, error: `Query Error in pet Table, line number is 193: ${err}` });
+            else {
+                if (result.length === 0); // do nothing
+                else {
+                    JSON.parse(result[0].image).forEach(function (ele) {
+                        modules.fs.unlink(`./public/pet-img/${ele}`, function (err) {
+                            if (err) console.log(err);
+                        });
+                    });
+                }
+            }
+            mysql.con.query(`DELETE FROM pet WHERE id = ${petId}`, function (err, result) {
+                if (err) reject({ code: 500, error: `DELETE Error in pet Table, line number is 192: ${err}` });
+                else resolve('Delete the id in pet table successful.');
+            });
+        });
+
+    });
+}
+function updateAdoption(req, petImgs) {
+    return new Promise(function (resolve, reject) {
+        let { status, petTitle, petId, kind, sex, age, neuter, county, petColor, petName, description, microchip, limitation, contactName, contactMethod } = req;
+        update_sql = {
+            status, title: petTitle, kind, sex, age, neuter, county, color: petColor,
+            petName, description: JSON.stringify(description), microchip,
+            limitation: JSON.stringify(limitation.split(',')), contactName, contactMethod
+        };
+        if (petImgs === undefined) {
+            mysql.con.query(`UPDATE pet SET ? WHERE id=${petId}`, update_sql, function (err, result) {
+                if (err) {
+                    reject({ code: 500, error: `UPDATE Error in pet Table: ${err}` });
+                    throw err;
+                }
+                else resolve('Update pet table successful.');
+            });
+        }
+        else if (petImgs.length !== 0) {
+            mysql.con.query(`SELECT image FROM pet WHERE id=${petId}`, function (err, result) {
+                if (err) reject({ code: 500, error: `Query Error in pet Table, line number is 231: ${err}` });
+                else {
+                    JSON.parse(result[0].image).forEach(function (ele) {
+                        modules.fs.unlink(`./public/pet-img/${ele}`, function (err) { if (err) console.log(err); });
+                    });
+                    update_sql.image = [];
+                    petImgs.forEach(function (ele) { update_sql.image.push(ele.filename) });
+                    update_sql.image = JSON.stringify(update_sql.image);
+                    mysql.con.query(`UPDATE pet SET ? WHERE id=${petId}`, update_sql, function (err, result) {
+                        if (err)
+                            reject({ code: 500, error: `UPDATE Error in pet Table,, line number is 217241: ${err}` });
+                        else resolve('Update pet table successful.');
+                    });
+                }
+            });
+        }
+    });
+
+}
+module.exports = { signup, login, profile, update, postAdoption, getAdoptionList, deleteAdoption, updateAdoption }

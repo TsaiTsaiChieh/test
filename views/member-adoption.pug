@@ -1,8 +1,19 @@
 .adoption-wrap
       .title-wrap 送養資訊
-      .subtitle-wrap 填寫寵物的基本資料，請務必詳實填寫
+      .subtitle-wrap 填寫毛孩的基本資料，請務必詳實填寫，一次請上傳一隻毛孩
+      //- img.lastPage(src="./imgs/lastPage.png")
       .warning-msg
       .right-line
+      .status-radio
+        span 認養狀態
+        input(type="radio" name="status" value="0" checked="")
+        | 未認養
+        input(type="radio" name="status" value="1")
+        | 已認養
+        input(type="radio" name="status" value="2")
+        | 暫不開放認養
+      //- for edit img
+      .img-wrap 
       label.btn.btn-info
         input.pet-img(style="display:none;" type="file" accept=".png, .jpg, .jpeg" name="pet-img" multiple)
         i 上傳寵物的照片
@@ -87,5 +98,6 @@
         span 聯絡方式
           p.need *
         input.contact-method(type="text" name="contact-method" required="" placeholder="聯絡人電話或電子郵件等")
-      button.adoption-btn(type='submit' onclick="adoptionPost()") 確認送養
+      //- button.adoption-btn(type='submit' onclick="adoptionPost()") 確認送養
+      button.adoption-btn(type='submit') 確認送養
       // 2. END adoption-wrap

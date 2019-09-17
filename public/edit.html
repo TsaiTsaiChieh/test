@@ -91,12 +91,42 @@
         </div>
         <div class="right-wrap">
             <div class="edit-wrap">
+                <div class="title">發佈過的送養紀錄</div>
+                <div class="subtitle">若已成功送養可編輯狀態，搜尋時便不會再出現<br>按下刪除則可刪除發佈過的送養紀錄</div>
+                <div class="msg">刪除成功</div>
+                <div class="line"></div>
+
                 <div class="item-list">
+                    <!-- <div class="null-msg">目前無任何送養的紀錄喔！</div> -->
+                    <!-- <iframe src="api/user/getAdoptionList" frameborder="0"> -->
                     <div class="item">
                         <img src="pet-img/1_1568610411446.jpg" class="pet-img">
-                        <h4>大貓咪送養</h4>
+                        <div class="small-wrap">
+                            <h4>大貓咪送養</h4>
+                            <div class="status-wrap">
+                                <div class="status-light" style="background:lightsalmon;"></div>
+                                <div class="status-text">未送養</div>
+                            </div>
+                        </div>
+                        <img src="./imgs/edit.png" class="edit">
+                        <img src="./imgs/remove.png" class="remove">
+
                     </div>
                     <div class="line"></div>
+                    <div class="item">
+                        <img src="pet-img/1_1568610412987.jpg" class="pet-img">
+                        <div class="small-wrap">
+                            <h4>超級可愛的凱蒂貓送養，親人親貓親狗又聽話但愛搗蛋</h4>
+                            <div class="status-wrap">
+                                <div class="status-light" style="background:lightgreen;"></div>
+                                <div class="status-text">已送養</div>
+                            </div>
+                        </div>
+                        <img src="./imgs/edit.png" class="edit">
+                        <img src="./imgs/remove.png" class="remove">
+                    </div>
+                    <div class="line"></div>
+                    <!-- </iframe> -->
                 </div>
             </div>
         </div> <!-- END right-wrap -->

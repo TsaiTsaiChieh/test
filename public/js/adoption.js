@@ -4,7 +4,7 @@ let paging = parseInt(urlParams.get('paging'));
 if (paging == null) paging = 0;
 let sex = urlParams.get('sex');
 let region = urlParams.get('region');
-console.log(kind, sex, region);
+
 function searchActive(kind, sex, region) {
     if (kind && kind !== 'all') {
         console.log('test:', app.get(`.kind #${kind} label`));

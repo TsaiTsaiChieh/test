@@ -10,5 +10,8 @@ router.get('/adoption', (req, res) => {
 router.get('/member', (req, res) => {
     res.render('member');
 });
+router.get('/notice', (req, res) => {
+    res.render('notice');
+});
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const modules = require('../util/modules');
-const mysql = require('../util/db')
+const mysql = require('../util/db');
 
-function signup(email, password) {
+function signup(name, email, password) {
     return new Promise(function (resolve, reject) {
         // 檢查有無重複註冊
         mysql.con.query(`SELECT id FROM user WHERE email='${email}'`, function (err, result) {
@@ -9,7 +9,7 @@ function signup(email, password) {
             else if (result.length != 0) reject({ code: 406, error: 'Email duplication registration' });
             // mysql.con.beginTransaction(function(err)) {
             else {
-                mysql.con.query('INSERT INTO user SET ?', { provider: 'native', email, password }, function (err, result) {
+                mysql.con.query('INSERT INTO user SET ?', { provider: 'native', name, email, password }, function (err, result) {
                     if (err) reject({ code: 500, error: `Query Error in user Table: ${err}` });
                     else {
                         let string_data = email + password + Date.now();
@@ -18,7 +18,7 @@ function signup(email, password) {
                         let token = { user_id, access_token, access_expired: 3600 };
                         mysql.con.query('INSERT INTO token SET ?', token, function (err, result) {
                             if (err) reject({ code: 500, error: `Query Error in token Table: ${err}` });
-                            else resolve({ token: { access_token, access_expired: 3600 }, user: { user_id, email } });
+                            else resolve({ token: { access_token, access_expired: 3600 }, user: { id: user_id, name, email } });
                         });
                     }
                 });
@@ -103,16 +103,16 @@ function profile(token) {
                 reject({ code: 408, error: 'Token expired.' });
             }
             else {
-                resolve({
-                    user: {
-                        id: result[0].id,
-                        provider: result[0].provider,
-                        name: result[0].name,
-                        email: result[0].email,
-                        phone: result[0].phone,
-                        picture: result[0].picture
-                    }
-                });
+                let body = {};
+                body.user = {
+                    id: result[0].id,
+                    provider: result[0].provider,
+                    name: result[0].name,
+                    email: result[0].email,
+                    phone: result[0].phone,
+                    picture: result[0].picture
+                };
+                resolve(body);
             }
         });
     });
@@ -148,7 +148,10 @@ function postAdoption(req, petImgs) {
         if (microchip) insert_sql.microchip = microchip;
 
         mysql.con.query('INSERT INTO pet SET ?', insert_sql, function (err, result) {
-            if (err) reject({ code: 500, error: `Query Error in pet Table: ${err}` });
+            if (err) {
+                reject({ code: 500, error: `Query Error in pet Table: ${err}` });
+                throw err;
+            }
             else resolve('Insert into pet table successful.');
         });
 
@@ -203,8 +206,14 @@ function deleteAdoption(petId) {
                 }
             }
             mysql.con.query(`DELETE FROM pet WHERE id = ${petId}`, function (err, result) {
-                if (err) reject({ code: 500, error: `DELETE Error in pet Table, line number is 192: ${err}` });
-                else resolve('Delete the id in pet table successful.');
+                if (err) reject({ code: 500, error: `DELETE Error in pet Table, line number is 208: ${err}` });
+                else {
+                    mysql.con.query(`DELETE FROM attention WHERE pet_id=${petId}`, function (err, result) {
+                        if (err) reject({ code: 500, error: `DELETE Error in attention Table, line number is 211: ${err}` });
+                        resolve('Delete the id in pet&attention table successful.');
+                    });
+
+                }
             });
         });
 
@@ -239,13 +248,180 @@ function updateAdoption(req, petImgs) {
                     update_sql.image = JSON.stringify(update_sql.image);
                     mysql.con.query(`UPDATE pet SET ? WHERE id=${petId}`, update_sql, function (err, result) {
                         if (err)
-                            reject({ code: 500, error: `UPDATE Error in pet Table,, line number is 217241: ${err}` });
+                            reject({ code: 500, error: `UPDATE Error in pet Table, line number is 240: ${err}` });
                         else resolve('Update pet table successful.');
                     });
                 }
             });
         }
     });
+}
+function sendMessage(senderId, receiverId, petId, senderName, receiverName, message, createTime) {
+    return new Promise(function (resolve, reject) {
+        let insert_sql = { sender_id: senderId, receiver_id: receiverId, pet_id: petId, sender_name: senderName, receiver_name: receiverName, createTime, msg: JSON.stringify(message) };
+        mysql.con.query(`INSERT INTO message SET ?`, insert_sql, function (err, result) {
+            if (err) {
+                reject({ code: 500, error: `INSERT Error in message Table, line number is 253: ${err}` });
+                throw err;
+            }
+            else resolve('Insert message table successful.');
+        });
+    });
 
 }
-module.exports = { signup, login, profile, update, postAdoption, getAdoptionList, deleteAdoption, updateAdoption }
+function getMessageList(token) {
+    let sql_search_user = `SELECT u.id, IF(TIMESTAMPDIFF(SECOND, t.created, CURRENT_TIMESTAMP)>t.access_expired,'YES','NO') AS expired_result FROM user AS u LEFT JOIN token AS t ON u.id = t.user_id WHERE t.access_token = '${token}'`;
+    return new Promise(function (resolve, reject) {
+        mysql.con.query(sql_search_user, function (err, result) {
+            if (err) reject({ code: 500, error: `Query Error in user Table, line number is 266: ${err}` });
+            else {
+                if (result.length === 0) reject({ code: 406, error: 'Invalid token.' });
+                else if (result[0].expired_result === 'YES') reject({ code: 408, error: 'Token expired.' });
+                else {
+                    mysql.con.query(`SELECT message.*,pet.image,pet.title FROM message LEFT JOIN pet ON message.pet_id = pet.id WHERE message.sender_id =${result[0].id} OR message.receiver_id = ${result[0].id} GROUP BY message.pet_id ORDER BY message.id DESC`, function (err, result) {
+                        let body = {};
+                        if (err) reject({ code: 500, error: `Query Error in message&pet Table, line number is 272: ${err}` });
+                        else {
+                            if (result.length === 0) body.data = [];
+                            else {
+                                result.forEach(function (ele) {
+                                    ele.image = JSON.parse(ele.image);
+                                    ele.msg = JSON.parse(ele.msg);
+                                });
+                                body.data = result;
+                            }
+                            resolve(body);
+                        }
+                    });
+                }
+            }
+        });
+    });
+}
+function getMessage(token, petId, senderId, receiverId) {
+    let sql_search_user = `SELECT u.id, IF(TIMESTAMPDIFF(SECOND, t.created, CURRENT_TIMESTAMP)>t.access_expired,'YES','NO') AS expired_result FROM user AS u LEFT JOIN token AS t ON u.id = t.user_id WHERE t.access_token = '${token}'`;
+    return new Promise(function (resolve, reject) {
+        mysql.con.query(sql_search_user, function (err, result) {
+            if (err) reject({ code: 500, error: `Query Error in user Table, line number is 295: ${err}` });
+            else {
+                if (result.length === 0) reject({ code: 406, error: 'Invalid token.' });
+                else if (result[0].expired_result === 'YES') reject({ code: 408, error: 'Token expired.' });
+                else {
+                    // mysql.con.query(`SELECT * FROM message WHERE pet_id = ${petId} AND (receiver_id=${result[0].id} OR sender_id = ${result[0].id})`, function (err, result) { 
+                    // mysql.con.query(`SELECT message.*,user.picture FROM message LEFT JOIN user ON user.id = ${senderId} OR user.id = ${receiverId} WHERE message.pet_id = ${petId} AND (message.receiver_id=${result[0].id} OR message.sender_id = ${result[0].id})`, function (err, result) {
+                    mysql.con.query(`SELECT message.* FROM message WHERE message.pet_id = ${petId} AND (message.receiver_id=${result[0].id} OR message.sender_id = ${result[0].id})`, function (err, result) {
+                        let body = {};
+                        if (err) {
+                            reject({ code: 500, error: `Query Error in message Table, line number is 307: ${err}` });
+                            throw err;
+                        }
+                        else {
+                            if (result.length === 0) body.data = [];
+                            else {
+                                let loaded = 0;
+                                result.forEach(function (ele) {
+                                    ele.msg = JSON.parse(ele.msg);
+                                    mysql.con.getConnection(function (err, connection) {
+                                        if (err) reject({ code: 500, error: `getConnection error, line number is 319: ${err}` });
+                                        else {
+                                            connection.query(`SELECT user.picture FROM message LEFT JOIN user ON user.id = message.sender_id WHERE sender_id = ${ele.sender_id} AND pet_id = ${ele.pet_id}
+                                                              UNION
+                                                              SELECT user.picture FROM message LEFT JOIN user ON user.id = message.receiver_id WHERE receiver_id = ${ele.receiver_id} AND pet_id = ${ele.pet_id}`,
+                                                function (err, result2) {
+                                                    if (err) {
+                                                        reject({ code: 500, error: `Query Error in message&user Table, line number is 324: ${err}` });
+                                                        throw err;
+                                                    }
+                                                    else {
+                                                        loaded++;
+                                                        ele.sender_picture = result2[0].picture;
+                                                        ele.receiver_picture = result2[1].picture;
+                                                    }
+                                                    if (loaded === result.length) {
+                                                        body.data = result;
+                                                        resolve(body);
+                                                    }
+                                                    // else reject({ code: 501, error: 'The total number of returned messages is incorrect.' });
+
+                                                });
+                                        }
+                                        connection.release();
+                                    });
+                                });// end forEach
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+}
+function addAttention(petId, userId) {
+    return new Promise(function (resolve, reject) {
+        mysql.con.query(`SELECT * from attention WHERE pet_id = ${petId} AND user_id = ${userId}`, function (err, result) {
+            if (err) reject({ code: 500, error: `Query Error in atttention Table, line number is 356: ${err}` });
+            else {
+                if (result.length === 0) {
+                    mysql.con.query(`INSERT INTO attention SET ?`, { pet_id: petId, user_id: userId }, function (err, result) {
+                        if (err) reject({ code: 500, error: `Insert Error in atttention Table, line number is 360: ${err}` });
+                        else {
+                            resolve('.insert');
+                        }
+                    });
+                }
+                else {
+                    mysql.con.query(`DELETE FROM attention WHERE pet_id = ${petId} AND user_id = ${userId}`, function (err, result) {
+                        if (err) reject({ code: 500, error: `Delete Error in atttention Table, line number is 368: ${err}` });
+                        else {
+                            resolve('.delete');
+                        }
+                    });
+                    // should update, but data is the same, do nothing
+                }
+            }
+        });
+    });
+}
+function getAttentionList(token) {
+    let sql_search_user = `SELECT u.id, IF(TIMESTAMPDIFF(SECOND, t.created, CURRENT_TIMESTAMP)>t.access_expired,'YES','NO') AS expired_result FROM user AS u LEFT JOIN token AS t ON u.id = t.user_id WHERE t.access_token = '${token}'`;
+    return new Promise(function (resolve, reject) {
+        mysql.con.query(sql_search_user, function (err, result) {
+            if (err) reject({ code: 500, error: `Query Error in user Table, line number is 160: ${err}` });
+            else {
+                if (result.length === 0) reject({ code: 406, error: 'Invalid token.' });
+                else if (result[0].expired_result === 'YES') reject({ code: 408, error: 'Token expired.' });
+                else {
+                    mysql.con.query(`SELECT attention.*,pet.db,pet.image,pet.title,pet.opendate,pet.status,pet.sex from attention LEFT JOIN pet ON attention.pet_id = pet.id WHERE attention.user_id = ${result[0].id} ORDER BY attention.id DESC`, function (err, result) {
+                        let body = {};
+                        if (err) reject({ code: 500, error: `Query Error in user&pet Table, line number is 166: ${err}` });
+                        else {
+                            if (result.length === 0) body.data = [];
+                            else {
+                                result.forEach(function (ele) {
+                                    ele.image = JSON.parse(ele.image);
+                                });
+                                body.data = result;
+
+                            }
+                            resolve(body);
+                        }
+                    });
+                }
+            }
+        });
+    });
+}
+function deleteAttention(petId, userId) {
+    return new Promise(function (resolve, reject) {
+        mysql.con.query(`DELETE FROM attention WHERE pet_id = ${petId} AND user_id=${userId}`, function (err, result) {
+            if (err) reject({ code: 500, error: `DELETE Error in attention Table, line number is 410: ${err}` });
+            else resolve('Delete the id in attention table successful.');
+        });
+    });
+}
+module.exports = {
+    signup, login, profile, update, postAdoption,
+    getAdoptionList, deleteAdoption, updateAdoption,
+    sendMessage, getMessageList, addAttention,
+    getAttentionList, getMessage, deleteAttention
+}

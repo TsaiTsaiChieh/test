@@ -12,9 +12,13 @@ block content
         li
           a.change(href="member?profile") 修改資料
         li
-          a.adopt(href="member?adoption") 送養訊息
+          a.adopt(href="member?adoption") 發佈送養
         li
           a.edit(href="member?edit") 編輯送養
+        li
+          a.attention(href="member?attention") 我的關注
+        li
+          a.message(href="member?message") 我的訊息
         li
           a.logout(href="adoption?kind=all&paging=0") 登出
   .right-wrap
@@ -36,9 +40,13 @@ block content
     //-     span 手機
     //-     input.phone(type="text" name="phone" placeholder="ex: 0987654321")
     //-   button.profile-btn(type="submit" onclick="updateProfile()") 確認修改
-    include member-info.pug
+    include member-profile.pug
     include member-adoption.pug
     include member-edit.pug
+    include member-attention.pug
+    include member-message.pug
+    include member-chat.pug
+    include adoption-details.pug
     //- .adoption-wrap
     //-   .title-wrap 送養資訊
     //-   .subtitle-wrap 填寫寵物的基本資料，請務必詳實填寫

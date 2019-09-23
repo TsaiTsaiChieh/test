@@ -4,10 +4,14 @@ let paging = parseInt(urlParams.get('paging'));
 if (paging == null) paging = 0;
 let sex = urlParams.get('sex');
 let region = urlParams.get('region');
+let order = urlParams.get('order');
+let age = urlParams.get('age');
+// for 加入關注功能，為了要讓已登入的使用者，再加入關注時，重整仍可看到已加入關注的按鈕為灰色
+let userId = Number.parseInt(window.localStorage.getItem('user-id'));
+let token = window.localStorage.getItem('auth');
 
-function searchActive(kind, sex, region) {
+function searchActive(kind, sex, region, order, age) {
     if (kind && kind !== 'all') {
-        console.log('test:', app.get(`.kind #${kind} label`));
         app.get(`.kind label.${kind}`).classList.add('active');
     }
     if (sex) app.get(`.sex label.${sex}`).classList.add('active');
@@ -17,17 +21,28 @@ function searchActive(kind, sex, region) {
             app.get(`.county label._${element}`).classList.add('active');
         });
     }
+    if (!order) app.get('.order label.asc').classList.add('active');
+    else if (order === 'desc') app.get('.order label.desc').classList.add('active');
+    if (age) app.get(`.age label.${age}`).classList.add('active');
 }
-searchActive(kind, sex, region);
-function queryString(sex, region, paging) {
-    if (region && sex) return `sex=${sex}&region=${region}&paging=${paging}`;
-    else if (region) return `region=${region}&paging=${paging}`;
-    else if (sex) return `sex=${sex}&paging=${paging}`;
-    else return `paging=${paging}`;
+searchActive(kind, sex, region, order, age);
+function queryString(sex, region, order, age, paging) {
+    let url = '';
+    if (sex) url = `sex=${sex}&`;
+    if (region) url = url.concat(`region=${region}&`);
+    if (order === 'desc') url = url.concat(`order=${order}&`);
+    if (age) url = url.concat(`age=${age}&`);
+    url = url.concat(`paging=${paging}`);
+    // if (region && sex) url = `sex=${sex}&region=${region}&`;
+    // else if (region) url = `region=${region}&`;
+    // else if (sex) url = `sex=${sex}&`;
+    // if (order === 'desc') url = url.concat(`order=${order}&`);
+    // url = url.concat(`paging=${paging}`);
+    return url;
+
 }
 
-
-app.ajax('GET', `api/adoption/${kind}`, queryString(sex, region, paging), {}, function (req) {
+app.ajax('GET', `api/adoption/${kind}`, queryString(sex, region, order, age, paging), {}, function (req) {
     let data = JSON.parse(req.responseText).data;
     const pet_list = app.get('.pet-list');
     for (let i = 0; i < data.length; i++) {
@@ -37,12 +52,12 @@ app.ajax('GET', `api/adoption/${kind}`, queryString(sex, region, paging), {}, fu
         let img_wrap = app.createElement('div', { atrs: { className: 'img-wrap' } }, item);
         if (data[i].image[0].length == 0) pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: './imgs/pet-null.jpg' } }, img_wrap);
         else {
-            if (data[i].db === 3) pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: `./pet-img/${data[i].image[0]}` } }, img_wrap);
+            if (data[i].db === 3) pet_img = app.createElement('img', { atrs: { className: `pet-img petId_${data[i].id}`, src: `./pet-img/${data[i].image[0]}` } }, img_wrap);
             else pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: data[i].image[0] } }, img_wrap);
         }
         pet_img.addEventListener('click', function () {
             app.get('.pet-details').style.display = 'block';
-            loadPetDetails(data[i].id);
+            app.loadPetDetails(data[i].id);
         });
         let text_wrap = app.createElement('div', { atrs: { className: 'text-wrap' } }, item);
         if (data[i].title.length == 0) {
@@ -70,159 +85,135 @@ app.ajax('GET', `api/adoption/${kind}`, queryString(sex, region, paging), {}, fu
         let color = app.createElement('div', { atrs: { className: 'color' } }, profile);
         app.createElement('h4', { atrs: { innerHTML: '顏色' } }, color);
         app.createElement('span', { atrs: { innerHTML: data[i].color } }, color);
+        // btn-setting
+        let btnWrap = app.createElement('div', { atrs: { className: 'btn-wrap' } }, profile);
+        if (data[i].db === 3) {
+            let wantAdoption = app.createElement('button', { atrs: { className: `wantAdoption petId_${data[i].id} receiver_${data[i].user_id} receiverName_${data[i].contactName}`, innerHTML: '我要認養' } }, btnWrap);
+            wantAdoption.addEventListener('click', adoptionMessage);
+        }
+        let attentionBtn = app.createElement('button', { atrs: { className: `attention petId_${data[i].id}`, innerHTML: '加入關注' } }, btnWrap);
+        attentionBtn.addEventListener('click', addAttention);
         app.createElement('div', { atrs: { className: 'line' } }, pet_list);
         // app.createElement('button', { arts: { innerHTML: '認養我', type: 'submit' } }, pet_list);
     }
 });
 
-
-function loadPetDetails(petId) {
-    let details_wrap = app.get('.details-wrap');
-    let img_wrap = app.get('.details-wrap .img-wrap');
-    // let info_wrap = app.get('.pet-details .info-wrap');
-    let info_wrap = app.createElement('div', { atrs: { className: 'info-wrap' } }, details_wrap);
-    document.addEventListener('keyup', function () {
-        if (event.keyCode === 27) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            app.get('.close.details').click();
-        }
-    });
-    app.get('.close.details').addEventListener('click', function () {
-        app.get('.pet-details').style.display = 'none';
-        // app.get('.details-wrap .img-wrap').classList.remove('.details-wrap .img-wrap');
-        let img = app.getAll('.details-wrap .img-wrap img');
-        for (let i = 0; i < img.length; i++) {
-            img[i].remove();
-        }
-        info_wrap.remove();
-    });
-    app.ajax('GET', 'api/adoption/details', `id=${petId}`, {}, function (req) {
-        let data = JSON.parse(req.responseText);
-
-        console.log(data);
-        if (data.title.length == 0) {
-            let stayDay = app.dateConversion(data.opendate);
-            app.get('h1.pet-title').innerHTML = `在收容所待${stayDay}天，可以帶我回家嗎？`;
-
-        }
-        else app.get('h1.pet-title').innerHTML = data.title;
-
-        // pet-image
-        if (data.image[0] === '') app.createElement('img', { atrs: { src: './imgs/pet-null.jpg' } }, img_wrap);
-        else {
-            for (let i = 0; i < data.image.length; i++) {
-                if (data.db === 2 || data.db === 1)
-                    app.createElement('img', { atrs: { src: data.image[i] } }, img_wrap);
-                else if (data.db === 3) app.createElement('img', { atrs: { src: `./pet-img/${data.image[i]}` } }, img_wrap);
-
-            }
-        }
-        // pet-name
-        let petNameItem = app.createElement('div', { atrs: { className: 'petName item' } }, info_wrap);
-        if (data.db === 1) {
-            // app.get('.petName.item h4').innerHTML = '所屬收容所編號';
-            // app.get('.petName.item p').innerHTML = data.db_link;
-            app.createElement('h4', { atrs: { innerHTML: '所屬收容所編號' } }, petNameItem);
-            app.createElement('p', { atrs: { innerHTML: data.db_link } }, petNameItem);
-        }
-        else {
-            // app.get('.petName.item h4').innerHTML = '小名';
-            // app.get('.petName.item p').innerHTML = data.petName;
-            app.createElement('h4', { atrs: { innerHTML: '小名' } }, petNameItem);
-            app.createElement('p', { atrs: { innerHTML: data.petName } }, petNameItem);
-        }
-        // county
-        // app.get('.county.item p').innerHTML = app.countryTable(data.county);
-        let countyItem = app.createElement('div', { atrs: { className: 'county item' } }, info_wrap);
-        app.createElement('h4', { atrs: { innerHTML: '地區' } }, countyItem);
-        app.createElement('p', { atrs: { innerHTML: app.countryTable(data.county) } }, countyItem);
-        // sex
-        if (data.sex !== null) {
-            let sexItem = app.createElement('div', { atrs: { className: 'sex item' } }, info_wrap);
-            app.createElement('h4', { atrs: { innerHTML: '性別' } }, sexItem);
-            app.createElement('p', { atrs: { innerHTML: app.sexTable(data.sex) } }, sexItem);
-        }
-        // age 
-        let ageItem = app.createElement('div', { atrs: { className: 'age item' } }, info_wrap);
-        app.createElement('h4', { atrs: { innerHTML: '年齡' } }, ageItem);
-        app.createElement('p', { atrs: { innerHTML: app.ageTable(data.age, data.kind) } }, ageItem);
-        // color
-        if (data.color !== null) {
-            let colorItem = app.createElement('div', { atrs: { className: 'color item' } }, info_wrap);
-            app.createElement('h4', { atrs: { innerHTML: '花色' } }, colorItem);
-            app.createElement('p', { atrs: { innerHTML: data.color } }, colorItem);
-        }
-        // neuter
-        let neuterItem = app.createElement('div', { atrs: { className: 'neuter item' } }, info_wrap);
-        app.createElement('h4', { atrs: { innerHTML: '結紮' } }, neuterItem);
-        app.createElement('p', { atrs: { innerHTML: app.neuterTable(data.neuter) } }, neuterItem);
-        // bacterin
-        if (data.bacterin !== null) {
-            let bacterinItem = app.createElement('div', { atrs: { className: 'bacterin item' } }, info_wrap);
-            app.createElement('h4', { atrs: { innerHTML: '狂犬病疫苗' } }, bacterinItem);
-            app.createElement('p', { atrs: { innerHTML: app.neuterTable(data.bacterin) } }, bacterinItem);
-        }
-        //microchip
-        if (data.microchip !== null) {
-            let microchipItem = app.createElement('div', { atrs: { className: 'microchip item' } }, info_wrap);
-            app.createElement('h4', { atrs: { innerHTML: '晶片號碼' } }, microchipItem);
-            app.createElement('p', { atrs: { innerHTML: data.microchip } }, microchipItem);
-        }
-        //description
-        if (data.description.length !== 0) {
-            let descriptionItem = app.createElement('div', { atrs: { className: 'description item' } }, info_wrap);
-            app.createElement('h4', { atrs: { innerHTML: '描述' } }, descriptionItem);
-            app.createElement('p', { atrs: { innerHTML: data.description } }, descriptionItem);
-        }
-        // habit
-        if (data.habit !== null) {
-            let habitItem = app.createElement('div', { atrs: { className: 'habit item' } }, info_wrap);
-            app.createElement('h4', { atrs: { innerHTML: '習性' } }, habitItem);
-            app.createElement('p', { atrs: { innerHTML: data.habit } }, habitItem);
-        }
-        // story
-        if (data.story !== null) {
-            let storyItem = app.createElement('div', { atrs: { className: 'story item' } }, info_wrap);
-            app.createElement('h4', { atrs: { innerHTML: '故事' } }, storyItem);
-            app.createElement('p', { atrs: { innerHTML: data.story } }, storyItem);
-        }
-        // limitation
-        if (data.limitation !== null) {
-            let limitationItem = app.createElement('div', { atrs: { className: 'limitation item' } }, info_wrap);
-            app.createElement('h4', { atrs: { innerHTML: '限制' } }, limitationItem);
-            app.createElement('p', { atrs: { innerHTML: data.limitation } }, limitationItem);
-        }
-        // contactName
-        let contactNameItem = app.createElement('div', { atrs: { className: 'contactName item' } }, info_wrap);
-        app.createElement('h4', { atrs: { innerHTML: '聯絡人' } }, contactNameItem);
-        app.createElement('p', { atrs: { innerHTML: data.contactName } }, contactNameItem);
-        // contactMethod
-        let contactMethodItem = app.createElement('div', { atrs: { className: 'contactMethod item' } }, info_wrap);
-        app.createElement('h4', { atrs: { innerHTML: '聯絡方式' } }, contactMethodItem);
-        app.createElement('p', { atrs: { innerHTML: data.contactMethod } }, contactMethodItem);
-        // link
-        if (data.db_link.length !== null) {
-            let linkItem = app.createElement('div', { atrs: { className: 'link item' } }, info_wrap);
-            app.createElement('h4', { atrs: { innerHTML: '連結' } }, linkItem);
-            if (data.db === 1) app.createElement('a', { atrs: { innerHTML: '全國推廣動物認領養平台', target: '_blank', href: `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${data.db_link}&AcceptNum=${data.link_id}&PageType=Adopt` } }, linkItem);
-            else if (data.db === 2) app.createElement('a', { atrs: { innerHTML: '台灣認養地圖', target: '_blank', href: `http://www.meetpets.org.tw/content/${data.db_link}` } }, linkItem);
-        }
-    });
-
-}
 // app.ajax('GET', `api/adoption/count?kind=${kind}`, {}, function (req) {
-app.ajax('GET', 'api/adoption/count', `kind=${kind}&${queryString(sex, region, paging)}`, {}, function (req) {
+app.ajax('GET', 'api/adoption/count', `kind=${kind}&${queryString(sex, region, order, age, paging)}`, {}, function (req) {
     let lastPage = JSON.parse(req.responseText).lastPage;
     const pagination = app.get('.pagination');
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, 0)}`, innerHTML: '«第一頁' } }, pagination);
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, paging > 0 ? paging - 1 : 0)}`, innerHTML: '«上一頁' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, 0)}`, innerHTML: '«第一頁' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, paging > 0 ? paging - 1 : 0)}`, innerHTML: '«上一頁' } }, pagination);
     let paging_list = app.createElement('div', { atrs: { className: 'paging-list' } }, pagination);
     for (let i = Math.floor(paging / 10) * 10; i < Math.floor(paging / 10) * 10 + 10 && i <= lastPage; i++) {
-        if (i === paging) app.createElement('a', { atrs: { className: 'active', href: `/adoption?kind=${kind}&${queryString(sex, region, i)}`, innerHTML: i + 1 } }, paging_list);
-        else app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, i)}`, innerHTML: i + 1 } }, paging_list);
+        if (i === paging) app.createElement('a', { atrs: { className: 'active', href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, i)}`, innerHTML: i + 1 } }, paging_list);
+        else app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, i)}`, innerHTML: i + 1 } }, paging_list);
     }
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, paging < lastPage ? paging + 1 : lastPage)}`, innerHTML: '下一頁›' } }, pagination);
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, lastPage)}`, innerHTML: '最後一頁»' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, paging < lastPage ? paging + 1 : lastPage)}`, innerHTML: '下一頁›' } }, pagination);
+    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, lastPage)}`, innerHTML: '最後一頁»' } }, pagination);
 });
+
+function adoptionMessage() {
+    let userId = Number.parseInt(window.localStorage.getItem('user-id'));
+    if (!userId) {
+        if (confirm('「我要認養」功能需要會員/註冊登入才能使用喔！')) {
+            app.get('.login-page').style.display = 'block';
+        }
+        else;// do nothing
+    }
+    else if (userId) {
+        let classNames = this.className.split(' ');
+        let receiverId = Number.parseInt(classNames[2].replace('receiver_', ''));
+        if (receiverId === userId) window.alert('不能傳訊息給自己喔！');
+        else {
+            let petId = Number.parseInt(classNames[1].replace('petId_', ''));
+            let contactName = classNames[3].replace('receiverName_', '');
+            let sendMegWrap = app.get('.sendMeg-wrap');
+            app.get('.mask').style.display = 'block';
+            // close setting
+            // closeSetting('.sendMeg-wrap .close-msg', '.sendMeg-wrap');
+            sendMegWrap.style.display = 'flex';
+            let imgPath = app.get(`.${classNames[1]}`).src;
+            app.get('.sendMeg-wrap .img-wrap .pet-img').src = `${imgPath}`;
+            app.get('.sendMeg-wrap .msg-wrap .contactName').innerHTML = `傳訊息給 ${contactName}：`;
+            // let msgSend = app.createElement('button',);
+            let msgSend = app.get('button.msg-send');
+            msgSend.setAttribute('class', `msg-send petId_${petId} receiverId_${receiverId} receiverName_${contactName}`);
+            app.get('button.msg-send').addEventListener('click', sendMessage);
+
+            document.addEventListener('keyup', function () {
+                if (event.keyCode === 27) {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    app.get('input.close-msg').click();
+                }
+            });
+        }
+    }
+
+}
+function sendMessage() {
+    let classNames = this.className.split(' ');
+    let petId = Number.parseInt(classNames[1].replace('petId_', ''));
+    let receiverId = Number.parseInt(classNames[2].replace('receiverId_', ''));
+    let receiverName = classNames[3].replace('receiverName_', '');
+    let message = app.get('.sendMeg-wrap .msg-wrap textarea').value;
+    let senderId = Number.parseInt(window.localStorage.getItem('user-id'));
+    let senderName = window.localStorage.getItem('name');
+    app.ajax('POST', 'api/user/sendMessage', { senderId, receiverId, petId, message, senderName, receiverName, createTime: new Date().getTime() }, {}, function (req) {
+        if (req.status === 500) app.get('.sendMeg-wrap .error-msg').innerHTML = '伺服器錯誤，請稍後再試';
+        else {
+            // console.log(senderId, receiverId, petId, message, new Date());
+            app.get('.sendMeg-wrap input.close-msg').click(); // 關閉視窗避免使用者重新傳遞訊息
+        }
+    });
+}
+
+function closeMessage() {
+    app.get('.mask').style.display = 'none';
+    app.get('.sendMeg-wrap').style.display = 'none';
+    app.get('button.msg-send').removeEventListener('click', sendMessage);
+    app.get('.sendMeg-wrap .msg-wrap textarea').value = '';
+}
+function addAttention() {
+    let userId = Number.parseInt(window.localStorage.getItem('user-id'));
+    if (!userId) {
+        if (confirm('「加入關注」功能需要會員/註冊登入才能使用喔！')) {
+            app.get('.login-page').style.display = 'block';
+        }
+        else;// do nothing
+    }
+    else {
+        let classNames = this.className.split(' ');
+        let petId = classNames[1].replace('petId_', '');
+        let userId = window.localStorage.getItem('user-id');
+        if (classNames.length >= 3) // 因為有 active
+        {
+            app.ajax('POST', 'api/user/deleteAttention', { petId, userId }, {}, function (req) {
+                if (req.status === 200) {
+                    app.get(`button.attention.petId_${petId}`).classList.remove('active');
+                }
+            });
+        }
+        else {
+            app.ajax('POST', 'api/user/addAttention', { petId, userId }, {}, function (req) {
+                if (req.status === 200) {
+                    app.get(`button.attention.petId_${petId}`).classList.add('active');
+                }
+            });
+        }
+    }
+}
+function initAttentionBtn() {
+    if (userId && token) {
+        app.ajax('GET', 'api/user/getAttentionList', '', { Authorization: `Bearer ${token}` }, function (req) {
+            let data = JSON.parse(req.responseText).data;
+            console.log(data);
+            data.forEach(function (ele) {
+                app.get(`button.attention.petId_${ele.pet_id}`).classList.add('active');
+            })
+        });
+    }
+}
+initAttentionBtn();

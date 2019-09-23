@@ -14,30 +14,29 @@ app.use(modules.express.static('public'));
 const mainRouter = require('./routes');
 const adoptionRouters = require('./routes/adoption');
 const userRouters = require('./routes/user');
-
+const noticeRouters = require('./routes/notice');
 
 
 app.use(mainRouter);
 app.use('/api/adoption', adoptionRouters);
 app.use('/api/user', userRouters);
+app.use('/api/notice', noticeRouters);
 app.set('views', './views');
 app.set('view engine', 'pug');
 
-let rule = new modules.schedule.RecurrenceRule();
-// let times = [0, 1, 2, 3, 4, 5, 15, 16];
-let times = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+// let rule = new modules.schedule.RecurrenceRule();
+// let times = [];
+// for (let i = 0; i < 24; i++) times.push(i + 1);
 // rule.hour = times;
-rule.minute = times;
-// modules.schedule.scheduleJob(rule, function () { //秒、分、時、日、月、周幾
-//     console.log('scheduleCronstyle:' + new Date());
-//     update.gov.updateGov();
-
-//     setTimeout(function () {
-//         console.log(new Date());
-//         update.map.updateAdoptionMap();
-//     }, 60000); // 五分鐘
-// });
-
+// rule.minute = times;
+modules.schedule.scheduleJob('0 30 0-23 * * *', function () { //秒、分、時、日、月、周幾
+    console.log(new Date());
+    update.gov.updateGov();
+    setTimeout(function () {
+        console.log(new Date(Date.now()));
+        update.map.updateAdoptionMap();
+    }, 60000); // 五分鐘
+});
 
 
 app.listen(3000, () => console.log('讓愛不流浪 at port 3000.'));

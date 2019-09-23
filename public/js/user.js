@@ -49,9 +49,15 @@ app.get('.login-page input.password').addEventListener('keyup', function () {
 
 // for user page
 function signup() {
+    let name = app.get('.signup-page .name').value;
     let email = app.get('.signup-page .email').value;
     let password = app.get('.signup-page .password').value;
-    if (!email) {
+
+    if (!name) {
+        app.get('.signup-page .message').innerHTML = '請輸入姓名';
+        app.get('.signup-page .message').style.opacity = '1';
+    }
+    else if (!email) {
         app.get('.signup-page .message').innerHTML = '請輸入帳號';
         app.get('.signup-page .message').style.opacity = '1';
     }
@@ -62,7 +68,7 @@ function signup() {
     else {
         // app.get('.signup-page .message').style.opacity = '0';
         app.get('.signup-page .message').style.opacity = '1';
-        app.ajax('POST', 'api/user/signup', { email, password }, {}, function (req) {
+        app.ajax('POST', 'api/user/signup', { name, email, password }, {}, function (req) {
             if (req.status === 406) {
                 app.get('.signup-page .message').innerHTML = '已有此電子信箱';
                 // app.get('.signup-page .message').style.opacity = '1';
@@ -120,6 +126,7 @@ function loginSuccessEvent(className, provider, req) {
     app.get(`.${className}`).style.display = 'none';
     window.localStorage.setItem('auth', data.token.access_token);
     window.localStorage.setItem('provider', provider);
+    window.localStorage.setItem('name', data.user.name);
     if (className === 'signup-page' && provider === 'native')
         window.localStorage.setItem('picture', null);
     else window.localStorage.setItem('picture', data.user.picture);

@@ -1,0 +1,11 @@
+.mask
+.sendMeg-wrap 
+  //- img.close-msg(src="./imgs/close.png" alt="close")
+  input.close-msg(type="image" src="./imgs/close.png" alt="close" onclick="closeMessage();")
+  .img-wrap
+    img.pet-img
+  .msg-wrap
+    .error-msg
+    .contactName 
+    textarea.msg(cols="60" rows="12" placeholder="想傳什麼訊息呢？")
+    button.msg-send 送出

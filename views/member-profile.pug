@@ -1,0 +1,18 @@
+.profile-wrap
+      .title-wrap 個人資料
+      .subtitle-wrap 查看和編輯您的個人資料
+      .right-line
+      .login-info
+        span 登入的電子郵件：
+        p
+        p#user-id
+      // bootstrap button
+      label.btn.btn-info
+        input.upload-img(style="display:none;" type="file" accept=".png, .jpg, .jpeg" name="upload-img")
+        i 上傳新照片
+      .personal-info
+        span 姓名
+        input.name(type="text" name="name" placeholder="編輯姓名") 
+        span 手機
+        input.phone(type="text" name="phone" placeholder="ex: 0987654321")
+      button.profile-btn(type="submit" onclick="updateProfile()") 確認修改

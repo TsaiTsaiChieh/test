@@ -2,9 +2,9 @@ const userModel = require('../model/userModel');
 const modules = require('../util/modules');
 
 function signup(req, res) {
-    let { email, password } = req.body;
+    let { name, email, password } = req.body;
     email = email.replace(/\s+/g, ""); // 過濾掉電子郵件的空格
-    userModel.signup(email, password).then(function (body) {
+    userModel.signup(name, email, password).then(function (body) {
         res.status(200);
         res.json(body);
     })
@@ -134,15 +134,91 @@ function updateAdoption(req, res) {
             userModel.updateAdoption(req.body, req.files.petImgs).then(function (body) {
                 res.send(body);
             }).catch(function () {
-
+                res.status(err.code);
+                res.send(err.error);
             });
         }
-        // console.log('controller',req.body);
-        // console.log('controller',req.files);
 
     });
 
 }
+function sendMessage(req, res) {
+    let { senderId, receiverId, petId, senderName, receiverName, message, createTime } = req.body;
+    userModel.sendMessage(senderId, receiverId, petId, senderName, receiverName, message, createTime).then(function (body) {
+        res.send(body)
+
+    }).catch(function (err) {
+        res.status(err.code);
+        res.send(err.error);
+    });
+}
+function getMessageList(req, res) {
+    let { authorization } = req.headers;
+    if (authorization) {
+        let token = authorization.replace('Bearer ', '');
+        userModel.getMessageList(token).then(function (body) {
+            res.json(body);
+        })
+            .catch(function (err) {
+                res.status(err.code);
+                res.send(err.error);
+            });
+
+    }
+}
+function getMessage(req, res) {
+    let { authorization } = req.headers;
+    let { petId, senderId, receiverId } = req.query;
+    if (authorization) {
+        let token = authorization.replace('Bearer ', '');
+        userModel.getMessage(token, petId, senderId, receiverId).then(function (body) {
+            res.json(body);
+        })
+            .catch(function (err) {
+                res.status(err.code);
+                res.send(err.error);
+            });
+    }
+    else {
+        // 重登
+    }
+
+
+}
+function addAttention(req, res) {
+    let { petId, userId } = req.body;
+    userModel.addAttention(petId, userId).then(function (body) {
+        res.send(body);
+    })
+}
+function getAttentionList(req, res) {
+    let { authorization } = req.headers;
+    if (authorization) {
+        let token = authorization.replace('Bearer ', '');
+        userModel.getAttentionList(token).then(function (body) {
+            res.json(body)
+        })
+            .catch(function (err) {
+                res.status(err.code);
+                res.send(err.error);
+            });
+
+    }
+}
+function deleteAttention(req, res) {
+    let { petId, userId } = req.body;
+    userModel.deleteAttention(petId, userId).then(function (body) {
+        res.send(body);
+
+    }).catch(function (err) {
+        res.status(err.code);
+        res.send(err.error);
+    })
+}
+
 module.exports = {
-    signup, login, profile, update, postAdoption, getAdoptionList, deleteAdoption, updateAdoption
+    signup, login, profile, update, postAdoption,
+    getAdoptionList, deleteAdoption, updateAdoption,
+    sendMessage, getMessageList, addAttention,
+    getAttentionList, getMessage, deleteAttention
 }

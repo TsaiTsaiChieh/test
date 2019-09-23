@@ -80,7 +80,7 @@ function updateGov() {
                             age: ageTable(data[j].animal_age), color: data[j].animal_colour, neuter: data[j].animal_sterilization,
                             bacterin: data[j].animal_bacterin, county: data[j].animal_area_pkid, foundplace: data[j].animal_foundplace,
                             title: data[j].animal_title, image: JSON.stringify([data[j].album_file]),
-                            description: JSON.stringify(data[j].animal_remark), opendate: opendateTable(data[j].animal_opendate),
+                            description: JSON.stringify(data[j].animal_remark), opendate: opendateTable(data[j].animal_createtime),
                             contactName: data[j].shelter_name, contactMethod: data[j].shelter_tel
                         });
                     } // end for /** data.length */ loop

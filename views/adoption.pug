@@ -27,73 +27,22 @@ block content
         label._4(for="east") 東
         input#outer(type="checkbox" value="5" name="region")
         label._5(for="outer") 外島
+      .order
+        h3 時間
+        input#asc(type="radio" value="asc" name="order")
+        label.asc(for="asc") 升冪
+        input#desc(type="radio" value="desc" name="order")
+        label.desc(for="desc") 降冪
+      .age
+        h3 年齡
+        input#adult(type="checkbox" value="A" name="age")
+        label.A(for="adult") 成體
+        input#child(type="checkbox" value="C" name="age")
+        label.C(for="child") 幼體
       button(type="submit") 搜尋
   .pet-list
-  .pet-details
-    .close.details
-    h1.pet-title
-    .details-wrap
-      .img-wrap
-      //- .info-wrap
-        //- .petName.item
-        //-   h4
-        //-   p
-        //- .county.item
-        //-   h4 地區
-        //-   p
-        //- .sex.item
-        //-   h4 性別
-        //-   p
-        //- .age.item
-        //-   h4 年齡
-        //-   p
-        //- .color.item
-        //-   h4 花色
-        //-   p 淡黃色
-        //- .neuter.item
-        //-   h4 結紮
-        //-   p 有
-        //- .bacterin.item
-        //-   h4 狂犬病疫苗
-        //-   p 有
-        //- .microchip.item
-        //-   h4 晶片號碼
-        //-   p 98765432
-        //- .description.item
-        //-   h4 描述
-        //-   p 超級可愛個性超好的可可
-        //- .habit.item
-        //-   h4 習性
-        //-   p
-        //-     | 依布一開始會比較怕生但是混熟了會在你腳邊倒下撒嬌，很喜歡被摸.
-        //-     br
-        //-     | 味增不怕生可以讓你抱來抱去抓來抓去，比較貪吃，手裡有罐頭他就追著你跑.
-        //-     br
-        //-     | 兩隻感情很好會相依偎睡覺，如果有一隻不在同一個空間另外一隻就會喵喵叫找人。
-        .story.item
-          h4 故事
-          p
-            | 兩隻都乖巧，但因女兒異位性皮膚炎從養貓後整個嚴重很多，
-            br
-            | 要等女兒長大一點才能再養寵物了
-            br
-            | 大約8公斤的皇家飼料
-            br
-            | 三包貓砂
-            br
-            | 兩組貓砂盆
-            br
-            | 有需要的話都可以給新主人
-        .limitation.item
-          h4 限制
-          p 須同意絕育 須家人同意 須同意簽認養切結書 須同意後續追蹤
-        .contactName.item
-          h4 聯絡人
-          p 謝小姐
-        .contactMethod.item
-          h4 聯絡方式
-          p 0987654321
-  // end pet details
+  include adoption-details.pug
+  include adoption-msg.pug
   .pagination
   script(src="./js/lib.js")
   script(src="./js/adoption.js")

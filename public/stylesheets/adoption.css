@@ -8,6 +8,9 @@
     --light-gray: #F7F7F7 !important;
     --second-color: #419FFF !important;
     --third-color: #5868BA !important;
+    --fourth-color: #6B9EAE !important;
+    --red-color: #FF4651 !important;
+    --fifth-color: #16A2B8 !important;
 }
 * {
     font-family: "MainText","Microsoft JhengHei" !important;
@@ -24,7 +27,10 @@
 }
 .search .kind,
 .search .sex,
-.search .county {
+.search .county,
+.search .order,
+.search .age
+{
     display: flex;
     flex-direction: row;
     padding-left: 10%;
@@ -45,6 +51,14 @@
     padding: .5em .5em;
 }
 .search input[type=checkbox]:checked + label
+{
+    color: white;
+    border: 1px solid var(--third-color);
+    background: var(--third-color);
+    border-radius: 100%;
+    padding: .5em .5em;
+}
+.search input[type=radio]:checked + label
 {
     color: white;
     border: 1px solid var(--third-color);
@@ -148,7 +162,10 @@
     }
     .search .kind,
     .search .sex,
-    .search .county {
+    .search .county,
+    .search .order,
+    .search .age
+     {
         padding-left: 15%;
     }
     .search button {
@@ -198,7 +215,7 @@
     position: fixed;
     top:0;
     right: 0;
-    display: none; 
+    display: none;
 }
 .pet-details .pet-title {
     margin: 1% 7%;
@@ -257,4 +274,129 @@
 .details-wrap .info-wrap .story p {
     height: 250px;
     overflow: auto;
+}
+/* btn-setting */
+.btn-wrap {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+}
+.btn-wrap button {
+    font-size: 1.2em;
+    padding: 1% 1%;
+    width: 100%;
+    letter-spacing: .15em;
+    border-radius:10px;
+    color: white;
+    border: none;
+}
+.btn-wrap button:hover {
+    opacity: .8;
+    transition: .5s;
+}
+.btn-wrap button.attention {
+    margin-top: 2%;
+    background: var(--main-color);
+}
+.btn-wrap button.attention.active {
+    background: gray;
+    transition: .5s;
+}
+.btn-wrap button.wantAdoption {
+    background: lightpink;
+}
+/* send message setting */
+.sendMeg-wrap {
+    /* for test */
+    display: none;
+    /* display: flex; */
+    position: relative;
+    background: white;
+    position: fixed;
+    
+    flex-direction: row;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 70%;
+    text-align: center;
+    border: 2px solid lightgray;
+    border-radius: 10px;
+}
+.sendMeg-wrap .close-msg {
+    width: 40px;
+    position: absolute;
+    top:0;
+    right: 0;
+
+}
+.sendMeg-wrap .close-msg:hover {
+    opacity: .8;
+}
+.sendMeg-wrap .img-wrap {
+    margin: auto 0;
+    flex-grow: 1;
+}
+.sendMeg-wrap .pet-img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    text-align: center;
+    padding:  0 5%; 
+}
+
+.sendMeg-wrap .msg-wrap {
+    margin: auto 5%;
+    flex-grow: 3;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.sendMeg-wrap .msg-wrap .contactName{
+    font-size: 1.2em;
+    text-align: left;
+    letter-spacing: .1em;
+    margin-bottom: 1%; 
+}
+.sendMeg-wrap .msg-wrap textarea{
+    border-radius: 5px;
+    width: 90%;
+    border: 1px solid black;
+    letter-spacing: .05em;
+}
+.sendMeg-wrap .msg-wrap .msg-send{
+    width: 90%;
+    margin-top:3%;
+    border: none;
+    color:white;
+    background: var(--main-color);
+    border-radius: 5px; 
+    padding: 1% 0;
+    font-size: 1.2em;
+}
+.sendMeg-wrap .msg-wrap .msg-send:hover {
+opacity: .8;
+}
+
+/* mask setting */
+.mask {
+    display: none;
+    background: black;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left: 0;
+    opacity: .5;
+}
+/* error-msg setting */
+.sendMeg-wrap .error-msg {
+    display: none;
+    font-size: 1.2em;
+    text-align: left;
+    letter-spacing: .1em;
+    margin-bottom: 1%;
+    color: var(--red-color);
 }

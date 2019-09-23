@@ -183,7 +183,7 @@ function crawler(species) {
                         }
                         if (loaded === contentURL.length) next(null, data);
                     });
-                }, 500 * i);
+                }, 1000 * i);
             } // end for loop
         },
         // 將全部資料開始餵入資料庫
@@ -237,8 +237,9 @@ function crawler(species) {
                                 connection.release();
                             } // first connection.query 'else' 
                         }); // first connection.query
+                        if (loaded === pet_data.length) console.log('Adoption map update finish.');
                     } // mysql.con.getConnection 'else'
-                    if (loaded === pet_data.length) console.log('Adoption map update finish.');
+
                 }); // mysql.con.getConnection
             }); // pet_data.forEach
         }

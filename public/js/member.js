@@ -29,15 +29,18 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
     }
     app.get('.login-info p').innerHTML = user.email;
     app.get('.login-info #user-id').innerHTML = user.id;
+
+    window.localStorage.setItem('name', user.name);
 });
 function initMenu(menu) {
     let change = app.get('.menu .change');
     let adopt = app.get('.menu .adopt');
     let edit = app.get('.menu .edit');
-
+    let message = app.get('.menu .message');
+    let attention = app.get('.menu .attention');
     if (menu === 'profile') {
         change.classList.add('active');
-        app.get('.info-wrap').style.display = 'flex';
+        app.get('.profile-wrap').style.display = 'flex';
     }
     else if (menu === 'adoption') {
         adopt.classList.add('active');
@@ -49,8 +52,17 @@ function initMenu(menu) {
         edit.classList.add('active');
         app.get('.edit-wrap').style.display = 'block';
         getAdoptionList();
-        // app.get('button.adoption-btn').addEventListener('click', adoptionPost);
         app.get('button.adoption-btn').removeEventListener('click', adoptionPost);
+    }
+    else if (menu === 'attention') {
+        attention.classList.add('active');
+        app.get('.attention-wrap').style.display = 'block';
+        getAttentionList();
+    }
+    else if (menu === 'message') {
+        message.classList.add('active');
+        app.get('.message-wrap').style.display = 'block';
+        getMessageList();
     }
 
 }
@@ -165,8 +177,7 @@ function adoptionPost() {
                     app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
                 }
                 else window.location.href = './member?edit';
-
-
+                console.log(userId);
             });
         });
 
@@ -252,23 +263,28 @@ function compressFile(file) {
 function getAdoptionList() {
     app.ajax('GET', 'api/user/getAdoptionList', '', { 'Authorization': `Bearer ${window.localStorage.getItem('auth')}` }, function (req) {
         let data = JSON.parse(req.responseText).data;
+        console.log('getAdoptionList', data);
+
         let itemList = app.get('.edit-wrap .item-list ');
         if (data.length === 0) app.createElement('div', { atrs: { className: 'null-msg', innerHTML: '目前無任何送養的紀錄喔！' } }, itemList);
         for (let i = 0; i < data.length; i++) {
             let item = app.createElement('div', { atrs: { className: `item item_${data[i].id}` } }, itemList);
-            app.createElement('img', { atrs: { className: 'pet-img', src: `./pet-img/${data[i].image[0]}` } }, item);
+            let petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `./pet-img/${data[i].image[0]}` } }, item);
+            petImg.addEventListener('click', function () {
+                app.get('.pet-details').style.display = 'block';
+                app.loadPetDetails(data[i].id);
+            });
             let smallWrap = app.createElement('div', { atrs: { className: 'small-wrap' } }, item);
             app.createElement('h4', { atrs: { innerHTML: data[i].title } }, smallWrap);
             let statusWrap = app.createElement('div', { atrs: { className: 'status-wrap' } }, smallWrap);
             let statusLight = app.createElement('div', { atrs: { className: 'status-light' } }, statusWrap);
             statusLight.style.background = statusColor(data[i].status);
             app.createElement('div', { atrs: { className: 'status-text', innerHTML: `${statusText(data[i].status)}` } }, statusWrap);
+            app.createElement('img', { atrs: { className: 'sex-icon', src: `./imgs/${data[i].sex === 'F' ? 'female.png' : 'male.png'}` } }, statusWrap)
             let edit = app.createElement('img', { atrs: { src: './imgs/edit.png', className: 'edit' } }, item);
-            edit.addEventListener('click', function () { getAdoption(data[i].id, data[i]) });
+            edit.addEventListener('click', function () { getAdoption(data[i].id, data[i]); });
             let remove = app.createElement('img', { atrs: { src: './imgs/remove.png', className: 'remove' } }, item);
-            remove.addEventListener('click', function () {
-                deleteAdoption(data[i].id);
-            });
+            remove.addEventListener('click', function () { deleteAdoption(data[i].id); });
             app.createElement('div', { atrs: { className: `line line_${data[i].id}` } }, itemList);
         }
     });
@@ -301,7 +317,6 @@ function deleteAdoption(petId) {
     }
 }
 function getAdoption(petId, data) {
-    console.log(petId, data);
     app.get('.adoption-wrap .status-radio').style.display = 'flex';
     if (data.status === 2) app.get('.adoption-wrap .status-radio input[type=radio]:nth-child(4)').checked = true;
     else if (data.status === 1) app.get('.adoption-wrap .status-radio input[type=radio]:nth-child(3)').checked = true;
@@ -420,7 +435,7 @@ function updateAdoption(petId) {
         }
     }
 
-    console.log(form.petImgs.files);
+    // console.log(form.petImgs.files);
 }
 
 function getAdoptionForm() {
@@ -445,4 +460,167 @@ function getAdoptionForm() {
     form.contactName = app.get('.adoption-info input.contact-name').value;
     form.contactMethod = app.get('.adoption-info input.contact-method').value;
     return form;
+}
+function getAttentionList() {
+    console.log('where');
+
+    app.ajax('GET', 'api/user/getAttentionList', '', { 'Authorization': `Bearer ${window.localStorage.getItem('auth')}` }, function (req) {
+
+        let data = JSON.parse(req.responseText).data;
+
+        let itemList = app.get('.attention-wrap .item-list');
+        if (data.length === 0) app.createElement('div', { atrs: { className: 'null-msg', innerHTML: '目前無任何關注的毛孩喔！' } }, itemList);
+        else {
+            data.forEach(function (ele) {
+                let item = app.createElement('div', { atrs: { className: `item item_${ele.pet_id}` } }, itemList);
+                let petImg;
+                if (ele.db === 3) petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `./pet-img/${ele.image[0]}` } }, item);
+                else {
+                    if (ele.image[0] === "") petImg = app.createElement('img', { atrs: { className: 'pet-img', src: './imgs/pet-null-small.png' } }, item);
+                    else petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `${ele.image[0]}` } }, item);
+                }
+                petImg.addEventListener('click', function () {
+                    app.get('.pet-details').style.display = 'block';
+                    app.loadPetDetails(ele.pet_id);
+                });
+                let smallWrap = app.createElement('div', { atrs: { className: 'small-wrap' } }, item);
+                if (!ele.title) app.createElement('h4', { atrs: { innerHTML: `在收容所待 ${app.dateConversion(ele.opendate)} 天，可以帶我回家嗎？` } }, smallWrap);
+                else app.createElement('h4', { atrs: { innerHTML: ele.title } }, smallWrap);
+                let statusWrap = app.createElement('div', { atrs: { className: 'status-wrap' } }, smallWrap);
+                let statusLight = app.createElement('div', { atrs: { className: 'status-light' } }, statusWrap);
+                statusLight.style.background = statusColor(ele.status);
+                app.createElement('div', { atrs: { className: 'status-text', innerHTML: `${statusText(ele.status)}` } }, statusWrap);
+                app.createElement('img', { atrs: { className: 'sex-icon', src: `./imgs/${ele.sex === 'F' ? 'female.png' : 'male.png'}` } }, statusWrap);
+                // let edit = app.createElement('img', { atrs: { src: './imgs/edit.png', className: 'edit' } }, item);
+                // edit.addEventListener('click', function () { getAdoption(data[i].id, data[i]) });
+                let remove = app.createElement('img', { atrs: { src: './imgs/remove.png', className: 'remove' } }, item);
+                remove.addEventListener('click', function () {
+                    deleteAttention(ele.pet_id);
+                });
+                app.createElement('div', { atrs: { className: `line line_${ele.pet_id}` } }, itemList);
+            });
+        }
+    });
+}
+function deleteAttention(petId) {
+    if (confirm("確定要刪除嗎？")) {
+        let userId = Number.parseInt(window.localStorage.getItem('user-id'));
+        app.ajax('POST', 'api/user/deleteAttention', { petId, userId }, {}, function (req) {
+            let msg = app.get('.attention-wrap .msg');
+            msg.style.display = 'block';
+            if (req.status === 500) msg.innerHTML = '伺服器錯誤，請稍後再試';
+            else {
+                msg.innerHTML = '刪除成功！';
+                app.get(`.attention-wrap .item-list .item_${petId}`).remove();
+                app.get(`.line_${petId}`).remove();
+            }
+        });
+    }
+    else {
+        // 取消
+    }
+}
+
+function getMessageList() {
+    app.ajax('GET', 'api/user/getMessageList', '', { 'Authorization': `Bearer ${window.localStorage.getItem('auth')}` }, function (req) {
+        let data = JSON.parse(req.responseText).data;
+        let userId = Number.parseInt(window.localStorage.getItem('user-id'));
+        let itemList = app.get('.message-wrap .item-list ');
+        if (data.length === 0) app.createElement('div', { atrs: { className: 'null-msg', innerHTML: '目前無任何訊息喔！' } }, itemList);
+        data.forEach(function (ele) {
+            let item = app.createElement('div', { atrs: { className: `item item_${ele.id}` } }, itemList);
+            let petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `./pet-img/${ele.image[0]}` } }, item);
+            petImg.addEventListener('click', function () {
+                app.get('.pet-details').style.display = 'block';
+                app.loadPetDetails(ele.pet_id);
+            });
+            let smallWrap = app.createElement('div', { atrs: { className: 'small-wrap' } }, item);
+            app.createElement('h4', { atrs: { innerHTML: ele.title } }, smallWrap);
+            let statusWrap = app.createElement('div', { atrs: { className: 'status-wrap' } }, smallWrap);
+            app.createElement('div', { atrs: { className: 'message', innerHTML: `${ele.msg.substring(0, 5)}...` } }, statusWrap);
+            app.createElement('div', { atrs: { className: 'contactName', innerHTML: `${ele.sender_id === userId ? `to ${ele.receiver_name}` : `from ${ele.sender_name}`}` } }, statusWrap);
+            let timeWrap = app.createElement('div', { atrs: { className: 'time-wrap' } }, smallWrap);
+            app.createElement('img', { atrs: { className: 'arrow-img', src: `${ele.sender_id === userId ? './imgs/arrow-right.png' : './imgs/arrow-left.png'}` } }, timeWrap);
+            app.createElement('div', { atrs: { className: 'time', innerHTML: ` at ${new Date(ele.createTime).toLocaleString()}` } }, timeWrap);
+            let view = app.createElement('img', { atrs: { className: 'view', src: './imgs/view.png' } }, item);
+            view.addEventListener('click', function () { messageView(userId, ele.pet_id, ele.sender_id, ele.receiver_id); });
+            app.createElement('div', { atrs: { className: `line line_${ele.id}` } }, itemList);
+        });
+    });
+}
+function messageView(userId, petId, sender_id, receiver_id) {
+    app.ajax('GET', 'api/user/getMessage', `petId=${petId}&senderId=${sender_id}&receiverId=${receiver_id}`, { 'Authorization': `Bearer ${window.localStorage.getItem('auth')}` }, function (req) {
+        let data = JSON.parse(req.responseText).data;
+
+        let chatWrap = app.get('.chat-wrap');
+        chatWrap.style.display = 'flex';
+        let contentWrap = app.createElement('div', { atrs: { className: 'content-wrap' } }, app.get('.content-parent'));
+        app.get('.chat-wrap .subtitle').innerHTML = `${sender_id === userId ? `和${data[0].receiver_name}的對話` : `和${data[0].sender_name}的對話`}`;
+        app.get('.message-wrap').style.display = 'none'; // 讓前一頁的訊息列表
+        data.forEach(function (ele, index) {
+            console.log(index, ele);
+            if (ele.sender_id === userId) { // 我自己的訊息
+                let rightMessage = app.createElement('div', { atrs: { className: 'right-message' } }, contentWrap);
+                if (ele.sender_picture === null) app.createElement('img', { atrs: { className: 'header', src: './imgs/login_big.jpg' } }, rightMessage);
+                else if (ele.sender_picture.substring(0, 4) === 'http') app.createElement('img', { atrs: { className: 'header', innerHTML: `${ele.sender_picture}` } }, rightMessage);
+                else app.createElement('img', { atrs: { className: 'header', src: `./user-pic/${ele.sender_picture}` } }, rightMessage);
+                app.createElement('div', { atrs: { className: 'content', innerHTML: `${ele.msg}` } }, rightMessage);
+                app.createElement('div', { atrs: { className: 'time', innerHTML: `${new Date(ele.createTime).toLocaleString()}` } }, rightMessage);
+            }
+            else if (ele.receiver_id === userId) {
+                let leftMessage = app.createElement('div', { atrs: { className: 'left-message' } }, contentWrap);
+                if (ele.sender_picture === null) app.createElement('img', { atrs: { className: 'header', src: './imgs/login_big.jpg' } }, leftMessage);
+                else if (ele.sender_picture.substring(0, 4) === 'http') app.createElement('img', { atrs: { className: 'header', innerHTML: `${ele.sender_picture}` } }, leftMessage);
+                else app.createElement('img', { atrs: { className: 'header', src: `./user-pic/${ele.sender_picture}` } }, leftMessage);
+                app.createElement('div', { atrs: { className: 'content', innerHTML: `${ele.msg}` } }, leftMessage);
+                app.createElement('div', { atrs: { className: 'time', innerHTML: `${new Date(ele.createTime).toLocaleString()}` } }, leftMessage);
+            }
+        });
+        contentWrap.scrollTop = contentWrap.scrollHeight; // 捲軸才會在最底下
+        app.get('img.lastPage').addEventListener('click', function () {
+            chatWrap.style.display = 'none';
+            app.get('.message-wrap').style.display = 'flex';
+            contentWrap.remove();
+        });
+        let sendMessageBtn = app.get('.chat-wrap .btn-wrap');
+        if (data[0].sender_id === userId) sendMessageBtn.setAttribute('class', `btn-wrap petId_${data[0].pet_id} receiverId_${data[0].receiver_id} receiverName_${data[0].receiver_name}`)
+        else if (data[0].receiver_id === userId) sendMessageBtn.setAttribute('class', `btn-wrap petId_${data[0].pet_id} receiverId_${data[0].sender_id} receiverName_${data[0].sender_name}`)
+        sendMessageBtn.addEventListener('click', memberSendMessage);
+    });
+}
+function memberSendMessage() {
+    let classNames = this.className.split(' ');
+    let msgInput = app.get('.chat-wrap .msg-input');
+    let message = msgInput.value;
+    let sendMessageBtn = app.get('.chat-wrap .btn-wrap');
+    let senderId = Number.parseInt(window.localStorage.getItem('user-id'));
+    let senderName = window.localStorage.getItem('name');
+    let receiverId = Number.parseInt(classNames[2].replace('receiverId_', ''));
+    let receiverName = classNames[3].replace('receiverName_', '');
+    let petId = classNames[1].replace('petId_', '');
+    message = message.replace(/\r\n|\n/g, "");
+    if (!message) {
+        msgInput.placeholder = '傳點訊息吧！'
+        msgInput.classList.add('error');
+    }
+    else if (message) {
+        let createTime = new Date().getTime();
+        app.ajax('POST', 'api/user/sendMessage', { senderId, receiverId, petId, message, senderName, receiverName, createTime }, {}, function (req) {
+            if (req.status === 500) app.get('.chat-wrap .error-msg').innerHTML = '伺服器錯誤，請稍後再試';
+            else {
+                msgInput.classList.remove('error');
+                msgInput.value = ''; // 清空訊息
+                let contentWrap = app.get('.content-wrap');
+                let rightMessage = app.createElement('div', { atrs: { className: 'right-message' } }, contentWrap);
+                let picture = window.localStorage.getItem('picture');
+                if (picture === 'null') app.createElement('img', { atrs: { className: 'header', src: './imgs/login_big.jpg' } }, rightMessage);
+                else if (picture.substring(0, 4) === 'http') app.createElement('img', { atrs: { className: 'header', innerHTML: `${picture}` } }, rightMessage);
+                else app.createElement('img', { atrs: { className: 'header', src: `./user-pic/${picture}` } }, rightMessage);
+                app.createElement('div', { atrs: { className: 'content', innerHTML: `${message}` } }, rightMessage);
+                app.createElement('div', { atrs: { className: 'time', innerHTML: `${new Date(createTime).toLocaleString()}` } }, rightMessage);
+                contentWrap.scrollTop = contentWrap.scrollHeight;
+            }
+        });
+    }
+    // console.log(message, `我${senderId}`, `我${senderName}`, petId, receiverId, receiverName);
 }

@@ -10,6 +10,8 @@ const multer = require('multer');
 const schedule = require('node-schedule');
 const mysql = require('mysql');
 const path = require('path');
+const aws = require('aws-sdk');
+const multer3 = require('multer-s3');
 
 function errorInsert(err, line) {
     error = { fileName: path.basename(__filename), line, code: err.code, errno: err.errno, sqlMessage: err.sqlMessage, command: err.sql };
@@ -21,5 +23,6 @@ module.exports = {
     express, request, cheerio,
     async, xmlhttprequest, fs,
     bodyparser, crypto, multer,
-    schedule, path, errorInsert
+    schedule, path, errorInsert,
+    aws, multer3
 };

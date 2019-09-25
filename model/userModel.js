@@ -42,7 +42,6 @@ function login(provider, email, password, name, picture) {
                     let token = { user_id, access_token, access_expired: 3600 };
                     mysql.con.query('INSERT token SET ?', token, function (err, result) {
                         if (err) reject({ code: 500, error: `Query Error in token Table: ${err}` });
-
                         else {
                             resolve({ token: { access_token, access_expired: 3600 }, user: { id: user_id, provider, name, email, picture } });
                         }

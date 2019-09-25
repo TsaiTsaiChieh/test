@@ -11,6 +11,7 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
         window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
     }
     let user = JSON.parse(req.responseText).user;
+    console.log(user);
 
     if (user.picture) {
         app.get('.left-profile img').src = user.picture;
@@ -88,22 +89,46 @@ function updateProfile() {
     let inputContactMethod = app.get('.personal-info input.phone').value;
     let uploadImg = app.get('.upload-img').files[0];
     let id = app.get('#user-id').innerHTML;
+    let fileAppend;
     if (inputName || inputContactMethod || uploadImg) {
         let formData = new FormData();
         if (uploadImg) {
             uploadImg = new File([uploadImg], id + ".jpg", { type: "image/jpeg" });
-            formData.append('upload-img', uploadImg);
+            // formData.append('upload-img', uploadImg);
+            fileAppend = new Promise(function (resolve, reject) {
+                let canvasBlob = compressFile(uploadImg);
+                canvasBlob.then(function (blob) {
+                    let myFile = blobToFile(blob, `${id}.jpg`);
+                    formData.append('upload-img', myFile);
+                    resolve(formData);
+                }).catch(function (err) {
+                    // nothing
+                });
+            });
         }
         if (inputName) formData.append('inputName', inputName);
         if (inputContactMethod) formData.append('inputContactMethod', inputContactMethod);
         formData.append('userId', id);
-        app.ajaxFormData('api/user/update', formData, function (req) {
-            if (req.status === 500) console.log(`error happen: error code is ${req.status}`);
-            else {
-                if (uploadImg) window.localStorage.setItem('picture', uploadImg.name);
-                location.reload('member');
-            }
-        });
+        if (uploadImg) {
+            fileAppend.then(function (formData) {
+                app.ajaxFormData('api/user/update', formData, function (req) {
+                    if (req.status === 500) console.log(`error happen: error code is ${req.status}`);
+                    else {
+                        if (uploadImg) window.localStorage.setItem('picture', uploadImg.name);
+                        location.reload('member');
+                    }
+                });
+            });
+        }
+        else {
+            app.ajaxFormData('api/user/update', formData, function (req) {
+                if (req.status === 500) console.log(`error happen: error code is ${req.status}`);
+                else {
+                    if (uploadImg) window.localStorage.setItem('picture', uploadImg.name);
+                    location.reload('member');
+                }
+            });
+        }
     }
 }
 function adoptionPost() {
@@ -253,8 +278,6 @@ function compressFile(file) {
                 if (blob) resolve(blob);
                 // 輸入上傳程式碼
             }, "image/jpg", compressRatio);
-
-
         };
     });
 

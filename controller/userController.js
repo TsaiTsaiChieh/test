@@ -1,6 +1,7 @@
 const userModel = require('../model/userModel');
 const modules = require('../util/modules');
-
+const AWS = require('../private/awsConfig');
+const s3 = new AWS.S3();
 function signup(req, res) {
     let { name, email, password } = req.body;
     email = email.replace(/\s+/g, ""); // 過濾掉電子郵件的空格
@@ -38,7 +39,6 @@ function profile(req, res) {
         res.send('Null token');
     }
 }
-
 function update(req, res) {
     let upload = modules.multer({
         storage: modules.multer.diskStorage({
@@ -48,12 +48,34 @@ function update(req, res) {
             }
         })
     }); // 設定添加到 multer 對象
+    // AWS S3 setting
+    // let upload = modules.multer({
+    //     storage: modules.multer3({
+    //         s3: s3,
+    //         bucket: 'pethome.bucket',
+    //         metadata: function (req, file, cb) {
+    //             cb(null, { fieldName: file.fieldname });
+    //         },
+    //         key: function (req, file, cb) {
+    //             let path = `user-pic/${file.originalname}`;
+    //             cb(null, path);
+    //         }
+    //     })
+    // });
     let imageLoad = upload.fields([{ name: 'upload-img', maxCount: 1 }]);
     imageLoad(req, res, function (err) {
         let { inputName, inputContactMethod, userId } = req.body;
         if (JSON.stringify(req.files) === JSON.stringify({})) inputPiture = 'null';
-        else inputPiture = req.files['upload-img'][0].filename;
+        else {
+            // inputPiture = req.files['upload-img'][0].filename;
+            inputPiture = req.files['upload-img'][0].originalname;
+            // console.log(req.files['upload-img']);
+            // console.log(req.files['upload-img'][0].originalname);
+
+        }
         userModel.update(userId, inputName, inputContactMethod, inputPiture).then(function (body) {
+            console.log(body);
+
             res.send(body);
         }).catch(function (err) {
             res.status(err.code);
@@ -61,7 +83,6 @@ function update(req, res) {
         });
     });
 }
-
 function postAdoption(req, res) {
     let upload = modules.multer({
         storage: modules.multer.diskStorage({

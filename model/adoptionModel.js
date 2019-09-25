@@ -28,7 +28,7 @@ function list(category, sex, region, order, age, paging, size) {
             else {
                 maxPage = Math.floor(result[0].total / size);
                 if (paging < maxPage) body.paging = paging + 1;
-                console.log(`SELECT pet.* FROM pet ${filter}`);
+                // console.log(`SELECT pet.* FROM pet ${filter}`);
 
                 mysql.con.query(`SELECT pet.* FROM pet ${filter} LIMIT ${offset},${size}`, function (err, result) {
                     if (err) reject(`Query Error in pet Table: ${err}, line number is 31`);
@@ -41,10 +41,6 @@ function list(category, sex, region, order, age, paging, size) {
                             body.data = result;
                         }
                         resolve(body);
-                        mysql.con.query(`explain SELECT pet.* FROM pet ${filter}`, function (err, result) {
-                            console.log(`type: ${result[0].type}// Extra:${result[0].Extra}// rows:${result[0].rows} //select_type:${result[0].select_type}`);
-
-                        });
                     }
                 });
             }

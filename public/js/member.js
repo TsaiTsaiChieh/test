@@ -19,8 +19,8 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
         app.get('.left-name').innerHTML = user.name;
         app.get('.personal-info input.name').placeholder = user.name;
     }
-    if (user.phone) {
-        app.get('.personal-info input.phone').placeholder = user.phone;
+    if (user.contactMethod) {
+        app.get('.personal-info input.phone').placeholder = user.contactMethod;
     }
     if (user.picture) {
         if (user.picture.substring(0, 4) === 'http')
@@ -85,17 +85,17 @@ function logout() {
 
 function updateProfile() {
     let inputName = app.get('.personal-info input.name').value;
-    let inputPhone = app.get('.personal-info input.phone').value;
+    let inputContactMethod = app.get('.personal-info input.phone').value;
     let uploadImg = app.get('.upload-img').files[0];
     let id = app.get('#user-id').innerHTML;
-    if (inputName || inputPhone || uploadImg) {
+    if (inputName || inputContactMethod || uploadImg) {
         let formData = new FormData();
         if (uploadImg) {
             uploadImg = new File([uploadImg], id + ".jpg", { type: "image/jpeg" });
             formData.append('upload-img', uploadImg);
         }
         if (inputName) formData.append('inputName', inputName);
-        if (inputPhone) formData.append('inputPhone', inputPhone);
+        if (inputContactMethod) formData.append('inputContactMethod', inputContactMethod);
         formData.append('userId', id);
         app.ajaxFormData('api/user/update', formData, function (req) {
             if (req.status === 500) console.log(`error happen: error code is ${req.status}`);
@@ -304,6 +304,8 @@ function deleteAdoption(petId) {
         app.ajax('POST', 'api/user/deleteAdoption', { petId }, {}, function (req) {
             let msg = app.get('.edit-wrap .msg');
             msg.style.display = 'block';
+            console.log(req.responseText, req.status);
+
             if (req.status === 500) msg.innerHTML = '伺服器錯誤，請稍後再試';
             else {
                 msg.innerHTML = '刪除成功！';
@@ -462,8 +464,6 @@ function getAdoptionForm() {
     return form;
 }
 function getAttentionList() {
-    console.log('where');
-
     app.ajax('GET', 'api/user/getAttentionList', '', { 'Authorization': `Bearer ${window.localStorage.getItem('auth')}` }, function (req) {
 
         let data = JSON.parse(req.responseText).data;
@@ -524,6 +524,8 @@ function deleteAttention(petId) {
 function getMessageList() {
     app.ajax('GET', 'api/user/getMessageList', '', { 'Authorization': `Bearer ${window.localStorage.getItem('auth')}` }, function (req) {
         let data = JSON.parse(req.responseText).data;
+        console.log(data);
+
         let userId = Number.parseInt(window.localStorage.getItem('user-id'));
         let itemList = app.get('.message-wrap .item-list ');
         if (data.length === 0) app.createElement('div', { atrs: { className: 'null-msg', innerHTML: '目前無任何訊息喔！' } }, itemList);

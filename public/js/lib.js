@@ -1,4 +1,4 @@
-let app = {
+app = {
     state: {
         auth: null, picture: null
     }

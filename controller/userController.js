@@ -50,10 +50,10 @@ function update(req, res) {
     }); // 設定添加到 multer 對象
     let imageLoad = upload.fields([{ name: 'upload-img', maxCount: 1 }]);
     imageLoad(req, res, function (err) {
-        let { inputName, inputPhone, userId } = req.body;
+        let { inputName, inputContactMethod, userId } = req.body;
         if (JSON.stringify(req.files) === JSON.stringify({})) inputPiture = 'null';
         else inputPiture = req.files['upload-img'][0].filename;
-        userModel.update(userId, inputName, inputPhone, inputPiture).then(function (body) {
+        userModel.update(userId, inputName, inputContactMethod, inputPiture).then(function (body) {
             res.send(body);
         }).catch(function (err) {
             res.status(err.code);

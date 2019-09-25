@@ -16,6 +16,8 @@ function get(id) {
     });
 }
 function list(category, sex, region, order, age, paging, size) {
+    console.log(`category:${category},sex:${sex},region:${region},order:${order},age:${age}`);
+
     let offset = paging * size;
     return new Promise(function (resolve, reject) {
         let filter = parseFilter(category, sex, region, order, age);
@@ -26,6 +28,8 @@ function list(category, sex, region, order, age, paging, size) {
             else {
                 maxPage = Math.floor(result[0].total / size);
                 if (paging < maxPage) body.paging = paging + 1;
+                console.log(`SELECT pet.* FROM pet ${filter}`);
+
                 mysql.con.query(`SELECT pet.* FROM pet ${filter} LIMIT ${offset},${size}`, function (err, result) {
                     if (err) reject(`Query Error in pet Table: ${err}, line number is 31`);
                     else {
@@ -37,6 +41,10 @@ function list(category, sex, region, order, age, paging, size) {
                             body.data = result;
                         }
                         resolve(body);
+                        mysql.con.query(`explain SELECT pet.* FROM pet ${filter}`, function (err, result) {
+                            console.log(`type: ${result[0].type}// Extra:${result[0].Extra}// rows:${result[0].rows} //select_type:${result[0].select_type}`);
+
+                        });
                     }
                 });
             }
@@ -65,7 +73,12 @@ function parseFilter(kind, sex, region, order, age) {
     // sex
     if (sex) filter = filter.concat(` AND sex='${sex}'`);
     // age
-    if (age) filter = filter.concat(` AND age='${age}'`);
+    if (age) {
+        age = age.split(',');
+        if (age.length == 2);
+        else filter = filter.concat(` AND age='${age}'`);
+    }
+
     // region
     if (region) {
         region = region.split(',');
@@ -80,6 +93,8 @@ function parseFilter(kind, sex, region, order, age) {
     }
     if (order)
         filter = filter.concat(' ORDER BY pet.id DESC');
+    // console.log(filter);
+
     return filter;
 
 }

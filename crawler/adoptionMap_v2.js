@@ -210,8 +210,6 @@ function crawler(species) {
         function (pet_data, next) {
             let loaded = 0;
             pet_data.forEach(element => {
-                // console.log(element, pet_data.length);
-
                 element = checkTitle(element);
                 // if (element.status === 1) console.log(element.title);
                 mysql.con.getConnection(function (err, connection) {
@@ -236,8 +234,9 @@ function crawler(species) {
                                 } // result.length !== 0 'else if', should insert data
                                 connection.release();
                             } // first connection.query 'else' 
+                            if (loaded === pet_data.length) console.log(`Adoption map in ${species} update finish.`);
                         }); // first connection.query
-                        if (loaded === pet_data.length) console.log('Adoption map update finish.');
+
                     } // mysql.con.getConnection 'else'
 
                 }); // mysql.con.getConnection

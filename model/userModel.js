@@ -42,6 +42,7 @@ function login(provider, email, password, name, picture) {
                     let token = { user_id, access_token, access_expired: 3600 };
                     mysql.con.query('INSERT token SET ?', token, function (err, result) {
                         if (err) reject({ code: 500, error: `Query Error in token Table: ${err}` });
+
                         else {
                             resolve({ token: { access_token, access_expired: 3600 }, user: { id: user_id, provider, name, email, picture } });
                         }
@@ -109,7 +110,7 @@ function profile(token) {
                     provider: result[0].provider,
                     name: result[0].name,
                     email: result[0].email,
-                    phone: result[0].phone,
+                    contactMethod: result[0].contactMethod,
                     picture: result[0].picture
                 };
                 resolve(body);
@@ -117,16 +118,18 @@ function profile(token) {
         });
     });
 }
-function update(userId, inputName, inputPhone, inputPicture) {
+function update(userId, inputName, inputContactMethod, inputPicture) {
     return new Promise(function (resolve, reject) {
         let update_sql = {};
         if (inputName) update_sql.name = inputName;
-        if (inputPhone) update_sql.phone = inputPhone;
+        if (inputContactMethod) update_sql.contactMethod = inputContactMethod;
         if (inputPicture !== 'null') update_sql.picture = inputPicture;
 
         mysql.con.query(`UPDATE user SET ? WHERE id=${userId}`, update_sql, function (err, result) {
-            if (err)
+            if (err) {
                 reject({ code: 500, error: `Query Error in user Table: ${err}` });
+                throw err;
+            }
             else resolve('Update user table successful.');
         });
     });
@@ -206,14 +209,8 @@ function deleteAdoption(petId) {
                 }
             }
             mysql.con.query(`DELETE FROM pet WHERE id = ${petId}`, function (err, result) {
-                if (err) reject({ code: 500, error: `DELETE Error in pet Table, line number is 208: ${err}` });
-                else {
-                    mysql.con.query(`DELETE FROM attention WHERE pet_id=${petId}`, function (err, result) {
-                        if (err) reject({ code: 500, error: `DELETE Error in attention Table, line number is 211: ${err}` });
-                        resolve('Delete the id in pet&attention table successful.');
-                    });
-
-                }
+                if (err) reject({ code: 500, error: `DELETE Error in pet Table, line number is 211: ${err}` });
+                else resolve('Delete the id in pet&attention table successful.');
             });
         });
 
@@ -414,7 +411,11 @@ function getAttentionList(token) {
 function deleteAttention(petId, userId) {
     return new Promise(function (resolve, reject) {
         mysql.con.query(`DELETE FROM attention WHERE pet_id = ${petId} AND user_id=${userId}`, function (err, result) {
-            if (err) reject({ code: 500, error: `DELETE Error in attention Table, line number is 410: ${err}` });
+            if (err) {
+                reject({ code: 500, error: `DELETE Error in attention Table, line number is 410: ${err}` });
+                throw err;
+            }
+
             else resolve('Delete the id in attention table successful.');
         });
     });

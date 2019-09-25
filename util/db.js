@@ -1,6 +1,6 @@
 // MySQL Initialization
 // const modules = require('../util/modules');
-const private = require('../private/mysqlcon');
+// const private = require('../private/mysqlcon');
 const mysql = require('mysql');
 // const mysqlCon = mysql.createPool({
 //     connectionLimit: 250,

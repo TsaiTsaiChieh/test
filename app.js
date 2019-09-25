@@ -35,7 +35,7 @@ modules.schedule.scheduleJob('0 30 0-23 * * *', function () { //秒、分、時�
     setTimeout(function () {
         console.log(new Date(Date.now()));
         update.map.updateAdoptionMap();
-    }, 60000); // 五分鐘
+    }, 60000); // 一分鐘
 });
 
 

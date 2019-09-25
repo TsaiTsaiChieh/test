@@ -13,7 +13,7 @@ const path = require('path');
 
 function errorInsert(err, line) {
     error = { fileName: path.basename(__filename), line, code: err.code, errno: err.errno, sqlMessage: err.sqlMessage, command: err.sql };
-    mysql.con.query(`INSERT INTO error SET ?`, error, function (err, result) {
+    mysql.con.query(`INSERT INTO crawler SET ?`, error, function (err, result) {
         if (err) console.log(err);
     });
 }

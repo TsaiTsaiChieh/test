@@ -6,7 +6,7 @@ let sex = urlParams.get('sex');
 let region = urlParams.get('region');
 let order = urlParams.get('order');
 let age = urlParams.get('age');
-// for 加入關注功能，為了要讓已登入的使用者，再加入關注時，重整仍可看到已加入關注的按鈕為灰色
+
 let userId = Number.parseInt(window.localStorage.getItem('user-id'));
 let token = window.localStorage.getItem('auth');
 
@@ -23,7 +23,13 @@ function searchActive(kind, sex, region, order, age) {
     }
     if (!order) app.get('.order label.asc').classList.add('active');
     else if (order === 'desc') app.get('.order label.desc').classList.add('active');
-    if (age) app.get(`.age label.${age}`).classList.add('active');
+    if (age) {
+        age = age.split(',');
+        if (age.length === 2) age.forEach(function (ele) {
+            app.get(`.age label.${ele}`).classList.add('active');
+        });
+        else app.get(`.age label.${age}`).classList.add('active');
+    }
 }
 searchActive(kind, sex, region, order, age);
 function queryString(sex, region, order, age, paging) {
@@ -192,6 +198,7 @@ function addAttention() {
         {
             app.ajax('POST', 'api/user/deleteAttention', { petId, userId }, {}, function (req) {
                 if (req.status === 200) {
+                    app.get(`button.attention.petId_${petId}`).innerHTML = '加入關注';
                     app.get(`button.attention.petId_${petId}`).classList.remove('active');
                 }
             });
@@ -199,19 +206,21 @@ function addAttention() {
         else {
             app.ajax('POST', 'api/user/addAttention', { petId, userId }, {}, function (req) {
                 if (req.status === 200) {
+                    app.get(`button.attention.petId_${petId}`).innerHTML = '取消關注';
                     app.get(`button.attention.petId_${petId}`).classList.add('active');
                 }
             });
         }
     }
 }
+// for 加入關注功能，為了要讓已登入的使用者，再加入關注時，重整仍可看到已加入關注的按鈕為灰色
 function initAttentionBtn() {
     if (userId && token) {
         app.ajax('GET', 'api/user/getAttentionList', '', { Authorization: `Bearer ${token}` }, function (req) {
             let data = JSON.parse(req.responseText).data;
-            console.log(data);
             data.forEach(function (ele) {
                 app.get(`button.attention.petId_${ele.pet_id}`).classList.add('active');
+                app.get(`button.attention.petId_${ele.pet_id}`).innerHTML = '取消關注';
             })
         });
     }

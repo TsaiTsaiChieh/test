@@ -40,28 +40,28 @@ function profile(req, res) {
     }
 }
 function update(req, res) {
-    let upload = modules.multer({
-        storage: modules.multer.diskStorage({
-            destination: "./public/user-pic",
-            filename: function (req, files, cb) {
-                cb(null, files.originalname);
-            }
-        })
-    }); // 設定添加到 multer 對象
-    // AWS S3 setting
     // let upload = modules.multer({
-    //     storage: modules.multer3({
-    //         s3: s3,
-    //         bucket: 'pethome.bucket',
-    //         metadata: function (req, file, cb) {
-    //             cb(null, { fieldName: file.fieldname });
-    //         },
-    //         key: function (req, file, cb) {
-    //             let path = `user-pic/${file.originalname}`;
-    //             cb(null, path);
+    //     storage: modules.multer.diskStorage({
+    //         destination: "./public/user-pic",
+    //         filename: function (req, files, cb) {
+    //             cb(null, files.originalname);
     //         }
     //     })
-    // });
+    // }); // 設定添加到 multer 對象
+    // AWS S3 setting
+    let upload = modules.multer({
+        storage: modules.multer3({
+            s3: s3,
+            bucket: 'pethome.bucket',
+            metadata: function (req, file, cb) {
+                cb(null, { fieldName: file.fieldname });
+            },
+            key: function (req, file, cb) {
+                let path = `user-pic/${file.originalname}`;
+                cb(null, path);
+            }
+        })
+    });
     let imageLoad = upload.fields([{ name: 'upload-img', maxCount: 1 }]);
     imageLoad(req, res, function (err) {
         let { inputName, inputContactMethod, userId } = req.body;

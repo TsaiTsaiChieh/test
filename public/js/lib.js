@@ -1,7 +1,8 @@
 app = {
     state: {
         auth: null, picture: null
-    }
+    },
+    s3: 'https://s3.us-east-2.amazonaws.com/pethome.bucket'
 };
 app.getAll = function (selector) {
     return document.querySelectorAll(selector);

@@ -58,7 +58,7 @@ app.ajax('GET', `api/adoption/${kind}`, queryString(sex, region, order, age, pag
         let img_wrap = app.createElement('div', { atrs: { className: 'img-wrap' } }, item);
         if (data[i].image[0].length == 0) pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: './imgs/pet-null.jpg' } }, img_wrap);
         else {
-            if (data[i].db === 3) pet_img = app.createElement('img', { atrs: { className: `pet-img petId_${data[i].id}`, src: `./pet-img/${data[i].image[0]}` } }, img_wrap);
+            if (data[i].db === 3) pet_img = app.createElement('img', { atrs: { className: `pet-img petId_${data[i].id}`, src: `${app.s3}/pet-img/${data[i].image[0]}` } }, img_wrap);
             else pet_img = app.createElement('img', { atrs: { className: 'pet-img', src: data[i].image[0] } }, img_wrap);
         }
         pet_img.addEventListener('click', function () {
@@ -219,8 +219,11 @@ function initAttentionBtn() {
         app.ajax('GET', 'api/user/getAttentionList', '', { Authorization: `Bearer ${token}` }, function (req) {
             let data = JSON.parse(req.responseText).data;
             data.forEach(function (ele) {
-                app.get(`button.attention.petId_${ele.pet_id}`).classList.add('active');
-                app.get(`button.attention.petId_${ele.pet_id}`).innerHTML = '取消關注';
+                let attentioBtn = app.get(`button.attention.petId_${ele.pet_id}`);
+                if (attentioBtn) {
+                    app.get(`button.attention.petId_${ele.pet_id}`).classList.add('active');
+                    app.get(`button.attention.petId_${ele.pet_id}`).innerHTML = '取消關注';
+                }
             })
         });
     }

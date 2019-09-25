@@ -26,7 +26,7 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
     if (user.picture) {
         if (user.picture.substring(0, 4) === 'http')
             app.get('.left-profile img').src = user.picture;
-        else app.get('.left-profile img').src = `./user-pic/${user.picture}`;
+        else app.get('.left-profile img').src = `${app.s3}/user-pic/${user.picture}`;
     }
     app.get('.login-info p').innerHTML = user.email;
     app.get('.login-info #user-id').innerHTML = user.id;
@@ -292,7 +292,7 @@ function getAdoptionList() {
         if (data.length === 0) app.createElement('div', { atrs: { className: 'null-msg', innerHTML: '目前無任何送養的紀錄喔！' } }, itemList);
         for (let i = 0; i < data.length; i++) {
             let item = app.createElement('div', { atrs: { className: `item item_${data[i].id}` } }, itemList);
-            let petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `./pet-img/${data[i].image[0]}` } }, item);
+            let petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `${app.s3}/pet-img/${data[i].image[0]}` } }, item);
             petImg.addEventListener('click', function () {
                 app.get('.pet-details').style.display = 'block';
                 app.loadPetDetails(data[i].id);
@@ -354,7 +354,7 @@ function getAdoption(petId, data) {
     let lastPage = app.createElement('img', { atrs: { className: 'lastPage', src: './imgs/lastPage.png' } }, adoptionWrap);
     let imgWrap = app.get('.img-wrap');
     data.image.forEach(function (ele) {
-        app.createElement('img', { atrs: { className: 'img-preview', src: `./pet-img/${ele}` } }, imgWrap);
+        app.createElement('img', { atrs: { className: 'img-preview', src: `${app.s3}/pet-img/${ele}` } }, imgWrap);
     });
     app.get('.adoption-wrap label.btn.btn-info i').innerHTML = '重傳毛孩的照片';
     app.get('.adoption-info .title').value = data.title;
@@ -497,7 +497,7 @@ function getAttentionList() {
             data.forEach(function (ele) {
                 let item = app.createElement('div', { atrs: { className: `item item_${ele.pet_id}` } }, itemList);
                 let petImg;
-                if (ele.db === 3) petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `./pet-img/${ele.image[0]}` } }, item);
+                if (ele.db === 3) petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `${app.s3}/pet-img/${ele.image[0]}` } }, item);
                 else {
                     if (ele.image[0] === "") petImg = app.createElement('img', { atrs: { className: 'pet-img', src: './imgs/pet-null-small.png' } }, item);
                     else petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `${ele.image[0]}` } }, item);
@@ -554,7 +554,7 @@ function getMessageList() {
         if (data.length === 0) app.createElement('div', { atrs: { className: 'null-msg', innerHTML: '目前無任何訊息喔！' } }, itemList);
         data.forEach(function (ele) {
             let item = app.createElement('div', { atrs: { className: `item item_${ele.id}` } }, itemList);
-            let petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `./pet-img/${ele.image[0]}` } }, item);
+            let petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `${app.s3}/pet-img/${ele.image[0]}` } }, item);
             petImg.addEventListener('click', function () {
                 app.get('.pet-details').style.display = 'block';
                 app.loadPetDetails(ele.pet_id);
@@ -638,7 +638,7 @@ function memberSendMessage() {
                 let contentWrap = app.get('.content-wrap');
                 let rightMessage = app.createElement('div', { atrs: { className: 'right-message' } }, contentWrap);
                 let picture = window.localStorage.getItem('picture');
-                if (picture === 'null') app.createElement('img', { atrs: { className: 'header', src: './imgs/login_big.jpg' } }, rightMessage);
+                if (picture === null) app.createElement('img', { atrs: { className: 'header', src: './imgs/login_big.jpg' } }, rightMessage);
                 else if (picture.substring(0, 4) === 'http') app.createElement('img', { atrs: { className: 'header', innerHTML: `${picture}` } }, rightMessage);
                 else app.createElement('img', { atrs: { className: 'header', src: `./user-pic/${picture}` } }, rightMessage);
                 app.createElement('div', { atrs: { className: 'content', innerHTML: `${message}` } }, rightMessage);

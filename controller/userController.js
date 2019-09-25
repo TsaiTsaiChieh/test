@@ -65,17 +65,12 @@ function update(req, res) {
     let imageLoad = upload.fields([{ name: 'upload-img', maxCount: 1 }]);
     imageLoad(req, res, function (err) {
         let { inputName, inputContactMethod, userId } = req.body;
-        if (JSON.stringify(req.files) === JSON.stringify({})) inputPiture = 'null';
+        if (JSON.stringify(req.files) === JSON.stringify({})) inputPiture = null;
         else {
             // inputPiture = req.files['upload-img'][0].filename;
             inputPiture = req.files['upload-img'][0].originalname;
-            // console.log(req.files['upload-img']);
-            // console.log(req.files['upload-img'][0].originalname);
-
         }
         userModel.update(userId, inputName, inputContactMethod, inputPiture).then(function (body) {
-            console.log(body);
-
             res.send(body);
         }).catch(function (err) {
             res.status(err.code);
@@ -84,11 +79,25 @@ function update(req, res) {
     });
 }
 function postAdoption(req, res) {
+    // let upload = modules.multer({
+    //     storage: modules.multer.diskStorage({
+    //         destination: './public/pet-img',
+    //         filename: function (req, files, cb) {
+    //             cb(null, files.originalname);
+    //         }
+    //     })
+    // });
+    // AWS S3 setting
     let upload = modules.multer({
-        storage: modules.multer.diskStorage({
-            destination: './public/pet-img',
-            filename: function (req, files, cb) {
-                cb(null, files.originalname);
+        storage: modules.multer3({
+            s3: s3,
+            bucket: 'pethome.bucket',
+            metadata: function (req, file, cb) {
+                cb(null, { fieldName: file.fieldname });
+            },
+            key: function (req, file, cb) {
+                let path = `pet-img/${file.originalname}`;
+                cb(null, path);
             }
         })
     });
@@ -100,6 +109,7 @@ function postAdoption(req, res) {
         }
         else {
             userModel.postAdoption(req.body, req.files.petImgs).then(function (body) {
+                // userModel.postAdoption(req.body, req.files['petImgs']).then(function (body) {
                 res.send(body);
             })
                 .catch(function (err) {
@@ -127,8 +137,6 @@ function getAdoptionList(req, res) {
 function deleteAdoption(req, res) {
     let { petId } = req.body;
     userModel.deleteAdoption(petId).then(function (body) {
-
-        console.log(body);
         res.send(body);
 
     }).catch(function (err) {
@@ -137,11 +145,24 @@ function deleteAdoption(req, res) {
     })
 }
 function updateAdoption(req, res) {
+    // let upload = modules.multer({
+    //     storage: modules.multer.diskStorage({
+    //         destination: './public/pet-img',
+    //         filename: function (req, files, cb) {
+    //             cb(null, files.originalname);
+    //         }
+    //     })
+    // });
     let upload = modules.multer({
-        storage: modules.multer.diskStorage({
-            destination: './public/pet-img',
-            filename: function (req, files, cb) {
-                cb(null, files.originalname);
+        storage: modules.multer3({
+            s3: s3,
+            bucket: 'pethome.bucket',
+            metadata: function (req, file, cb) {
+                cb(null, { fieldName: file.fieldname });
+            },
+            key: function (req, file, cb) {
+                let path = `pet-img/${file.originalname}`;
+                cb(null, path);
             }
         })
     });
@@ -153,6 +174,7 @@ function updateAdoption(req, res) {
         }
         else {
             userModel.updateAdoption(req.body, req.files.petImgs).then(function (body) {
+                // userModel.updateAdoption(req.body, req.files.petImgs).then(function (body) {
                 res.send(body);
             }).catch(function () {
                 res.status(err.code);

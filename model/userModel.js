@@ -1,6 +1,7 @@
 const modules = require('../util/modules');
 const mysql = require('../util/db');
-
+const AWS = require('../private/awsConfig');
+const s3 = new AWS.S3();
 function signup(name, email, password) {
     return new Promise(function (resolve, reject) {
         // 檢查有無重複註冊
@@ -82,8 +83,6 @@ function login(provider, email, password, name, picture) {
                         if (err) reject({ code: 500, error: `Query Error in token Table: ${err}` });
                         else resolve({ token: { access_token, access_expired: 3600 }, user: { id: user_id, provider, name: name_, email, picture: picture_ } });
                     });
-                    // }
-                    // });
                 }
             });
         }
@@ -122,7 +121,7 @@ function update(userId, inputName, inputContactMethod, inputPicture) {
         let update_sql = {};
         if (inputName) update_sql.name = inputName;
         if (inputContactMethod) update_sql.contactMethod = inputContactMethod;
-        if (inputPicture !== 'null') update_sql.picture = inputPicture;
+        if (inputPicture !== null) update_sql.picture = inputPicture;
 
         mysql.con.query(`UPDATE user SET ? WHERE id=${userId}`, update_sql, function (err, result) {
             if (err) {
@@ -138,7 +137,8 @@ function postAdoption(req, petImgs) {
 
     return new Promise(function (resolve, reject) {
         let image = [];
-        for (let i = 0; i < petImgs.length; i++) image.push(petImgs[i].filename);
+        // for (let i = 0; i < petImgs.length; i++) image.push(petImgs[i].filename);
+        for (let i = 0; i < petImgs.length; i++) image.push(petImgs[i].originalname);
         let { petTitle, userId, kind, sex, age, neuter, county, petColor, petName, description, microchip, limitation, contactName, contactMethod } = req;
         let insert_sql = {
             db: 3, status: 0, title: petTitle, user_id: userId, image: JSON.stringify(image),
@@ -201,8 +201,13 @@ function deleteAdoption(petId) {
                 if (result.length === 0); // do nothing
                 else {
                     JSON.parse(result[0].image).forEach(function (ele) {
-                        modules.fs.unlink(`./public/pet-img/${ele}`, function (err) {
+                        // modules.fs.unlink(`./public/pet-img/${ele}`, function (err) {
+                        //     if (err) console.log(err);
+                        // });
+                        let params = { Bucket: 'pethome.bucket', Key: `pet-img/${ele}` };
+                        s3.deleteObject(params, function (err, data) {
                             if (err) console.log(err);
+                            else;// do nothing
                         });
                     });
                 }
@@ -237,10 +242,17 @@ function updateAdoption(req, petImgs) {
                 if (err) reject({ code: 500, error: `Query Error in pet Table, line number is 231: ${err}` });
                 else {
                     JSON.parse(result[0].image).forEach(function (ele) {
-                        modules.fs.unlink(`./public/pet-img/${ele}`, function (err) { if (err) console.log(err); });
+                        // modules.fs.unlink(`./public/pet-img/${ele}`, function (err) { if (err) console.log(err); });
+                        let params = { Bucket: 'pethome.bucket', Key: `pet-img/${ele}` };
+                        s3.deleteObject(params, function (err, data) {
+                            if (err) console.log(err);
+                            else;
+
+                        });
                     });
                     update_sql.image = [];
-                    petImgs.forEach(function (ele) { update_sql.image.push(ele.filename) });
+                    // petImgs.forEach(function (ele) { update_sql.image.push(ele.filename) });
+                    petImgs.forEach(function (ele) { update_sql.image.push(ele.originalname) });
                     update_sql.image = JSON.stringify(update_sql.image);
                     mysql.con.query(`UPDATE pet SET ? WHERE id=${petId}`, update_sql, function (err, result) {
                         if (err)

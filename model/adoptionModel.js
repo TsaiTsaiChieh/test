@@ -16,7 +16,7 @@ function get(id) {
     });
 }
 function list(category, sex, region, order, age, paging, size) {
-    console.log(`category:${category},sex:${sex},region:${region},order:${order},age:${age}`);
+    // console.log(`category:${category},sex:${sex},region:${region},order:${order},age:${age}`);
 
     let offset = paging * size;
     return new Promise(function (resolve, reject) {

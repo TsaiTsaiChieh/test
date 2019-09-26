@@ -53,10 +53,10 @@ function count(kind, sex, region, order, age, size) {
     if (kind == undefined) kind = '';
     return new Promise(function (resolve, reject) {
         let filter = parseFilter(kind, sex, region, order, age);
-        if (age === 'A,C') age = '';
+        if (age === 'A,C') age = 'all';
         // 1. Every time we need campaign data, check cache first.
-        client.get(`count_${kind}_${sex}_${age}_${order}`, function (err, data) {
-            if (err) throw err;
+        client.get(`count_${kind}_${sex}_${age}_${region}`, function (err, data) {
+            if (err) reject(`Redis Error: ${err}, line number is 58`);
             else if (data) {
                 console.log('cache:', JSON.parse(data));
                 resolve(JSON.parse(data)); // 2. If data existed in the cache, get it.
@@ -67,7 +67,8 @@ function count(kind, sex, region, order, age, size) {
                     else {
                         console.log('fetch data');
                         // 3. If there is no data in the cache, get it from database and store in the cache.
-                        client.set(`count_${kind}_${sex}_${age}_${order}`, JSON.stringify({ total: result[0].count, lastPage: Math.ceil(result[0].count / size) - 1 }));
+                        client.set(`count_${kind}_${sex}_${age}_${region}`, JSON.stringify({ total: result[0].count, lastPage: Math.ceil(result[0].count / size) - 1 }));
+                        client.expire(`count_${kind}_${sex}_${age}_${region}`, 60);
                         resolve({ total: result[0].count, lastPage: Math.ceil(result[0].count / size) - 1 });
                     }
                 });

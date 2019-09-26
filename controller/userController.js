@@ -174,7 +174,6 @@ function updateAdoption(req, res) {
         }
         else {
             userModel.updateAdoption(req.body, req.files.petImgs).then(function (body) {
-                // userModel.updateAdoption(req.body, req.files.petImgs).then(function (body) {
                 res.send(body);
             }).catch(function () {
                 res.status(err.code);

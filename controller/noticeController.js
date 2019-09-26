@@ -1,4 +1,5 @@
 const noticeModel = require('../model/noticeModel');
+
 function videoInfo(req, res) {
     noticeModel.videoInfo().then(function (body) {
         res.json(body);

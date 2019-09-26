@@ -198,12 +198,15 @@ function adoptionPost() {
         app.get('.warning-msg').style.display = 'none';
         fileAppend.then(function (formData) {
             app.ajaxFormData('api/user/postAdoption', formData, function (req) {
-                console.log(req.status, req.responseText);
+
                 if (req.status === 500) {
                     app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
                 }
                 else if (req.status === 200) {
                     window.location.href = './member?edit';
+                }
+                else {
+                    console.log(req.status, req.responseText);
                 }
             });
         });

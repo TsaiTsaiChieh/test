@@ -12,6 +12,7 @@ const mysql = require('mysql');
 const path = require('path');
 const aws = require('aws-sdk');
 const multer3 = require('multer-s3');
+const redis = require('redis');
 
 function errorInsert(err, line) {
     error = { fileName: path.basename(__filename), line, code: err.code, errno: err.errno, sqlMessage: err.sqlMessage, command: err.sql };
@@ -24,5 +25,5 @@ module.exports = {
     async, xmlhttprequest, fs,
     bodyparser, crypto, multer,
     schedule, path, errorInsert,
-    aws, multer3
+    aws, multer3, redis
 };

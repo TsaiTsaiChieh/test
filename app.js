@@ -15,6 +15,7 @@ const mainRouter = require('./routes');
 const adoptionRouters = require('./routes/adoption');
 const userRouters = require('./routes/user');
 const noticeRouters = require('./routes/notice');
+const PORT = process.env.PORT || 3000;
 
 
 app.use(mainRouter);
@@ -39,4 +40,4 @@ modules.schedule.scheduleJob('0 30 0-23 * * *', function () { //秒、分、時�
 });
 
 
-app.listen(3000, () => console.log('讓愛不流浪 at port 3000.'));
+app.listen(3000, () => console.log(`讓愛不流浪 on port ${PORT}`));

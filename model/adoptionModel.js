@@ -1,5 +1,7 @@
 const mysql = require('../util/db');
-
+const modules = require('../util/modules');
+const REDIS_PORT = process.env.PORT || 6379;
+const client = modules.redis.createClient(REDIS_PORT);
 function get(id) {
     return new Promise(function (resolve, reject) {
         mysql.con.query(`SELECT * FROM pet WHERE id=${id} AND status = 0`, function (err, result) {
@@ -51,9 +53,25 @@ function count(kind, sex, region, order, age, size) {
     if (kind == undefined) kind = '';
     return new Promise(function (resolve, reject) {
         let filter = parseFilter(kind, sex, region, order, age);
-        mysql.con.query(`SELECT COUNT(pet.id) AS count FROM pet ${filter}`, function (err, result) {
-            if (err) reject(`Query Error in pet Table: ${err}, line number is 54`);
-            else resolve({ total: result[0].count, lastPage: Math.ceil(result[0].count / size) - 1 });
+        if (age === 'A,C') age = '';
+        // 1. Every time we need campaign data, check cache first.
+        client.get(`count_${kind}_${sex}_${age}_${order}`, function (err, data) {
+            if (err) throw err;
+            else if (data) {
+                console.log('cache:', JSON.parse(data));
+                resolve(JSON.parse(data)); // 2. If data existed in the cache, get it.
+            }
+            else {
+                mysql.con.query(`SELECT COUNT(pet.id) AS count FROM pet ${filter}`, function (err, result) {
+                    if (err) reject(`Query Error in pet Table: ${err}, line number is 54`);
+                    else {
+                        console.log('fetch data');
+                        // 3. If there is no data in the cache, get it from database and store in the cache.
+                        client.set(`count_${kind}_${sex}_${age}_${order}`, JSON.stringify({ total: result[0].count, lastPage: Math.ceil(result[0].count / size) - 1 }));
+                        resolve({ total: result[0].count, lastPage: Math.ceil(result[0].count / size) - 1 });
+                    }
+                });
+            }
         });
     });
 }
@@ -71,7 +89,7 @@ function parseFilter(kind, sex, region, order, age) {
     // age
     if (age) {
         age = age.split(',');
-        if (age.length == 2);
+        if (age.length == 2); // do nothing
         else filter = filter.concat(` AND age='${age}'`);
     }
 

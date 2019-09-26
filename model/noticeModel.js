@@ -20,9 +20,9 @@ function videoInfo() {
                             console.log('fetch data in noticeModel.js');
                             result.forEach(function (ele) { ele.subtitle = JSON.parse(ele.subtitle); });
                             // result.subtitle = JSON.parse(result.subtitle);
-                            client.set('video', JSON.stringify(result));
-                            client.expire('video', 3600);
                             body.data = result;
+                            client.set('video', JSON.stringify(body));
+                            client.expire('video', 3600);
                         }
                         resolve(body);
                     }

@@ -1,5 +1,7 @@
 app.ajax('GET', 'api/notice/videoInfo', '', {}, function (req) {
     let data = JSON.parse(req.responseText).data;
+    console.log(req.responseText);
+
     let notice = app.get('.notice');
     data.forEach(function (ele) {
         let itemWrap = app.createElement('div', { atrs: { className: 'item-wrap' } }, notice);

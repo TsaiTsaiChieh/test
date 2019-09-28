@@ -35,6 +35,7 @@
         </nav>
     </header>
     <div class="search">
+
         <form action="/api/adoption" method="POST">
             <div class="left-search">
                 <div class="kind">
@@ -97,6 +98,10 @@
                     <div class="color">
                         <h4>顏色</h4><span>虎斑色</span>
                     </div>
+                    <div class="btn-wrap">
+                        <!-- <button class="wantAdoption">我要認養</button> -->
+                        <button class="attention">加入關注</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,10 +132,10 @@
                     <div class="color">
                         <h4>顏色</h4><span></span>
                     </div>
-                    <div class="btn-wrap">
+                    <!-- <div class="btn-wrap">
                         <button class="wantAdoption">我要認養</button>
                         <button class="attention">加入關注</button>
-                    </div>
+                    </div> -->
                 </div>
 
             </div>
@@ -138,7 +143,7 @@
         <div class="line"></div>
     </div>
     <!-- end pet list -->
-    <div class="pet-details" style="display: block;">
+    <!-- <div class="pet-details" style="display: block;">
         <div class="close details"></div>
         <div class="title-wrap">
             <h1 class="pet-title">三花妹妹小紅</h1>
@@ -214,13 +219,14 @@
             <button class="wantAdoption petId_7839 receiver_1 receiverName_ss">我要認養</button>
             <button class="attention petId_7839">加入關注</button>
         </div>
-    </div>
+    </div> -->
     <!-- end pet details -->
     <div class="sendMeg-wrap">
         <!-- <div class="title">小小貓很可愛</div> -->
         <img src="./imgs/close.png" alt="close" class="close-msg">
         <div class="img-wrap">
-            <img src="./pet-img/1_1568706889350.jpg" class="pet-img">
+            <img src="http://www.meetpets.org.tw/files_meetpets/imagecache/normal/FB_IMG_1567609512958.jpg"
+                class="pet-img">
         </div>
         <div class="msg-wrap">
             <div class="contactName">傳訊息給劉先生：</div>
@@ -231,14 +237,22 @@
     </div>
     <!-- end sendMeg-wrap -->
     <div class="pagination">
-        <a href="#">«第一頁</a>
+        <a href="#" class="firstPage">«第一頁</a>
         <a href="#"> ‹上一頁</a>
         <div class="paging-list">
             <a href="/adoption/all?paging=1">1</a>
             <a href="/adoption/all?paging=2">2</a>
+            <a href="">3</a>
+            <a href="">4</a>
+            <a href="">5</a>
+            <a href="">6</a>
+            <a href="">7</a>
+            <a href="">8</a>
+            <a href="">9</a>
+            <a href="">10</a>
         </div>
         <a href="#"> 下一頁›</a>
-        <a href="#">最後一頁»</a>
+        <a href="#" class="lastPage">最後一頁»</a>
     </div>
     <!-- end pagination list -->
     <!-- Optional JavaScript -->

@@ -457,12 +457,11 @@
     position: relative;
     background: white;
     position: fixed;
-    
     flex-direction: row;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 60%;
+    width: fit-content;
     height: 70%;
     text-align: center;
     border: 2px solid lightgray;
@@ -481,14 +480,15 @@
 .sendMeg-wrap .img-wrap {
     margin: auto 0;
     flex-grow: 1;
+    padding-left:5%; 
 }
 .sendMeg-wrap .pet-img {
     width: 250px;
     height: 250px;
     object-fit: cover;
     text-align: center;
-    padding:  0 5%; 
-    
+    padding:  0% 5%; 
+    box-shadow: 1px 5px 10px -5px;
 }
 
 .sendMeg-wrap .msg-wrap {
@@ -496,7 +496,6 @@
     flex-grow: 3;
     display: flex;
     flex-direction: column;
-    
 }
 
 .sendMeg-wrap .msg-wrap .contactName{
@@ -520,9 +519,12 @@
     border-radius: 5px; 
     padding: 1% 0;
     font-size: 1.2em;
+    box-shadow: 1px 5px 10px -5px grey;
 }
 .sendMeg-wrap .msg-wrap .msg-send:hover {
 opacity: .8;
+transform: scale(1.03);
+transition: .5s;
 }
 
 /* mask setting */
@@ -604,3 +606,108 @@ opacity: .8;
       transform: rotate(360deg);
     }
   }
+
+  @media (max-width: 400px) {
+    /* search setting */
+    .search {
+        width: 90%;
+        margin: 5% auto 0;
+    }
+    .search form {
+        display: flex;
+        flex-direction: column;
+        margin: 2% 4%;
+    }
+    .search .right-search {
+        flex-grow:1;
+        margin-left: 0;
+        
+    }
+    .search .right-search button {
+        margin-left: 4.2em;
+        margin-top: 0;
+    }
+    .search h3 {
+        font-size: 1.2em;
+    }
+    /* pet-list */
+    .pet-list {
+        /* width: 90%; */
+        display: flex;
+        margin: 0 auto;
+
+    }
+    .pet-list .item {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10%;
+    }
+    .pet-list .img-wrap {
+        text-align: center;
+    }
+    .pet-list .item .img-wrap .pet-img{
+        width: 95%;
+    }
+    .pet-list .item .text-wrap  {
+        padding-top: 10%;
+    }
+    .pet-list .item .text-wrap .title {
+        margin-left: .5%;
+        line-height: 1.5;
+    }
+    .pet-list .item .text-wrap .profile {
+        margin-left: .3%;
+    }
+    .pet-list .item .text-wrap .profile h4{
+        padding-right: 1em;
+    }
+    .pet-list .item .text-wrap .btn-wrap {
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        bottom: -42%;
+        justify-content: center;
+        margin: auto auto;
+        left: 0;
+    }
+    .pet-list .item .text-wrap .btn-wrap button { 
+        margin-top: 0;
+        margin-bottom: 0;
+        width: 35%;
+        
+    }
+    .pet-list .item .text-wrap .btn-wrap .wantAdoption {
+        margin-right: 5%;
+    }
+    .pet-list .line {
+        margin-top: 16%;
+        position: relative;
+    }
+    .pagination {
+        width: 90%;
+        font-size: .8em;
+        position: relative;
+        margin: 0 auto; 
+        margin-top: 5%;
+        margin-bottom: 15%;
+        
+    }
+    .pagination .paging-list {
+        
+    }
+    .pagination .firstPage
+    {
+        left: 20%;
+        top: 120%;
+        position: absolute;
+    }
+    .pagination .lastPage {
+        position: absolute;
+        top: 120%;
+        right: 20%;
+    }
+    .pagination a {
+        padding: 0 .2em;
+    }
+}

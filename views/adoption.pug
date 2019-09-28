@@ -3,43 +3,47 @@ include includes/header.pug
 block content
   .search
     form(action="/api/adoption" method="POST")
-      .kind
-        h3 種類
-        input#dog(type="checkbox" value="dog" name="kind")
-        label.dog(for="dog") 汪
-        input#cat(type="checkbox" value="cat" name="kind")
-        label.cat(for="cat") 喵
-      .sex
-        h3 性別
-        input#male(type="checkbox" value="M" name="sex")
-        label.M(for="male") 公
-        input#female(type="checkbox" value="F" name="sex")
-        label.F(for="female") 母
-      .county
-        h3 地區
-        input#north(type="checkbox" value="1" name="region")
-        label._1(for="north") 北
-        input#middle(type="checkbox" value="2" name="region")
-        label._2(for="middle") 中
-        input#south(type="checkbox" value="3" name="region")
-        label._3(for="south") 南
-        input#east(type="checkbox" value="4" name="region")
-        label._4(for="east") 東
-        input#outer(type="checkbox" value="5" name="region")
-        label._5(for="outer") 外島
-      .order
-        h3 時間
-        input#asc(type="radio" value="asc" name="order")
-        label.asc(for="asc") 最舊
-        input#desc(type="radio" value="desc" name="order")
-        label.desc(for="desc") 最新
-      .age
-        h3 年齡
-        input#adult(type="checkbox" value="A" name="age")
-        label.A(for="adult") 成體
-        input#child(type="checkbox" value="C" name="age")
-        label.C(for="child") 幼體
-      button(type="submit") 搜尋
+      .left-search
+        .kind
+          h3 種類
+          input#dog(type="checkbox" value="dog" name="kind")
+          label.dog(for="dog") 狗狗
+          input#cat(type="checkbox" value="cat" name="kind")
+          label.cat(for="cat") 喵咪
+        .order
+          h3 時間
+          input#asc(type="radio" value="asc" name="order")
+          label.asc.active(for="asc") 最舊
+          input#desc(type="radio" value="desc" name="order")
+          label.desc(for="desc") 最新
+        .county
+          h3 地區
+          input#north(type="checkbox" value="1" name="region")
+          label._1(for="north") 北
+          input#middle(type="checkbox" value="2" name="region")
+          label._2(for="middle") 中
+          input#south(type="checkbox" value="3" name="region")
+          label._3(for="south") 南
+          input#east(type="checkbox" value="4" name="region")
+          label._4(for="east") 東
+          input#outer(type="checkbox" value="5" name="region")
+          label._5(for="outer") 外島
+      .right-search
+        .sex
+          h3 性別
+          input#male(type="checkbox" value="M" name="sex")
+          label.M(for="male") 雄性
+          input#female(type="checkbox" value="F" name="sex")
+          label.F(for="female") 雌性
+        .age
+          h3 年齡
+          input#adult(type="checkbox" value="A" name="age")
+          label.A(for="adult") 成體
+          input#child(type="checkbox" value="C" name="age")
+          label.C(for="child") 幼體
+        button(type="submit") 搜尋
+  .lds-dual-ring
+    div
   .pet-list
   include adoption-details.pug
   include adoption-msg.pug

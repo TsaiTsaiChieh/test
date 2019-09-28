@@ -41,8 +41,8 @@ function count(req, res) {
 }
 function search(req, res) {
     let { kind, sex, region, order, age } = req.body;
-    if (sex)
-        if (sex.length === 2) sex = ''; // means all
+    // if (sex)
+    //     if (sex.length === 2) sex = ''; // means all
     if (!kind || kind.includes('cat') && kind.includes('dog')) res.redirect(`/adoption?kind=all&${queryString(sex, region, order, age)}`);
     else if (kind.includes('cat')) res.redirect(`/adoption?kind=cat&${queryString(sex, region, order, age)}`);
     else if (kind.includes('dog')) res.redirect(`/adoption?kind=dog&${queryString(sex, region, order, age)}`);

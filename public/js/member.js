@@ -8,7 +8,7 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
         window.localStorage.removeItem('picture');
         window.localStorage.removeItem('provider');
         window.localStorage.removeItem('user-id');
-        window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
+        // window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
     }
     let user = JSON.parse(req.responseText).user;
     console.log(user);

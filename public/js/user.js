@@ -107,14 +107,6 @@ function login() {
             }
             else {
                 loginSuccessEvent('login-page', 'native', req);
-                // app.get('.login-page .message').style.color = 'black';
-                // app.get('.login-page .message').innerHTML = '登入成功';
-                // app.get('.login-page .message').style.opacity = '1';
-                // app.get('.login-page').style.display = 'none';
-                // window.localStorage.setItem('auth', JSON.parse(req.responseText).token.access_token);
-                // // 登入成功後要把可開啟登入註冊頁面的監聽器拿掉
-                // app.get('.member').removeEventListener('click', memberEvent);
-                // app.get('.member p').innerHTML = '會員';
             }
         });
     }
@@ -124,7 +116,9 @@ function loginSuccessEvent(className, provider, req) {
     app.get(`.${className} .message`).style.color = 'black';
     app.get(`.${className} .message`).innerHTML = '登入成功';
     app.get(`.${className} .message`).style.opacity = '1';
-    app.get(`.${className}`).style.display = 'none';
+    window.setTimeout(function () {
+        app.get(`.${className}`).style.display = 'none';
+    }, 2000);
     window.localStorage.setItem('auth', data.token.access_token);
     window.localStorage.setItem('provider', provider);
     window.localStorage.setItem('name', data.user.name);

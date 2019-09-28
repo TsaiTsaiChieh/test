@@ -165,6 +165,7 @@ app.neuterTable = function (neuter) {
     }
 }
 app.loadPetDetails = function (petId) {
+    let petDetails = app.get('pet-details');
     let details_wrap = app.get('.details-wrap');
     let img_wrap = app.get('.details-wrap .img-wrap');
     // let info_wrap = app.get('.pet-details .info-wrap');
@@ -188,12 +189,11 @@ app.loadPetDetails = function (petId) {
     });
     app.ajax('GET', 'api/adoption/details', `id=${petId}`, {}, function (req) {
         let data = JSON.parse(req.responseText);
-
+        // let titleWrap = app.createElement('div', { atrs: { className: 'title-wrap' } }, details_wrap);
         console.log('details:', data);
         if (data.title.length == 0) {
             let stayDay = app.dateConversion(data.opendate);
             app.get('h1.pet-title').innerHTML = `在收容所待${stayDay}天，可以帶我回家嗎？`;
-
         }
         else app.get('h1.pet-title').innerHTML = data.title;
 
@@ -201,10 +201,15 @@ app.loadPetDetails = function (petId) {
         if (data.image[0] === '') app.createElement('img', { atrs: { src: './imgs/pet-null.jpg' } }, img_wrap);
         else {
             for (let i = 0; i < data.image.length; i++) {
-                if (data.db === 2 || data.db === 1)
-                    app.createElement('img', { atrs: { src: data.image[i] } }, img_wrap);
-                else if (data.db === 3) app.createElement('img', { atrs: { src: `./pet-img/${data.image[i]}` } }, img_wrap);
-
+                if (data.db === 1) {
+                    let imgLink = app.createElement('a', { atrs: { target: '_blank', href: `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${data.db_link}&AcceptNum=${data.link_id}&PageType=Adopt` } }, img_wrap);
+                    app.createElement('img', { atrs: { src: data.image[i] } }, imgLink);
+                }
+                else if (data.db === 2) {
+                    let imgLink = app.createElement('a', { atrs: { target: '_blank', href: `http://www.meetpets.org.tw/content/${data.db_link}` } }, img_wrap);
+                    app.createElement('img', { atrs: { src: data.image[i] } }, imgLink);
+                }
+                else if (data.db === 3) app.createElement('img', { atrs: { src: `${app.s3}/pet-img/${data.image[i]}` } }, img_wrap);
             }
         }
         // pet-name
@@ -218,8 +223,10 @@ app.loadPetDetails = function (petId) {
         else {
             // app.get('.petName.item h4').innerHTML = '小名';
             // app.get('.petName.item p').innerHTML = data.petName;
-            app.createElement('h4', { atrs: { innerHTML: '小名' } }, petNameItem);
-            app.createElement('p', { atrs: { innerHTML: data.petName } }, petNameItem);
+            if (data.petName) {
+                app.createElement('h4', { atrs: { innerHTML: '小名' } }, petNameItem);
+                app.createElement('p', { atrs: { innerHTML: data.petName } }, petNameItem);
+            }
         }
         // county
         // app.get('.county.item p').innerHTML = app.countryTable(data.county);
@@ -237,7 +244,7 @@ app.loadPetDetails = function (petId) {
         app.createElement('h4', { atrs: { innerHTML: '年齡' } }, ageItem);
         app.createElement('p', { atrs: { innerHTML: app.ageTable(data.age, data.kind) } }, ageItem);
         // color
-        if (data.color !== null) {
+        if (data.color !== '' && data.color !== null) {
             let colorItem = app.createElement('div', { atrs: { className: 'color item' } }, info_wrap);
             app.createElement('h4', { atrs: { innerHTML: '花色' } }, colorItem);
             app.createElement('p', { atrs: { innerHTML: data.color } }, colorItem);
@@ -299,6 +306,6 @@ app.loadPetDetails = function (petId) {
                 else if (data.db === 2) app.createElement('a', { atrs: { innerHTML: '台灣認養地圖', target: '_blank', href: `http://www.meetpets.org.tw/content/${data.db_link}` } }, linkItem);
             }
         }
-    });
 
+    });
 }

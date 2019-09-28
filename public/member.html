@@ -82,36 +82,34 @@
             </div>
             <div class="menu">
                 <ul>
-                    <li><a class="change" href="">修改資料</a></li>
-                    <li><a class="adopt active" href="">送養訊息</a></li>
-                    <li><a class="blood" href="">捐血需求</a></li>
+                    <li><a class="change active" href="member?profile">修改資料</a></li>
+                    <li><a class="adopt" href="member?adoption">發佈送養</a></li>
+                    <li><a class="edit" href="member?edit">編輯送養</a></li>
+                    <li><a class="attention" href="member?attention">我的關注</a></li>
+                    <li><a class="message" href="member?message">我的訊息</a></li>
                     <li><a class="logout" href="adoption?kind=all&amp;paging=0">登出</a></li>
                 </ul>
             </div>
         </div>
         <div class="right-wrap">
             <div class="info-wrap">
-                <div class="title-wrap">個人資料</div>
-                <div class="subtitle-wrap">查看和編輯您的個人資料</div>
-                <div class="right-line"></div>
-                <div class="login-info"><span>登入的電子郵件：</span>
-                    <p></p>
+                <div class="profile-wrap" style="display: flex;">
+                    <div class="title-wrap">個人資料</div>
+                    <div class="subtitle-wrap">查看和編輯您的個人資料</div>
+                    <div class="right-line"></div>
+                    <div class="login-info"><span>登入的電子郵件：</span>
+                        <p>jecica196@gmail.com</p>
+                        <p id="user-id">1</p>
+                    </div><!-- bootstrap button--><label class="btn btn-info"><input class="upload-img"
+                            style="display:none;" type="file" accept=".png, .jpg, .jpeg"
+                            name="upload-img"><i>上傳新照片</i></label>
+                    <div class="personal-info">
+                        <span>姓名</span>
+                        <input class="name" type="text" name="name" placeholder="test">
+                        <span>聯絡資訊</span>
+                        <input class="phone" type="text" name="phone" placeholder="953508900"></div>
+                    <button class="profile-btn" type="submit" onclick="updateProfile()">確認修改</button>
                 </div>
-                <div class="" id="user-id"></div>
-                <!-- bootstrap button -->
-
-                <label class="btn btn-info">
-                    <input class="upload-img" style="display:none;" type="file" accept="image/*">
-                    <i>上傳新照片</i>
-                </label>
-
-                <div class="personal-info">
-                    <span>姓名</span>
-                    <input class="name" type="text" name="name" placeholder="編輯姓名" />
-                    <span>手機</span>
-                    <input class="phone" type="text" name="phone" placeholder="ex: 0987654321" />
-                </div>
-                <button class="profile-btn" type="submit" onclick="updateProfile()">確認修改</button>
             </div> <!-- 1. END info-wrap -->
             <div class="adoption-wrap">
                 <div class="title-wrap">送養資訊</div>

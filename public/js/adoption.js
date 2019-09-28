@@ -14,15 +14,31 @@ function searchActive(kind, sex, region, order, age) {
     if (kind && kind !== 'all') {
         app.get(`.kind label.${kind}`).classList.add('active');
     }
-    if (sex) app.get(`.sex label.${sex}`).classList.add('active');
+    if (sex) {
+        sex = sex.split(',');
+        if (sex.length === 2) {
+            app.get('.sex label.F').classList.add('active');
+            app.get('.sex label.M').classList.add('active');
+        }
+        else app.get(`.sex label.${sex}`).classList.add('active');
+    }
+
     if (region) {
         region = region.split(',');
         region.forEach(function (element) {
             app.get(`.county label._${element}`).classList.add('active');
         });
     }
-    if (!order) app.get('.order label.asc').classList.add('active');
-    else if (order === 'desc') app.get('.order label.desc').classList.add('active');
+    if (!order) {
+        app.get('.order label.asc').classList.add('active');
+        app.get('.order label.desc').classList.remove('active');
+    }
+
+    else if (order === 'desc') {
+        app.get('.order label.desc').classList.add('active');
+        app.get('.order label.asc').classList.remove('active');
+    }
+
     if (age) {
         age = age.split(',');
         if (age.length === 2) age.forEach(function (ele) {
@@ -34,7 +50,11 @@ function searchActive(kind, sex, region, order, age) {
 searchActive(kind, sex, region, order, age);
 function queryString(sex, region, order, age, paging) {
     let url = '';
-    if (sex) url = `sex=${sex}&`;
+    if (sex) {
+        sex = sex.split(',');
+        if (sex.length === 2); //do nothing
+        else url = `sex=${sex}&`;
+    }
     if (region) url = url.concat(`region=${region}&`);
     if (order === 'desc') url = url.concat(`order=${order}&`);
     if (age) url = url.concat(`age=${age}&`);
@@ -68,9 +88,13 @@ app.ajax('GET', `api/adoption/${kind}`, queryString(sex, region, order, age, pag
         let text_wrap = app.createElement('div', { atrs: { className: 'text-wrap' } }, item);
         if (data[i].title.length == 0) {
             let stayDay = app.dateConversion(data[i].opendate);
-            title = app.createElement('h2', { atrs: { className: 'title', innerHTML: `在收容所待 ${stayDay} 天，可以帶我回家嗎？` } }, text_wrap);
+            title = app.createElement('h2', { atrs: { className: 'title', innerHTML: `在收容所待${stayDay}天，可以帶我回家嗎？` } }, text_wrap);
         }
         else title = app.createElement('h2', { atrs: { className: 'title', innerHTML: data[i].title } }, text_wrap);
+        title.addEventListener('click', function () {
+            app.get('.pet-details').style.display = 'block';
+            app.loadPetDetails(data[i].id);
+        });
         let profile = app.createElement('div', { atrs: { className: 'profile' } }, text_wrap);
         let county = app.createElement('div', { atrs: { className: 'county' } }, profile);
         app.createElement('h4', { atrs: { innerHTML: '地區' } }, county);
@@ -89,7 +113,7 @@ app.ajax('GET', `api/adoption/${kind}`, queryString(sex, region, order, age, pag
         app.createElement('h4', { atrs: { innerHTML: '性別' } }, sex);
         app.createElement('span', { atrs: { innerHTML: app.sexTable(data[i].sex) } }, sex);
         let color = app.createElement('div', { atrs: { className: 'color' } }, profile);
-        app.createElement('h4', { atrs: { innerHTML: '顏色' } }, color);
+        app.createElement('h4', { atrs: { innerHTML: '花色' } }, color);
         app.createElement('span', { atrs: { innerHTML: data[i].color } }, color);
         // btn-setting
         let btnWrap = app.createElement('div', { atrs: { className: 'btn-wrap' } }, profile);
@@ -130,7 +154,7 @@ function adoptionMessage() {
     else if (userId) {
         let classNames = this.className.split(' ');
         let receiverId = Number.parseInt(classNames[2].replace('receiver_', ''));
-        if (receiverId === userId) window.alert('不能傳訊息給自己喔！');
+        if (receiverId === userId) window.alert('不能留言給自己喔！');
         else {
             let petId = Number.parseInt(classNames[1].replace('petId_', ''));
             let contactName = classNames[3].replace('receiverName_', '');
@@ -141,7 +165,7 @@ function adoptionMessage() {
             sendMegWrap.style.display = 'flex';
             let imgPath = app.get(`.${classNames[1]}`).src;
             app.get('.sendMeg-wrap .img-wrap .pet-img').src = `${imgPath}`;
-            app.get('.sendMeg-wrap .msg-wrap .contactName').innerHTML = `傳訊息給 ${contactName}：`;
+            app.get('.sendMeg-wrap .msg-wrap .contactName').innerHTML = `留言給 ${contactName}：`;
             // let msgSend = app.createElement('button',);
             let msgSend = app.get('button.msg-send');
             msgSend.setAttribute('class', `msg-send petId_${petId} receiverId_${receiverId} receiverName_${contactName}`);
@@ -229,3 +253,11 @@ function initAttentionBtn() {
     }
 }
 initAttentionBtn();
+// function ShowMessage() {
+//     console.log('1261364673673467367267346734343');
+//     app.get('.lds-heart').style.display = 'none';
+// }
+// window.οnlοad = ShowMessage();
+window.οnlοad = function () {
+    app.get('.lds-dual-ring').style.display = 'none';
+}();

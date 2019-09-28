@@ -1,7 +1,11 @@
 /* global setting */
 @font-face {
     font-family: 'MainText';
-    src: src('./fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
+    src: url('../fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'MainText-Bold';
+    src: url('../fonts/TaipeiSansTCBeta-Bold.ttf') format('truetype');
 }
 :root {
     --main-color: #8FD3E8 !important;
@@ -12,7 +16,7 @@
     --red-color: #FF4651 !important;
 }
 * {
-    font-family: "MainText","Microsoft JhengHei" !important;
+    font-family: MainText, "Microsoft JhengHe" !important;
 }
 /* header setting */
 header {
@@ -31,16 +35,19 @@ header h1 {
     font-size: 2.5em;
     letter-spacing: .15em;
     line-height: 1.5;
+    font-family: MainText-Bold !important;
 }
 header h4 {
     color: var(--main-color);
     font-size: 1em;
     letter-spacing: .18em;
     margin-bottom: 1em;
+    font-family: MainText-Bold !important;
 }
 header nav {
     background: var(--light-gray);
     height: auto;
+    padding: .5% 0;
 }
 header nav ul{
     display: flex;
@@ -149,6 +156,7 @@ header .wrap .member img {
 }
 .login-page input,
 .signup-page input {
+    font-family: "Microsoft JhengHe" !important;
     width: 22%;
     height: 3em;
     border: none;
@@ -162,6 +170,14 @@ header .wrap .member img {
     width: 22%;
     margin-top: .5%;
     padding: .4% 0;
+    border-radius: 5px;
+    box-shadow: 1px 5px 10px -5px grey;
+}
+.login-page button:hover,
+.signup-page button:hover {
+    opacity: .8;
+    transition: .5s;
+    transform: scale(1.03);
 }
 .signup-page .message,
 .login-page .message{

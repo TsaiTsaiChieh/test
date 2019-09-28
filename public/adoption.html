@@ -16,29 +16,58 @@
 </head>
 
 <body>
-    <header><a href="./"><img id="logo" src="./imgs/logo.png" alt="logo" /></a>
-        <h1>讓愛不流浪</h1>
-        <h4>Love Never Stray</h4>
+    <header>
+        <div class="wrap">
+            <div class="logo-wrap"><a href="./"><img id="logo" src="./imgs/logo.png" alt="logo"></a>
+                <h1>讓愛不流浪</h1>
+                <h4>Love Never Stray</h4>
+            </div>
+            <div class="member"><img src="https://s3.us-east-2.amazonaws.com/pethome.bucket/user-pic/1.jpg" alt="login">
+                <p>會員</p>
+            </div>
+        </div>
         <nav>
             <ul>
                 <li><a href="#">主頁</a></li>
                 <li><a href="#">認養</a></li>
-                <li><a href="#">協尋</a></li>
-                <li><a href="#">捐血</a></li>
                 <li><a href="#">須知</a></li>
             </ul>
         </nav>
     </header>
     <div class="search">
         <form action="/api/adoption" method="POST">
-            <div class="kind">
-                <h3>種類</h3>
-                <input type="checkbox" id="dog" value="dog" name="kind">
-                <label for="dog">汪</label>
-                <input type="checkbox" id="cat" value="cat" name="kind">
-                <label for="cat">喵</label>
+            <div class="left-search">
+                <div class="kind">
+                    <h3>種類</h3><input id="dog" type="checkbox" value="dog" name="kind"><label class="dog"
+                        for="dog">狗狗</label><input id="cat" type="checkbox" value="cat" name="kind"><label class="cat"
+                        for="cat">喵咪</label>
+                </div>
+                <div class="order">
+                    <h3>時間</h3><input id="asc" type="radio" value="asc" name="order"><label class="asc active"
+                        for="asc">最舊</label><input id="desc" type="radio" value="desc" name="order"><label class="desc"
+                        for="desc">最新</label>
+                </div>
+                <div class="county">
+                    <h3>地區</h3><input id="north" type="checkbox" value="1" name="region"><label class="_1"
+                        for="north">北</label><input id="middle" type="checkbox" value="2" name="region"><label
+                        class="_2" for="middle">中</label><input id="south" type="checkbox" value="3"
+                        name="region"><label class="_3" for="south">南</label><input id="east" type="checkbox" value="4"
+                        name="region"><label class="_4" for="east">東</label><input id="outer" type="checkbox" value="5"
+                        name="region"><label class="_5" for="outer">外島</label>
+                </div>
             </div>
-            <button type="submit">搜尋</button>
+            <div class="right-search">
+                <div class="sex">
+                    <h3>性別</h3><input id="male" type="checkbox" value="M" name="sex"><label class="M"
+                        for="male">雄性</label><input id="female" type="checkbox" value="F" name="sex"><label class="F"
+                        for="female">雌性</label>
+                </div>
+                <div class="age">
+                    <h3>年齡</h3><input id="adult" type="checkbox" value="A" name="age"><label class="A"
+                        for="adult">成體</label><input id="child" type="checkbox" value="C" name="age"><label class="C"
+                        for="child">幼體</label>
+                </div><button type="submit">搜尋</button>
+            </div>
         </form>
     </div>
     <!-- end search -->
@@ -109,74 +138,81 @@
         <div class="line"></div>
     </div>
     <!-- end pet list -->
-    <div class="pet-details">
+    <div class="pet-details" style="display: block;">
         <div class="close details"></div>
-        <h1 class="pet-title">小小貓很可愛</h1>
-        <div class="wrap">
+        <div class="title-wrap">
+            <h1 class="pet-title">三花妹妹小紅</h1>
+        </div>
+
+        <div class="details-wrap">
             <div class="img-wrap">
-                <img src="./pet-img/1_1567929865699.jpg">
-                <img src="./pet-img/1_1567929865700.jpg">
-                <img src="./pet-img/1_1567929865701.jpg">
+                <a href="google.com">
+                    <img src="http://www.meetpets.org.tw/files_meetpets/imagecache/normal/FB_IMG_1567609512958.jpg">
+
+                    <img src="http://www.meetpets.org.tw/files_meetpets/imagecache/normal/FB_IMG_1567609515236.jpg">
+                    <img src="http://www.meetpets.org.tw/files_meetpets/imagecache/normal/FB_IMG_1567609517407.jpg">
+                </a>
             </div>
             <div class="info-wrap">
+
                 <div class="petName item">
                     <h4>小名</h4>
-                    <p>小花</p>
+                    <p>小紅</p>
                 </div>
                 <div class="county item">
                     <h4>地區</h4>
-                    <p>台中市</p>
+                    <p>台北市</p>
                 </div>
                 <div class="sex item">
                     <h4>性別</h4>
-                    <p>公</p>
+                    <p>不確定</p>
                 </div>
                 <div class="age item">
                     <h4>年齡</h4>
-                    <p>成體</p>
-                </div>
-                <div class="color item">
-                    <h4>花色</h4>
-                    <p>淡黃色</p>
+                    <p>幼貓</p>
                 </div>
                 <div class="neuter item">
                     <h4>結紮</h4>
                     <p>有</p>
                 </div>
-                <div class="bacterin item">
-                    <h4>狂犬病疫苗</h4>
-                    <p>有</p>
-                </div>
-                <div class="microchip item">
-                    <h4>晶片號碼</h4>
-                    <p>98765432</p>
-                </div>
                 <div class="description item">
                     <h4>描述</h4>
-                    <p>超級可愛個性超好的可可</p>
+                    <p>親人</p>
                 </div>
                 <div class="habit item">
                     <h4>習性</h4>
-                    <p>依布一開始會比較怕生但是混熟了會在你腳邊倒下撒嬌，很喜歡被摸.<br>味增不怕生可以讓你抱來抱去抓來抓去，比較貪吃，手裡有罐頭他就追著你跑.<br>兩隻感情很好會相依偎睡覺，如果有一隻不在同一個空間另外一隻就會喵喵叫找人。
-                    </p>
+                    <p>台北萬華
+                        三花妹妹~小紅
+                        約七個多月大，已結紮
+                        今年四月在環南市場救援
+                        限雙北 #25歲</p>
                 </div>
                 <div class="story item">
                     <h4>故事</h4>
-                    <p>兩隻都乖巧，但因女兒異位性皮膚炎從養貓後整個嚴重很多，<br>要等女兒長大一點才能再養寵物了<br>大約8公斤的皇家飼料<br>三包貓砂<br>兩組貓砂盆<br>有需要的話都可以給新主人</p>
+                    <p>限雙北 #25歲以上未滿若與家長同住請家長來洽談 窗戶夾鐵網陽台需有鐵窗能加裝園藝網 會家訪看防護
+                        不放養不當店貓不遛貓
+                        不接受大賣場飼料</p>
                 </div>
                 <div class="limitation item">
                     <h4>限制</h4>
-                    <p>須同意絕育 須家人同意 須同意簽認養切結書 須同意後續追蹤</p>
+                    <p>須年滿20歲,須同意絕育,須家人同意,須同意簽認養切結書,須同意後續追蹤</p>
                 </div>
                 <div class="contactName item">
                     <h4>聯絡人</h4>
-                    <p>謝小姐</p>
+                    <p>邱小姐</p>
                 </div>
                 <div class="contactMethod item">
                     <h4>聯絡方式</h4>
-                    <p>0987654321</p>
+                    <p>Line:nikkichiu0923</p>
+                </div>
+                <div class="link item">
+                    <h4>連結</h4><a target="_blank" href="http://www.meetpets.org.tw/content/74472">台灣認養地圖</a>
                 </div>
             </div>
+        </div>
+        <div class="btn-wrap">
+            <button class="wantAdoption petId_7839 receiver_1 receiverName_ss">我要認養</button>
+            <button class="attention petId_7839">加入關注</button>
         </div>
     </div>
     <!-- end pet details -->

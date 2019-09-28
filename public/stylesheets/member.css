@@ -1,7 +1,7 @@
 /* global setting */
 @font-face {
     font-family: 'MainText';
-    src: src('./fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
+    src: url('../fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
 }
 :root {
     --main-color: #8FD3E8 !important;
@@ -15,7 +15,7 @@
     --send-color: #25B7D3 !important;
 }
 * {
-    font-family: "MainText","Microsoft JhengHei" !important;
+    font-family: MainText,"Microsoft JhengHei" !important;
 }
 ul {
     margin-bottom: 0 !important;
@@ -164,6 +164,9 @@ ul {
     border: 1px solid black;
     letter-spacing: .15em;
 }
+.profile-wrap .btn {
+    /* margin-bottom: 14%;  */
+}
 /* button setting */
 .profile-btn,
 .adoption-btn {
@@ -172,7 +175,7 @@ ul {
     width: 100%;
     font-size: 1em;
     letter-spacing: .15em;
-    padding: .8% 0;
+    padding: .98%;
     background: var(--main-color);
     color: white;
     border: none;
@@ -185,6 +188,7 @@ ul {
 
 /* upload picture setting */
 .btn-info {
+    padding: .8%;
     letter-spacing: .15em;
 }
 
@@ -210,6 +214,16 @@ ul {
     flex-direction: row;
     align-items: baseline;
     padding: 1% 0;
+}
+
+.adoption-info .subset-1 > span {
+    border: 2px solid red;
+    font-weight: bold;
+}
+.adoption-info .subset-1 > span:not(:first-child){
+    margin-left: 30px;
+    background: yellow;
+
 }
 
 .adoption-info .subset-1 input[type="radio"] {

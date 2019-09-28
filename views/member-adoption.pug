@@ -22,62 +22,68 @@
           p.need *
         input.title(type="text" name="title" required="required" placeholder="會出現在搜尋列表的大標題" )
         .subset-1
-          span 種類
-          input(type="radio" name="kind" value="狗" checked="")
-          | 狗
-          input(type="radio" name="kind" value="貓")
-          | 貓
-          span |性別
-          input(type="radio" name="sex" value="M" checked="")
-          | 公
-          input(type="radio" name="sex" value="F")
-          | 母
-          input(type="radio" name="sex" value="N")
-          | 未知
-          span |年齡
-          input(type="radio" name="age" value="C" checked="")
-          | 幼體
-          input(type="radio" name="age" value="A")
-          | 成體
-          span |結紮
-          input(type="radio" name="neuter" value="F")
-          | 無
-          input(type="radio" name="neuter" value="T" checked="")
-          | 有
+          .kind-wrap
+            span 種類
+            input(type="radio" name="kind" value="dog" checked="")
+            | 狗
+            input(type="radio" name="kind" value="cat")
+            | 貓
+          .sex-wrap
+            span |性別
+            input(type="radio" name="sex" value="male")
+            | 公
+            input(type="radio" name="sex" value="female")
+            | 母
+            input(type="radio" name="sex" value="unknow")
+            | 未知
+          .age-wrap
+            span |年齡
+            input(type="radio" name="age" value="child" checked="")
+            | 幼體
+            input(type="radio" name="age" value="adult")
+            | 成體
+          .neuter-wrap
+            span |結紮
+            input(type="radio" name="neuter" value="no")
+            | 無
+            input(type="radio" name="neuter" value="yes")
+            | 有
         .subset-2
-          span 所在縣市
-            p.need *
-          select(name="county")
-            option(value="2") 台北市
-            option(value="3") 新北市
-            option(value="4") 基隆市
-            option(value="5") 宜蘭縣
-            option(value="6") 桃園縣
-            option(value="7") 新竹縣
-            option(value="8") 新竹市
-            option(value="9") 苗栗縣
-            option(value="10") 台中市
-            option(value="11") 彰化縣
-            option(value="12") 南投縣
-            option(value="13") 雲林縣
-            option(value="14") 嘉義縣
-            option(value="15") 嘉義市
-            option(value="16") 台南市
-            option(value="17") 高雄市
-            option(value="18") 屏東縣
-            option(value="19") 花蓮縣
-            option(value="20") 台東縣
-            option(value="21") 澎湖縣
-            option(value="22") 金門縣
-            option(value="23") 連江縣
-          span 花色
-          input.pet-color(type="text" name="pet-color")
-          span 小名
-          input.pet-name(type="text" name="pet-name")
-        // END subsetting-2
+          .county-wrap
+            span 所在縣市
+            select(name="county")
+              option(value="2") 台北市
+              option(value="3") 新北市
+              option(value="4") 基隆市
+              option(value="5") 宜蘭縣
+              option(value="6") 桃園縣
+              option(value="7") 新竹縣
+              option(value="8") 新竹市
+              option(value="9") 苗栗縣
+              option(value="10") 台中市
+              option(value="11") 彰化縣
+              option(value="12") 南投縣
+              option(value="13") 雲林縣
+              option(value="14") 嘉義縣
+              option(value="15") 嘉義市
+              option(value="16") 台南市
+              option(value="17") 高雄市
+              option(value="18") 屏東縣
+              option(value="19") 花蓮縣
+              option(value="20") 台東縣
+              option(value="21") 澎湖縣
+              option(value="22") 金門縣
+              option(value="23") 連江縣
+          .color-wrap
+            span 花色
+            input.pet-color(type="text" name="pet-color")
+          .name-wrap
+            span 小名
+            input.pet-name(type="text" name="pet-name")
+          // END subsetting-2
         span 寵物描述
           p.need *
-        textarea(class="description" cols="60" rows="8" placeholder="可以在此欄敘述寵物的個性喜好或者由來")
+        textarea(class="description" placeholder="可以在此欄敘述寵物的個性喜好或者由來")
         span 晶片號碼
         input.pet-microchip(type="text" name="pet-microchip" placeholder="若有寵物晶片號碼可填入")
         span 認養條件

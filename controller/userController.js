@@ -64,13 +64,13 @@ function update(req, res) {
     });
     let imageLoad = upload.fields([{ name: 'upload-img', maxCount: 1 }]);
     imageLoad(req, res, function (err) {
-        let { inputName, inputContactMethod, userId } = req.body;
+        let { inputName, inputContactMethod, password, userId } = req.body;
         if (JSON.stringify(req.files) === JSON.stringify({})) inputPiture = null;
         else {
             // inputPiture = req.files['upload-img'][0].filename;
             inputPiture = req.files['upload-img'][0].originalname;
         }
-        userModel.update(userId, inputName, inputContactMethod, inputPiture).then(function (body) {
+        userModel.update(userId, inputName, inputContactMethod, inputPiture, password).then(function (body) {
             res.send(body);
         }).catch(function (err) {
             res.status(err.code);

@@ -87,10 +87,11 @@ function logout() {
 function updateProfile() {
     let inputName = app.get('.personal-info input.name').value;
     let inputContactMethod = app.get('.personal-info input.phone').value;
+    let password = app.get('.personal-info input.password').value;
     let uploadImg = app.get('.upload-img').files[0];
     let id = app.get('#user-id').innerHTML;
     let fileAppend;
-    if (inputName || inputContactMethod || uploadImg) {
+    if (inputName || inputContactMethod || uploadImg || password) {
         let formData = new FormData();
         if (uploadImg) {
             uploadImg = new File([uploadImg], id + ".jpg", { type: "image/jpeg" });
@@ -108,6 +109,7 @@ function updateProfile() {
         }
         if (inputName) formData.append('inputName', inputName);
         if (inputContactMethod) formData.append('inputContactMethod', inputContactMethod);
+        if (password) formData.append('password', password);
         formData.append('userId', id);
         if (uploadImg) {
             fileAppend.then(function (formData) {

@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="right-wrap">
-            <div class="info-wrap">
+            <!-- <div class="info-wrap">
                 <div class="profile-wrap" style="display: flex;">
                     <div class="title-wrap">個人資料</div>
                     <div class="subtitle-wrap">查看和編輯您的個人資料</div>
@@ -100,17 +100,20 @@
                     <div class="login-info"><span>登入的電子郵件：</span>
                         <p>jecica196@gmail.com</p>
                         <p id="user-id">1</p>
-                    </div><!-- bootstrap button--><label class="btn btn-info"><input class="upload-img"
-                            style="display:none;" type="file" accept=".png, .jpg, .jpeg"
-                            name="upload-img"><i>上傳新照片</i></label>
+                    </div><label class="btn btn-info"><input class="upload-img" style="display:none;" type="file"
+                            accept=".png, .jpg, .jpeg" name="upload-img"><i>上傳新照片</i></label>
                     <div class="personal-info">
                         <span>姓名</span>
                         <input class="name" type="text" name="name" placeholder="test">
                         <span>聯絡資訊</span>
-                        <input class="phone" type="text" name="phone" placeholder="953508900"></div>
+                        <input class="phone" type="text" name="phone" placeholder="953508900">
+                        <span>修改密碼</span>
+                        <input class="password" type="password" name="password">
+                    </div>
+
                     <button class="profile-btn" type="submit" onclick="updateProfile()">確認修改</button>
                 </div>
-            </div> <!-- 1. END info-wrap -->
+            </div> 1. END info-wrap -->
             <div class="adoption-wrap">
                 <div class="title-wrap">送養資訊</div>
                 <div class="subtitle-wrap">填寫寵物的基本資料，請務必詳實填寫</div>
@@ -123,63 +126,81 @@
                     <input type="radio" name="status" value="2">暫不開放認養
                 </div>
                 <div class="img-wrap">
-
-                    <img src="./pet-img/1_1568684143356.jpg" class="img-preview">
-                    <img src="./pet-img/1_1568684142268.jpg" class="img-preview">
-                    <img src="./pet-img/1_1568684426225.jpg" class="img-preview">
+                    <img src="https://s3.us-east-2.amazonaws.com/pethome.bucket/pet-img/1_1569570159065.jpg"
+                        class="img-preview">
+                    <img src="https://s3.us-east-2.amazonaws.com/pethome.bucket/pet-img/1_1569570159065.jpg"
+                        class="img-preview">
+                    <img src="https://s3.us-east-2.amazonaws.com/pethome.bucket/pet-img/1_1569570159065.jpg"
+                        class="img-preview">
                 </div>
                 <label class="btn btn-info">
                     <input class="upload-img" style="display:none;" type="file" accept="image/*">
                     <i>上傳寵物的照片</i>
                 </label>
                 <div class="adoption-info">
+
                     <span>標題</span>
                     <input class="title" type="text" name="title" required="" placeholder="會出現在搜尋列表的大標題" />
                     <div class="subset-1">
-                        <span>種類</span>
-                        <input type="radio" name="kind" value="dog" checked>狗
-                        <input type="radio" name="kind" value="cat">貓
-                        <span>|性別</span>
-                        <input type="radio" name="sex" value="male">公
-                        <input type="radio" name="sex" value="female">母
-                        <input type="radio" name="sex" value="unknow">未知
-                        <span>|年齡</span>
-                        <input type="radio" name="age" value="child" checked>幼體
-                        <input type="radio" name="age" value="adult">成體
-                        <span>|結紮</span>
-                        <input type="radio" name="neuter" value="no">無
-                        <input type="radio" name="neuter" value="yes">有
+                        <div class="kind-wrap">
+                            <span>種類</span>
+                            <input type="radio" name="kind" value="dog" checked>狗
+                            <input type="radio" name="kind" value="cat">貓
+                        </div>
+                        <div class="sex-wrap">
+
+                            <span>性別</span>
+                            <input type="radio" name="sex" value="male">公
+                            <input type="radio" name="sex" value="female">母
+                            <input type="radio" name="sex" value="unknow">未知
+                        </div>
+                        <div class="age-wrap">
+                            <span>|年齡</span>
+                            <input type="radio" name="age" value="child" checked>幼體
+                            <input type="radio" name="age" value="adult">成體
+                        </div>
+                        <div class="neuter-wrap">
+                            <span>|結紮</span>
+                            <input type="radio" name="neuter" value="no">無
+                            <input type="radio" name="neuter" value="yes">有
+                        </div>
                     </div>
                     <div class="subset-2">
-                        <span>所在縣市</span>
-                        <select name="county">
-                            　<option value=2>台北市</option>
-                            　<option value=3>新北市</option>
-                            　<option value=4>基隆市</option>
-                            　<option value=5>宜蘭縣</option>
-                            　<option value=6>桃園縣</option>
-                            　<option value=7>新竹縣</option>
-                            　<option value=8>新竹市</option>
-                            　<option value=9>苗栗縣</option>
-                            <option value=10>台中市</option>
-                            　<option value=11>彰化縣</option>
-                            　<option value=12>南投縣</option>
-                            　<option value=13>雲林縣</option>
-                            　<option value=14>嘉義縣</option>
-                            　<option value=15>嘉義市</option>
-                            　<option value=16>台南市</option>
-                            　<option value=17>高雄市</option>
-                            <option value=18>屏東縣</option>
-                            　<option value=19>花蓮縣</option>
-                            　<option value=20>台東縣</option>
-                            　<option value=21>澎湖縣</option>
-                            　<option value=22>金門縣</option>
-                            　<option value=23>連江縣</option>
-                        </select>
-                        <span>花色</span>
-                        <input class="pet-color" type="text" name="pet-color" />
-                        <span>小名</span>
-                        <input class="pet-name" type="text" name="pet-name" />
+                        <div class="county-wrap">
+                            <span>所在縣市</span>
+                            <select name="county">
+                                　<option value=2>台北市</option>
+                                　<option value=3>新北市</option>
+                                　<option value=4>基隆市</option>
+                                　<option value=5>宜蘭縣</option>
+                                　<option value=6>桃園縣</option>
+                                　<option value=7>新竹縣</option>
+                                　<option value=8>新竹市</option>
+                                　<option value=9>苗栗縣</option>
+                                <option value=10>台中市</option>
+                                　<option value=11>彰化縣</option>
+                                　<option value=12>南投縣</option>
+                                　<option value=13>雲林縣</option>
+                                　<option value=14>嘉義縣</option>
+                                　<option value=15>嘉義市</option>
+                                　<option value=16>台南市</option>
+                                　<option value=17>高雄市</option>
+                                <option value=18>屏東縣</option>
+                                　<option value=19>花蓮縣</option>
+                                　<option value=20>台東縣</option>
+                                　<option value=21>澎湖縣</option>
+                                　<option value=22>金門縣</option>
+                                　<option value=23>連江縣</option>
+                            </select>
+                        </div>
+                        <div class="color-wrap">
+                            <span>花色</span>
+                            <input class="pet-color" type="text" name="pet-color" />
+                        </div>
+                        <div class="name-wrap">
+                            <span>小名</span>
+                            <input class="pet-name" type="text" name="pet-name" />
+                        </div>
                     </div> <!-- END subsetting-2 -->
                     <span>寵物描述</span>
                     <textarea cols="60" rows="8" placeholder="可以在此欄敘述寵物的個性喜好或者由來"></textarea>

@@ -116,12 +116,13 @@ function profile(token) {
         });
     });
 }
-function update(userId, inputName, inputContactMethod, inputPicture) {
+function update(userId, inputName, inputContactMethod, inputPicture, password) {
     return new Promise(function (resolve, reject) {
         let update_sql = {};
         if (inputName) update_sql.name = inputName;
         if (inputContactMethod) update_sql.contactMethod = inputContactMethod;
         if (inputPicture !== null) update_sql.picture = inputPicture;
+        if (password) update_sql.password = password;
 
         mysql.con.query(`UPDATE user SET ? WHERE id=${userId}`, update_sql, function (err, result) {
             if (err) {

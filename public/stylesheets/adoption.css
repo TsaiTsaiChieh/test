@@ -624,7 +624,7 @@ transition: .5s;
         
     }
     .search .right-search button {
-        margin-left: 4.2em;
+        margin-left: 4.8em;
         margin-top: 0;
     }
     .search h3 {
@@ -717,20 +717,20 @@ transition: .5s;
         position: absolute;
     }
     .pagination .lastPage {
-        left: 8%;
+        left: 32%;
         
     }
     .pagination .nextPage {
-        right: 8%;
+        right: 32%;
         
     }
     .pagination .firstPage
     {
-        left: 28%;
+        left: 8%;
     }
     .pagination .finalPage {
        
-        right: 28%;
+        right: 8%;
     }
 
     .pagination a {

@@ -736,4 +736,29 @@ transition: .5s;
     .pagination a {
         padding: 0 .25em;
     }
+    /* detail setting */
+    .details-wrap {
+        overflow: scroll;
+        display: flex;
+        flex-direction: column;
+      
+    }
+    .details-wrap .img-wrap a{
+        display: flex;
+        flex-direction: row;
+    }
+    .details-wrap .img-wrap img {
+        width: 120px;
+        height: 120px;
+    }
+    .details-wrap .info-wrap {
+        margin-left: 0;
+        margin-top: 2%;
+        font-size: .8em;
+        line-height: 1;
+    }
+    .pet-details .close {
+        right: 10%;
+        top:.5%;
+    }
 }

@@ -741,8 +741,16 @@ transition: .5s;
         overflow: scroll;
         display: flex;
         flex-direction: column;
-      
+      background: red;
     }
+    .pet-details .pet-title {
+        font-size: 1.3em;
+        height: fit-content;
+    }
+    .details-wrap .img-wrap {
+        height: fit-content;
+    }
+    
     .details-wrap .img-wrap a{
         display: flex;
         flex-direction: row;
@@ -756,6 +764,7 @@ transition: .5s;
         margin-top: 2%;
         font-size: .8em;
         line-height: 1;
+        height: fit-content;
     }
     .pet-details .close {
         right: 10%;

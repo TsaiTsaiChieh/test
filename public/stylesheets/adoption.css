@@ -706,7 +706,7 @@ transition: .5s;
         margin: 0 auto; 
         margin-top: 5%;
         margin-bottom: 15%;
-        
+        z-index: -4;
     }
     .pagination .firstPage,
     .pagination .lastPage,
@@ -771,6 +771,7 @@ transition: .5s;
         top:.5%;
     }
     .details-wrap .info-wrap {
+        height: 100vh;
         overflow: scroll;
     }
 }

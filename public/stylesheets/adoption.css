@@ -775,6 +775,6 @@ transition: .5s;
         overflow: scroll;
         display: flex;
         flex-direction: column;
-        flex-wrap: initial;
+        flex-wrap: wrap;
     }
 }

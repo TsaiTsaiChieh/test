@@ -775,6 +775,6 @@ transition: .5s;
         overflow: scroll;
         display: flex;
         flex-direction: column;
-        overflow-y: visible;
+        min-height: 0;
     }
 }

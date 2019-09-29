@@ -566,6 +566,7 @@ function deleteAttention(petId) {
 
 function getMessageList() {
     app.ajax('GET', 'api/user/getMessageList', '', { 'Authorization': `Bearer ${window.localStorage.getItem('auth')}` }, function (req) {
+        console.log(req.responseText);
         let data = JSON.parse(req.responseText).data;
         console.log(data);
 

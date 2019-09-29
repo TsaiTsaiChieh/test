@@ -169,6 +169,7 @@ ul {
 .adoption-info textarea {
     border: 1px solid black;
     letter-spacing: .15em;
+    line-height: 1.8;
 }
 .profile-wrap .btn {
     /* margin-bottom: 14%;  */
@@ -177,7 +178,7 @@ ul {
 .profile-btn,
 .adoption-btn {
     border-radius:5px; 
-    margin-top: 5%; 
+    margin-top: 3%; 
     width: 100%;
     font-size: 1em;
     letter-spacing: .15em;
@@ -715,4 +716,32 @@ border: 1px solid var(--red-color);
     margin-bottom: 1%;
     color: var(--red-color);
 }
+/* loader */
 
+.lds-dual-ring-2 {
+    margin: auto;
+    margin-top: 3%;
+    display: none ;
+    width: 40px ;
+    height: 40px ;
+    /* z-index: 10; */
+  }
+  .lds-dual-ring-2:after {
+    content: " ";
+    display: block;
+    width: 40px ;
+    height: 40px ;
+    margin: 1px;
+    border-radius: 50%;
+    border: 5px solid var(--main-color) ;
+    border-color: var(--main-color) transparent var(--main-color) transparent;
+    animation: lds-dual-ring-2 1.2s linear infinite;
+  }
+  @keyframes lds-dual-ring-2 {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

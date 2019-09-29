@@ -135,12 +135,12 @@ function update(userId, inputName, inputContactMethod, inputPicture, password) {
 }
 function postAdoption(req, petImgs) {
     // console.log('model', petImgs);
-
     return new Promise(function (resolve, reject) {
         let image = [];
         // for (let i = 0; i < petImgs.length; i++) image.push(petImgs[i].filename);
         for (let i = 0; i < petImgs.length; i++) image.push(petImgs[i].originalname);
         let { petTitle, userId, kind, sex, age, neuter, county, petColor, petName, description, microchip, limitation, contactName, contactMethod } = req;
+
         let insert_sql = {
             db: 3, status: 0, title: petTitle, user_id: userId, image: JSON.stringify(image),
             kind, sex, age, neuter, county, description: JSON.stringify(description),

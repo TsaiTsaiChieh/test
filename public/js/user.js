@@ -137,10 +137,13 @@ function loginSuccessEvent(className, provider, req) {
 }
 function userInit() {
     let picture = window.localStorage.getItem('picture');
-    if (picture !== null) {
+    if (picture !== 'null') {
         if (picture.substring(0, 4) === 'http')
             app.get('.member img').src = picture;
         else app.get('.member img').src = `${app.s3}/user-pic/${picture}`;
+    }
+    else {
+        app.get('.member img').src = './imgs/login_big.jpg';
     }
 };
 userInit();

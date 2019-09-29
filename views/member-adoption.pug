@@ -24,29 +24,29 @@
         .subset-1
           .kind-wrap
             span 種類
-            input(type="radio" name="kind" value="dog" checked="")
+            input(type="radio" name="kind" value="狗" checked="")
             | 狗
-            input(type="radio" name="kind" value="cat")
+            input(type="radio" name="kind" value="貓")
             | 貓
           .sex-wrap
             span |性別
-            input(type="radio" name="sex" value="male")
+            input(type="radio" name="sex" value="M" checked="")
             | 公
-            input(type="radio" name="sex" value="female")
+            input(type="radio" name="sex" value="F")
             | 母
-            input(type="radio" name="sex" value="unknow")
+            input(type="radio" name="sex" value="N")
             | 未知
           .age-wrap
             span |年齡
-            input(type="radio" name="age" value="child" checked="")
+            input(type="radio" name="age" value="C" checked="")
             | 幼體
-            input(type="radio" name="age" value="adult")
+            input(type="radio" name="age" value="A")
             | 成體
           .neuter-wrap
             span |結紮
-            input(type="radio" name="neuter" value="no")
+            input(type="radio" name="neuter" value="F")
             | 無
-            input(type="radio" name="neuter" value="yes")
+            input(type="radio" name="neuter" value="T" checked="")
             | 有
         .subset-2
           .county-wrap
@@ -105,5 +105,6 @@
           p.need *
         input.contact-method(type="text" name="contact-method" required="" placeholder="聯絡人電話或電子郵件等")
       //- button.adoption-btn(type='submit' onclick="adoptionPost()") 確認送養
+      .lds-dual-ring-2
       button.adoption-btn(type='submit') 確認送養
       // 2. END adoption-wrap

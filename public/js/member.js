@@ -8,7 +8,13 @@ app.ajax('GET', 'api/user/profile', '', { 'Authorization': `Bearer ${window.loca
         window.localStorage.removeItem('picture');
         window.localStorage.removeItem('provider');
         window.localStorage.removeItem('user-id');
-        // window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
+        if (confirm("登入時間已逾期，請重新登入")) {
+            window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
+        }
+        else {
+            window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
+        }
+
     }
     let user = JSON.parse(req.responseText).user;
     console.log(user);
@@ -48,6 +54,7 @@ function initMenu(menu) {
         app.get('.adoption-wrap').style.display = 'flex';
         app.get('button.adoption-btn').addEventListener('click', adoptionPost);
         app.get('button.adoption-btn').removeEventListener('click', updateAdoption);
+
     }
     else if (menu === 'edit') {
         edit.classList.add('active');
@@ -198,13 +205,15 @@ function adoptionPost() {
 
     if (flag) {
         app.get('.warning-msg').style.display = 'none';
+        app.get('.lds-dual-ring-2').style.display = 'flex';
         fileAppend.then(function (formData) {
             app.ajaxFormData('api/user/postAdoption', formData, function (req) {
-
                 if (req.status === 500) {
                     app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
+                    app.get('.lds-dual-ring-2').style.display = 'none';
                 }
                 else if (req.status === 200) {
+                    app.get('.lds-dual-ring-2').style.display = 'none';
                     window.location.href = './member?edit';
                 }
                 else {
@@ -330,7 +339,7 @@ function statusText(status) {
     else return '未認養';
 }
 function deleteAdoption(petId) {
-    if (confirm("確定要刪除嗎？")) {
+    if (confirm("確定要刪除嗎？會將自己以及其他人的關注和留言都刪除喔！")) {
         app.ajax('POST', 'api/user/deleteAdoption', { petId }, {}, function (req) {
             let msg = app.get('.edit-wrap .msg');
             msg.style.display = 'block';
@@ -366,11 +375,11 @@ function getAdoption(petId, data) {
     app.get('.adoption-wrap label.btn.btn-info i').innerHTML = '重傳毛孩的照片';
     app.get('.adoption-info .title').value = data.title;
     app.get(`.adoption-info input[type=radio]:nth-child(${data.kind === '狗' ? 2 : 3})`).checked = true;
-    if (data.sex === 'M') app.get(`.adoption-info input[type=radio]:nth-child(5)`).checked = true;
-    else if (data.sex === 'F') app.get(`.adoption-info input[type=radio]:nth-child(5)`).checked = true;
-    else app.get(`.adoption-info input[type=radio]:nth-child(7)`).checked = true;
-    app.get(`.adoption-info input[type=radio]:nth-child(${data.age === 'C' ? 9 : 10})`).checked = true;
-    app.get(`.adoption-info input[type=radio]:nth-child(${data.age === 'F' ? 12 : 13})`).checked = true;
+    if (data.sex === 'M') app.get(`.adoption-info .sex-wrap input[type=radio]:nth-child(2)`).checked = true;
+    else if (data.sex === 'F') app.get(`.adoption-info .sex-wrap input[type=radio]:nth-child(3)`).checked = true;
+    else app.get(`.adoption-info .sex-wrap input[type=radio]:nth-child(4)`).checked = true;
+    app.get(`.adoption-info .age-wrap input[type=radio]:nth-child(${data.age === 'C' ? 2 : 3})`).checked = true;
+    app.get(`.adoption-info .neuter-wrap input[type=radio]:nth-child(${data.neuter === 'F' ? 2 : 3})`).checked = true;
     app.get('.adoption-info select').value = data.county;
     if (data.color !== 'null') app.get('.adoption-info .pet-color').value = data.color;
     if (data.petName !== 'null') app.get('.adoption-info .pet-name').value = data.petName;
@@ -444,6 +453,7 @@ function updateAdoption(petId) {
             }
         });
         if (flag) {
+            app.get('.');
             app.get('.warning-msg').style.display = 'none';
             fileAppend.then(function (formData) {
                 app.ajaxFormData('api/user/updateAdoption', formData, function (req) {
@@ -458,11 +468,14 @@ function updateAdoption(petId) {
     else if (form.petImgs.files.length === 0) {
         if (flag) {
             app.get('.warning-msg').style.display = 'none';
+            app.get('.lds-dual-ring-2').style.display = 'flex';
             app.ajaxFormData('api/user/updateAdoption', formData, function (req) {
                 if (req.status === 500) {
                     app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
+                    app.get('.lds-dual-ring-2').style.display = 'none';
                 }
                 else window.location.href = './member?edit';
+                app.get('.lds-dual-ring-2').style.display = 'none';
             });
         }
     }

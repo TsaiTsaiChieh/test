@@ -771,7 +771,7 @@ transition: .5s;
         top:.5%;
     }
     .details-wrap .info-wrap {
-        height: 100vh;
+        height: fit-content;
         overflow: scroll;
     }
 }

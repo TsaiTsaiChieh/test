@@ -606,11 +606,11 @@ transition: .5s;
       transform: rotate(360deg);
     }
   }
-
+/* for iphone */
   @media (max-width: 400px) {
     /* search setting */
     .search {
-        width: 90%;
+        width: 95%;
         margin: 5% auto 0;
     }
     .search form {
@@ -647,29 +647,43 @@ transition: .5s;
     }
     .pet-list .item .img-wrap .pet-img{
         width: 95%;
+        height: 230px;
     }
-    .pet-list .item .text-wrap  {
-        padding-top: 10%;
-    }
+    
     .pet-list .item .text-wrap .title {
+        font-size: 1.35em;
         margin-left: .5%;
         line-height: 1.5;
+        margin-top: 5%;
     }
     .pet-list .item .text-wrap .profile {
-        margin-left: .3%;
+        justify-content: center;
+        font-size: .9em;
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
     }
     .pet-list .item .text-wrap .profile h4{
         padding-right: 1em;
+        justify-content: center;
+    }
+    .pet-list .item .text-wrap .profile span{
+        font-size: .9em;
+
     }
     .pet-list .item .text-wrap .btn-wrap {
-        position: absolute;
+        
         display: flex;
         flex-direction: row;
         width: 100%;
-        bottom: -42%;
+        margin-top: 5%;
         justify-content: center;
-        margin: auto auto;
+        
+        text-align: center;
         left: 0;
+    }
+    .pet-list .text-wrap .name {
+        position: relative;
     }
     .pet-list .item .text-wrap .btn-wrap button { 
         margin-top: 0;
@@ -681,9 +695,10 @@ transition: .5s;
         margin-right: 5%;
     }
     .pet-list .line {
-        margin-top: 16%;
-        position: relative;
+        margin-top: 5%;
+        /* position: relative; */
     }
+    /* pagination */
     .pagination {
         width: 90%;
         font-size: .8em;
@@ -693,21 +708,32 @@ transition: .5s;
         margin-bottom: 15%;
         
     }
-    .pagination .paging-list {
-        
-    }
-    .pagination .firstPage
+    .pagination .firstPage,
+    .pagination .lastPage,
+    .pagination .finalPage,
+    .pagination .nextPage
     {
-        left: 20%;
         top: 120%;
         position: absolute;
     }
     .pagination .lastPage {
-        position: absolute;
-        top: 120%;
-        right: 20%;
+        left: 8%;
+        
     }
+    .pagination .nextPage {
+        right: 8%;
+        
+    }
+    .pagination .firstPage
+    {
+        left: 28%;
+    }
+    .pagination .finalPage {
+       
+        right: 28%;
+    }
+
     .pagination a {
-        padding: 0 .2em;
+        padding: 0 .25em;
     }
 }

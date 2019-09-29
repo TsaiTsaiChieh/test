@@ -771,7 +771,8 @@ transition: .5s;
         top:.5%;
     }
     .details-wrap .info-wrap {
-        height: 50vh;
+        height: 60vh;
         overflow: scroll;
+        flex-wrap: wrap;
     }
 }

@@ -773,6 +773,8 @@ transition: .5s;
     .details-wrap .info-wrap {
         height: 60vh;
         overflow: scroll;
-        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: initial;
     }
 }

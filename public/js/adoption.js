@@ -133,14 +133,14 @@ app.ajax('GET', 'api/adoption/count', `kind=${kind}&${queryString(sex, region, o
     let lastPage = JSON.parse(req.responseText).lastPage;
     const pagination = app.get('.pagination');
     app.createElement('a', { atrs: { className: 'firstPage', href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, 0)}`, innerHTML: '«第一頁' } }, pagination);
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, paging > 0 ? paging - 1 : 0)}`, innerHTML: '«上一頁' } }, pagination);
+    app.createElement('a', { atrs: { className: 'lastPage', href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, paging > 0 ? paging - 1 : 0)}`, innerHTML: '‹上一頁' } }, pagination);
     let paging_list = app.createElement('div', { atrs: { className: 'paging-list' } }, pagination);
     for (let i = Math.floor(paging / 10) * 10; i < Math.floor(paging / 10) * 10 + 10 && i <= lastPage; i++) {
         if (i === paging) app.createElement('a', { atrs: { className: 'active', href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, i)}`, innerHTML: i + 1 } }, paging_list);
         else app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, i)}`, innerHTML: i + 1 } }, paging_list);
     }
-    app.createElement('a', { atrs: { href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, paging < lastPage ? paging + 1 : lastPage)}`, innerHTML: '下一頁›' } }, pagination);
-    app.createElement('a', { atrs: { className: 'lastPage', href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, lastPage)}`, innerHTML: '最後一頁»' } }, pagination);
+    app.createElement('a', { atrs: { className: 'nextPage', href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, paging < lastPage ? paging + 1 : lastPage)}`, innerHTML: '下一頁›' } }, pagination);
+    app.createElement('a', { atrs: { className: 'finalPage', href: `/adoption?kind=${kind}&${queryString(sex, region, order, age, lastPage)}`, innerHTML: '最後一頁»' } }, pagination);
 });
 
 function adoptionMessage() {

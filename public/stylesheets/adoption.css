@@ -452,6 +452,8 @@
 /* send message setting */
 .sendMeg-wrap {
     /* for test */
+    width: 75% !important;
+    height: 60% !important;
     display: none;
     /* display: flex; */
     position: relative;

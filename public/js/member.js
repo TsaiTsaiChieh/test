@@ -571,7 +571,7 @@ function getMessageList() {
 
         let userId = Number.parseInt(window.localStorage.getItem('user-id'));
         let itemList = app.get('.message-wrap .item-list ');
-        if (data.length === 0) app.createElement('div', { atrs: { className: 'null-msg', innerHTML: '目前無任何訊息喔！' } }, itemList);
+        if (data.length === 0) app.createElement('div', { atrs: { className: 'null-msg', innerHTML: '目前無任何留言喔！' } }, itemList);
         data.forEach(function (ele) {
             let item = app.createElement('div', { atrs: { className: `item item_${ele.id}` } }, itemList);
             let petImg = app.createElement('img', { atrs: { className: 'pet-img', src: `${app.s3}/pet-img/${ele.image[0]}` } }, item);
@@ -608,7 +608,7 @@ function messageView(userId, petId, sender_id, receiver_id) {
                 let rightMessage = app.createElement('div', { atrs: { className: 'right-message' } }, contentWrap);
                 if (ele.sender_picture === null) app.createElement('img', { atrs: { className: 'header', src: './imgs/login_big.jpg' } }, rightMessage);
                 else if (ele.sender_picture.substring(0, 4) === 'http') app.createElement('img', { atrs: { className: 'header', innerHTML: `${ele.sender_picture}` } }, rightMessage);
-                else app.createElement('img', { atrs: { className: 'header', src: `./user-pic/${ele.sender_picture}` } }, rightMessage);
+                else app.createElement('img', { atrs: { className: 'header', src: `${app.s3}/user-pic/${ele.sender_picture}` } }, rightMessage);
                 app.createElement('div', { atrs: { className: 'content', innerHTML: `${ele.msg}` } }, rightMessage);
                 app.createElement('div', { atrs: { className: 'time', innerHTML: `${new Date(ele.createTime).toLocaleString()}` } }, rightMessage);
             }
@@ -616,7 +616,7 @@ function messageView(userId, petId, sender_id, receiver_id) {
                 let leftMessage = app.createElement('div', { atrs: { className: 'left-message' } }, contentWrap);
                 if (ele.sender_picture === null) app.createElement('img', { atrs: { className: 'header', src: './imgs/login_big.jpg' } }, leftMessage);
                 else if (ele.sender_picture.substring(0, 4) === 'http') app.createElement('img', { atrs: { className: 'header', innerHTML: `${ele.sender_picture}` } }, leftMessage);
-                else app.createElement('img', { atrs: { className: 'header', src: `./user-pic/${ele.sender_picture}` } }, leftMessage);
+                else app.createElement('img', { atrs: { className: 'header', src: `${app.s3}/user-pic/${ele.sender_picture}` } }, leftMessage);
                 app.createElement('div', { atrs: { className: 'content', innerHTML: `${ele.msg}` } }, leftMessage);
                 app.createElement('div', { atrs: { className: 'time', innerHTML: `${new Date(ele.createTime).toLocaleString()}` } }, leftMessage);
             }
@@ -660,7 +660,7 @@ function memberSendMessage() {
                 let picture = window.localStorage.getItem('picture');
                 if (picture === null) app.createElement('img', { atrs: { className: 'header', src: './imgs/login_big.jpg' } }, rightMessage);
                 else if (picture.substring(0, 4) === 'http') app.createElement('img', { atrs: { className: 'header', innerHTML: `${picture}` } }, rightMessage);
-                else app.createElement('img', { atrs: { className: 'header', src: `./user-pic/${picture}` } }, rightMessage);
+                else app.createElement('img', { atrs: { className: 'header', src: `${app.s3}/user-pic/${picture}` } }, rightMessage);
                 app.createElement('div', { atrs: { className: 'content', innerHTML: `${message}` } }, rightMessage);
                 app.createElement('div', { atrs: { className: 'time', innerHTML: `${new Date(createTime).toLocaleString()}` } }, rightMessage);
                 contentWrap.scrollTop = contentWrap.scrollHeight;

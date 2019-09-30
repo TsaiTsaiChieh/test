@@ -566,10 +566,8 @@ function deleteAttention(petId) {
 
 function getMessageList() {
     app.ajax('GET', 'api/user/getMessageList', '', { 'Authorization': `Bearer ${window.localStorage.getItem('auth')}` }, function (req) {
-        console.log(req.responseText);
         let data = JSON.parse(req.responseText).data;
-        console.log(data);
-
+        // console.log(data);
         let userId = Number.parseInt(window.localStorage.getItem('user-id'));
         let itemList = app.get('.message-wrap .item-list ');
         if (data.length === 0) app.createElement('div', { atrs: { className: 'null-msg', innerHTML: '目前無任何留言喔！' } }, itemList);

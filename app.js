@@ -2,13 +2,13 @@ const modules = require('./util/modules');
 const app = modules.express();
 const cst = require('./util/constants');
 const update = {
-    gov: require('./crawler/conGov_v3'),
-    map: require('./crawler/adoptionMap_v2')
+  gov: require('./crawler/conGov_v3'),
+  map: require('./crawler/adoptionMap_v2'),
 };
 // const x = require('./crawler/conGov_v3')
 
 app.use(modules.bodyparser.json()); // 否則 Ajax Post 值傳不到後端
-app.use(modules.bodyparser.urlencoded({ extended: true }));
+app.use(modules.bodyparser.urlencoded({extended: true}));
 
 app.use(modules.express.static('public'));
 const mainRouter = require('./routes');
@@ -30,13 +30,13 @@ app.set('view engine', 'pug');
 // for (let i = 0; i < 24; i++) times.push(i + 1);
 // rule.hour = times;
 // rule.minute = times;
-modules.schedule.scheduleJob('0 30 0-23 * * *', function () { //秒、分、時、日、月、周幾
-    console.log(new Date());
-    update.gov.updateGov();
-    setTimeout(function () {
-        console.log(new Date(Date.now()));
-        update.map.updateAdoptionMap();
-    }, 60000); // 一分鐘
+modules.schedule.scheduleJob('0 30 0-23 * * *', function() { // 秒、分、時、日、月、周幾
+  console.log(new Date());
+  update.gov.updateGov();
+  setTimeout(function() {
+    console.log(new Date(Date.now()));
+    update.map.updateAdoptionMap();
+  }, 60000); // 一分鐘
 });
 
 

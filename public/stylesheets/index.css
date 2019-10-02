@@ -67,6 +67,19 @@
 }
 .content-wrap a:hover {
     text-decoration: none;
-    color:black;s
+    color:black;
 }
 
+/* for iphone */
+@media (max-width: 400px) {
+    .content-wrap {
+        width: 90%;
+        flex-direction: column;
+    }
+    .content-wrap .item {
+        width: 90%;
+        margin: 5% auto;
+    }
+
+    
+}

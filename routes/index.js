@@ -1,17 +1,18 @@
+/* eslint-disable new-cap */
 const modules = require('../util/modules');
 const router = modules.express.Router();
 
 router.get('/', (req, res) => {
-    res.render('index');
+  res.render('index');
 });
 router.get('/adoption', (req, res) => {
-    res.render('adoption');
+  res.render('adoption');
 });
 router.get('/member', (req, res) => {
-    res.render('member');
+  res.render('member');
 });
 router.get('/notice', (req, res) => {
-    res.render('notice');
+  res.render('notice');
 });
 
 module.exports = router;

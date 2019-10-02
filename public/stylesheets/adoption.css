@@ -449,6 +449,9 @@
     box-shadow: 1px 5px 10px -5px grey;
     margin-bottom: 2%;
 }
+.pet-list .text-wrap .name {
+    width: 17.114% !important;
+}
 /* send message setting */
 .sendMeg-wrap {
     /* for test */
@@ -636,10 +639,13 @@ transition: .5s;
         padding-right: 1em;
         justify-content: center;
     }
+    
     .pet-list .item .text-wrap .profile span{
         font-size: .9em;
 
     }
+    
+    
     .pet-list .item .text-wrap .btn-wrap {
         
         display: flex;

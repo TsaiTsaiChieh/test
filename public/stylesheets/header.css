@@ -63,6 +63,7 @@ header nav ul li a {
     font-size: 1.2em;
     color: black;
     line-height: 1.5;
+    letter-spacing: .25em;
 }
 header nav ul li a:hover {
     text-decoration: none;
@@ -100,6 +101,8 @@ header .wrap .member img {
     height: 35px;
     border-radius: 50%;
 }
+
+
 /* login page setting */
 
 .login-page,
@@ -201,9 +204,7 @@ header .wrap .member img {
     padding: 0 10px;
 }
 /* FB login button */
-.login-page .fb-login-button {
-    /* margin-top: 2%;  */
-}
+
 /* close setting */
 .close {
     position: absolute;

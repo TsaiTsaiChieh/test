@@ -15,11 +15,12 @@ function videoInfo() {
       } else {
         mysql.con.query('SELECT * FROM video', function(err, result) {
           if (err) {
-            reject(new module.Err(500, 19, `Query Error in video Table: ${err}`));
+            reject(new module.Err(500, 18, `Query Error in video Table: ${err}`));
           } else {
             body = {};
-            if (result.length === 0) body.data = [];
-            else {
+            if (result.length === 0) {
+              body.data = [];
+            } else {
               result.forEach(function(ele) {
                 ele.subtitle = JSON.parse(ele.subtitle);
               });
@@ -34,4 +35,6 @@ function videoInfo() {
     });
   });
 }
-module.exports = {videoInfo};
+module.exports = {
+  videoInfo,
+};

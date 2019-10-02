@@ -105,6 +105,8 @@ function login() {
   }
 }
 function loginSuccessEvent(className, provider, req) {
+  console.log(req.responseText);
+
   const data = JSON.parse(req.responseText);
   app.get(`.${className} .message`).style.color = 'black';
   app.get(`.${className} .message`).innerHTML = '登入成功';
@@ -145,7 +147,7 @@ function checkLoginState() { // Called when a person is finished with the Login 
   FB.login(function(response) {
     console.log('fb response::', response);
     statusChangeCallback(response);
-  }, {scope: 'email'});
+  });
   // FB.getLoginStatus(function (response) {   // See the onlogin handler
 
   // });
@@ -153,13 +155,13 @@ function checkLoginState() { // Called when a person is finished with the Login 
 function statusChangeCallback(response) { // Called with the results from FB.getLoginStatus().
   console.log('click');
   // The current login status of the person.
-  // if (response.status === 'connected') { // Logged into your webpage and Facebook.
-  //   // app.state.auth = response.authResponse;
-  //   FB.api('/me?fields=name,email,picture.width(500)', function(response) {
-  //     saveFBtoDB(response);
-  //     // console.log(response);
-  //   });
-  // }
+  if (response.status === 'connected') { // Logged into your webpage and Facebook.
+    // app.state.auth = response.authResponse;
+    FB.api('/me?fields=name,email,picture.width(500)', function(response) {
+      saveFBtoDB(response);
+      // console.log(response);
+    });
+  }
 }
 window.fbAsyncInit = function() {
   FB.init({

@@ -24,7 +24,7 @@ function signup(req, res) {
 function login(req, res) {
   const user = {
     email: req.body.email.replace(/\s+/g, ''),
-    password: req.body.password.replace(/\s+/g, ''),
+    password: `${req.body.password ? req.body.password.replace(/\s+/g, ''):''}`,
     provider: req.body.provider,
     name: req.body.name,
     picture: req.body.picture,
@@ -301,12 +301,12 @@ function getMessage(req, res) {
 }
 
 function sendMessage(req, res) {
-  const {senderId, receiverId, petId, senderName, receiverName, message, createTime} = req.body;
   userModel
-      .sendMessage(senderId, receiverId, petId, senderName, receiverName, message, createTime)
+      .sendMessage(req)
       .then(function(body) {
         res.send(body);
-      }).catch(function(err) {
+      })
+      .catch(function(err) {
         res.status(err.code);
         res.send(`${err.error}, the line number is ${err.line}`);
       });

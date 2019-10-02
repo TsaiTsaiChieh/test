@@ -63,10 +63,10 @@ html(lang="en")
               .line
               p or
               .line
-            .fb-login-button(data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState()")
+            .fb-login-button(data-size="large" data-button-type="continue_with" onlogin="checkLoginState()" scope="public_profile,email")
         script(src="./js/lib.js")
         script(src="./js/user.js")
         #fb-root
-        script(async="" defer="" crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&autoLogAppEvents=1&version=v4.0&appId=2263463080567166")
+        script(async="" defer="" crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v4.0&appId=2263463080567166&autoLogAppEvents=1")
         block content
         

@@ -634,15 +634,13 @@ ul {
     right: 51px;
     left: unset;
 }
-.chat-wrap .left-message .header {
+.chat-wrap .left-message .header,
+.chat-wrap .right-message .header
+{
     border-radius: 50%;
     width: 40px;
     height: 40px;
-}
-.chat-wrap .right-message .header {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    object-fit: cover;
 }
 
 .chat-wrap .bottom-bar {

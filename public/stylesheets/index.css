@@ -3,6 +3,10 @@
     font-family: 'MainText';
     src: url('../fonts/TaipeiSansTCBeta-Regular.ttf') format('truetype');
 }
+@font-face {
+    font-family: 'MainText-Bold';
+    src: url('../fonts/TaipeiSansTCBeta-Bold.ttf') format('truetype');
+}
 :root {
     --main-color: #8FD3E8 !important;
     --light-gray: #F7F7F7 !important;
@@ -23,12 +27,13 @@
     color: var(--main-color);
     letter-spacing: .15em;
     font-size: 2.5em;
+    font-family: MainText-Bold !important;
 }
 .content-wrap {
     display: flex;
     flex-direction: row;
     width: 90%;
-    
+    margin-top: -2%;
 }
 .content-wrap .item {
     flex-grow:1;

@@ -1,18 +1,11 @@
 /* eslint-disable new-cap */
 const modules = require('../util/modules');
+const indexController = require('../controller/indexController');
 const router = modules.express.Router();
 
-router.get('/', (req, res) => {
-  res.render('index');
-});
-router.get('/adoption', (req, res) => {
-  res.render('adoption');
-});
-router.get('/member', (req, res) => {
-  res.render('member');
-});
-router.get('/notice', (req, res) => {
-  res.render('notice');
-});
+router.get('/', indexController.index);
+router.get('/adoption', indexController.adoption);
+router.get('/member', indexController.member);
+router.get('/notice', indexController.notice);
 
 module.exports = router;

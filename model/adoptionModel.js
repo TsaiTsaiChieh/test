@@ -8,7 +8,7 @@ const size = 20; // 一頁要 show 幾個
 
 function get(id) {
   return new Promise(function(resolve, reject) {
-    mysql.con.query(`SELECT * FROM pet WHERE id=${id} AND status = 0`, function(err, result) {
+    mysql.con.query(`SELECT * FROM pet WHERE id = ? AND status = 0`, id, function(err, result) {
       if (err) {
         reject(new modules.Err(500, 13, `Query Error in pet Table: ${err}`));
       } else if (result.length === 0) {

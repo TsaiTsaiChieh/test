@@ -7,9 +7,10 @@
     --main-color: #8FD3E8 !important;
     --light-gray: #F7F7F7 !important;
 }
+/* @import url("https://fonts.googleapis.com/css?family=Barlow+Condensed:300,400,700&display=swap");
 * {
     font-family: MainText,"Microsoft JhengHei" !important;
-}
+} */
 /* banner setting */
 
 .banner #carouselCaptions img{
@@ -45,6 +46,60 @@
 .banner .carousel-item .full-width h3{
     font-size: 2em;
 }
-.banner .carousel-item .full-width p{
+.banner .carousel-item .full-width .counter-wrap{
+    display: flex;
+    flex-direction: row;
     font-size: 1.2em;
 }
+
+.counters {
+    display: flex;
+    background: rgba(255, 255, 255, 0.75);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .counter {
+    letter-spacing: 0.125rem;
+    line-height: 1;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    height: 3.125rem;
+    font-size: 3.125rem;
+    margin: 0 1.25rem;
+    font-weight: 400;
+  }
+  .counter > span {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: -webkit-transform 2s ease;
+    transition: transform 2s ease;
+    transition: transform 2s ease, -webkit-transform 2s ease;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    line-height: 1;
+  }
+  .counter > span span {
+    flex: 0 0 100%;
+    height: 100%;
+  }
+  .counter:nth-child(1) > span {
+    transition-delay: 0s;
+  }
+  .counter:nth-child(2) > span {
+    transition-delay: 0.375s;
+  }
+  .counter:nth-child(3) > span {
+    transition-delay: 0.75s;
+  }
+  .counter:nth-child(4) > span {
+    transition-delay: 1.125s;
+  }
+  
+
+  

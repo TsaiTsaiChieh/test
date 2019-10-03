@@ -11,14 +11,20 @@ link(rel='stylesheet' href='./stylesheets/banner.css')
         .carousel-caption.d-none.d-md-block
           .full-width.dog
             h3 給我一個家
-            p 目前有 隻狗狗等待認領養
+            .counter-wrap
+              | 目前有
+              h3.counter #{body.dogCount}
+              | 隻狗狗等待認領養
       .carousel-item
         a.cat-link(href="")
           img.d-block.w-100.cat-img(src='./imgs/cat_banncer.jpeg')
         .carousel-caption.d-none.d-md-block
           .full-width.cat
             h3 毛小孩是家人
-            p 目前有 隻喵喵等待認領養
+            .counter-wrap
+              | 目前有
+              h3.counter #{body.catCount}
+              | 隻貓咪等待認領養
     //- a.carousel-control-prev(href='#carouselCaptions' role='button' data-slide='prev')
     //-   span.carousel-control-prev-icon(aria-hidden='true')
     //-   span.sr-only Previous

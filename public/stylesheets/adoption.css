@@ -320,14 +320,14 @@
     flex-direction: column;
     /* align-self: center; */
     /* flex-wrap: nowrap; */
-    justify-content: center;
+    /* justify-content: center; */
     /* border: 2px solid red; */
     overflow:scroll;
 }
 .details-wrap .img-wrap img {
     /* width: 70%; */
     width: 100%;
-    height: 250px;
+    height: 400px;
     object-fit: cover;
     padding: 1% 0;
     align-self: center;

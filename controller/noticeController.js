@@ -8,8 +8,8 @@ function videoInfo(req, res) {
         res.json(body);
       })
       .catch(function(err) {
-        res(err.status);
-        res(`${err.error}, line number is ${err.line}`);
+        res.status(err.status);
+        res.send(`${err.error}, line number is ${err.line}`);
       });
 }
 module.exports = {videoInfo};

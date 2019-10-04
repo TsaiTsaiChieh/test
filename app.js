@@ -3,7 +3,7 @@ const app = modules.express();
 const cst = require('./util/constants');
 const update = {
   gov: require('./crawler/conGov_v3'),
-  map: require('./crawler/adoptionMap_v2'),
+  map: require('./crawler/adoptionMapUpdate'),
 };
 // const x = require('./crawler/conGov_v3')
 

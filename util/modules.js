@@ -14,6 +14,7 @@ const path = require('path');
 const aws = require('aws-sdk');
 const multer3 = require('multer-s3');
 const redis = require('redis');
+const axios = require('axios');
 /**
  * @param  {Object} err
  * @param  {int} line
@@ -27,7 +28,7 @@ function errorInsert(err, line) {
     sqlMessage: err.sqlMessage,
     command: err.sql,
   };
-  mysql.con.query(`INSERT INTO crawler SET ?`, error, function(err, result) {
+  mysql.con.query(`INSERT INTO crawlerErr SET ?`, error, function(err, result) {
     if (err) console.log(err);
   });
 }
@@ -61,4 +62,5 @@ module.exports = {
   multer3,
   redis,
   Err,
+  axios,
 };

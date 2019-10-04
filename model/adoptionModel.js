@@ -103,7 +103,7 @@ function parseFilter(kind, sex, region, order, age) {
     filter = filter.concat(`WHERE status = 0 AND kind='狗'`);
   }
   // sex
-  if (sex) filter = filter.concat(` AND sex='${sex}'`);
+  if (sex) filter = filter.concat(` AND sex='${sex}' OR sex='N'`); // 因為認養地圖無性別的資料
   // age
   if (age) {
     age = age.split(',');

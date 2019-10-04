@@ -340,7 +340,7 @@
 .details-wrap .info-wrap {
     flex: 2;
     height: 80vh;
-    padding-top: 20vh !important;
+    /* flex-wrap: wrap; */
     /* height: fit-content; */
     margin-left: 2%;
     box-shadow: 4px 4px 8px 4px rgba(0,0,0,0.2);

@@ -1,8 +1,8 @@
+/* eslint-disable max-len */
 const menu = window.location.search.replace('?', '');
 
 // Load member.pug 時，去拿 user 的資料
 app.ajax('GET', 'api/user/profile', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
-  console.log(req.responseText);
   // token 無效或過期，要重新登入
   if (req.status !== 200) {
     window.localStorage.removeItem('auth');
@@ -16,7 +16,6 @@ app.ajax('GET', 'api/user/profile', '', {'Authorization': `Bearer ${window.local
     }
   }
   const user = JSON.parse(req.responseText).user;
-  console.log(user);
 
   if (user.picture) {
     app.get('.left-profile img').src = user.picture;
@@ -84,6 +83,7 @@ function logout() {
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 function updateProfile() {
   const inputName = app.get('.personal-info input.name').value;
   const inputContactMethod = app.get('.personal-info input.phone').value;
@@ -116,7 +116,6 @@ function updateProfile() {
         app.get('.lds-dual-ring-2').style.display = 'flex';
         app.ajaxFormData('api/user/update', formData, function(req) {
           if (req.status === 500) {
-            console.log(`error happen: error code is ${req.status}`);
             app.get('.lds-dual-ring-2').style.display = 'none';
           } else {
             if (uploadImg) window.localStorage.setItem('picture', uploadImg.name);
@@ -128,7 +127,6 @@ function updateProfile() {
       app.get('.lds-dual-ring-2').style.display = 'flex';
       app.ajaxFormData('api/user/update', formData, function(req) {
         if (req.status === 500) {
-          console.log(`error happen: error code is ${req.status}`);
           app.get('.lds-dual-ring-2').style.display = 'none';
         } else {
           if (uploadImg) window.localStorage.setItem('picture', uploadImg.name);
@@ -193,8 +191,7 @@ function adoptionPost() {
         formData.append('petImgs', myFile);
         if (loaded === petImgs.files.length) resolve(formData);
       }, function(err) {
-        // console.log(err);
-        // formData.append('petImgs', petImg);
+        reject(err);
       });
     }
   });
@@ -210,8 +207,6 @@ function adoptionPost() {
         } else if (req.status === 200) {
           app.get('.adoption-wrap .lds-dual-ring-2').style.display = 'none';
           window.location.href = './member?edit';
-        } else {
-          console.log(req.status, req.responseText);
         }
       });
     });
@@ -244,12 +239,6 @@ function checkForm(value, msg, flag) {
     flag = false;
   }
   return flag;
-}
-function printFormData(formData) {
-  // Display the key/value pairs
-  for (const pair of formData.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
 }
 
 // jQuery 壓縮圖片
@@ -294,8 +283,6 @@ function compressFile(file) {
 function getAdoptionList() {
   app.ajax('GET', 'api/user/getAdoptionList', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
     const data = JSON.parse(req.responseText).data;
-    console.log('getAdoptionList', data);
-
     const itemList = app.get('.edit-wrap .item-list ');
     if (data.length === 0) app.createElement('div', {atrs: {className: 'null-msg', innerHTML: '目前無任何送養的紀錄喔！'}}, itemList);
     for (let i = 0; i < data.length; i++) {
@@ -339,8 +326,6 @@ function deleteAdoption(petId) {
     app.ajax('POST', 'api/user/deleteAdoption', {petId}, {}, function(req) {
       const msg = app.get('.edit-wrap .msg');
       msg.style.display = 'block';
-      console.log(req.responseText, req.status);
-
       if (req.status === 500) msg.innerHTML = '伺服器錯誤，請稍後再試';
       else {
         msg.innerHTML = '刪除成功！';
@@ -409,7 +394,6 @@ function getAdoption(petId, data) {
   });
 }
 function updateAdoption(petId) {
-  // console.log(petId);
   let flag = true;
   const form = getAdoptionForm();
   // checkForm
@@ -451,8 +435,7 @@ function updateAdoption(petId) {
           formData.append('petImgs', myFile);
           if (loaded === form.petImgs.files.length) resolve(formData);
         }, function(err) {
-          // console.log(err);
-          // formData.append('petImgs', petImg);
+          reject(err);
         });
       }
     });
@@ -480,8 +463,6 @@ function updateAdoption(petId) {
       });
     }
   }
-
-  // console.log(form.petImgs.files);
 }
 
 function getAdoptionForm() {
@@ -566,7 +547,6 @@ function deleteAttention(petId) {
 function getMessageList() {
   app.ajax('GET', 'api/user/getMessageList', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
     const data = JSON.parse(req.responseText).data;
-    // console.log(data);
     const userId = Number.parseInt(window.localStorage.getItem('user-id'));
     const itemList = app.get('.message-wrap .item-list ');
     if (data.length === 0) app.createElement('div', {atrs: {className: 'null-msg', innerHTML: '目前無任何留言喔！'}}, itemList);
@@ -581,9 +561,9 @@ function getMessageList() {
       app.createElement('h4', {atrs: {innerHTML: ele.title}}, smallWrap);
       const statusWrap = app.createElement('div', {atrs: {className: 'status-wrap'}}, smallWrap);
       app.createElement('div', {atrs: {className: 'message', innerHTML: `${ele.msg.substring(0, 5)}...`}}, statusWrap);
-      app.createElement('div', {atrs: {className: 'contactName', innerHTML: `${ele.sender_id === userId ? `to ${ele.receiver_name}` : `from ${ele.sender_name}`}`}}, statusWrap);
+      app.createElement('div', {atrs: {className: 'contactName', innerHTML: `${ele.senderId === userId ? `to ${ele.receiver_name}` : `from ${ele.sender_name}`}`}}, statusWrap);
       const timeWrap = app.createElement('div', {atrs: {className: 'time-wrap'}}, smallWrap);
-      app.createElement('img', {atrs: {className: 'arrow-img', src: `${ele.sender_id === userId ? './imgs/arrow-right.png' : './imgs/arrow-left.png'}`}}, timeWrap);
+      app.createElement('img', {atrs: {className: 'arrow-img', src: `${ele.senderId === userId ? './imgs/arrow-right.png' : './imgs/arrow-left.png'}`}}, timeWrap);
       app.createElement('div', {atrs: {className: 'time', innerHTML: ` at ${new Date(ele.createTime).toLocaleString()}`}}, timeWrap);
       const view = app.createElement('img', {atrs: {className: 'view', src: './imgs/view.png'}}, item);
       view.addEventListener('click', function() {
@@ -593,18 +573,15 @@ function getMessageList() {
     });
   });
 }
-function messageView(userId, petId, sender_id, receiver_id) {
-  app.ajax('GET', 'api/user/getMessage', `petId=${petId}&senderId=${sender_id}&receiverId=${receiver_id}`, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
-    console.log(req.responseText);
+function messageView(userId, petId, senderId, receiverId) {
+  app.ajax('GET', 'api/user/getMessage', `petId=${petId}&sender_id=${senderId}&receiver_id=${receiverId}`, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
     const data = JSON.parse(req.responseText).data;
-
     const chatWrap = app.get('.chat-wrap');
     chatWrap.style.display = 'flex';
     const contentWrap = app.createElement('div', {atrs: {className: 'content-wrap'}}, app.get('.content-parent'));
-    app.get('.chat-wrap .subtitle').innerHTML = `${sender_id === userId ? `和${data[0].receiver_name}的對話` : `和${data[0].sender_name}的對話`}`;
+    app.get('.chat-wrap .subtitle').innerHTML = `${senderId === userId ? `和${data[0].receiver_name}的對話` : `和${data[0].sender_name}的對話`}`;
     app.get('.message-wrap').style.display = 'none'; // 讓前一頁的訊息列表
-    data.forEach(function(ele, index) {
-      console.log(index, ele);
+    data.forEach(function(ele) {
       if (ele.sender_id === userId) { // 我自己的訊息
         const rightMessage = app.createElement('div', {atrs: {className: 'right-message'}}, contentWrap);
         if (ele.sender_picture === null) app.createElement('img', {atrs: {className: 'header', src: './imgs/login_big.jpg'}}, rightMessage);
@@ -629,7 +606,7 @@ function messageView(userId, petId, sender_id, receiver_id) {
     });
     const sendMessageBtn = app.get('.chat-wrap .btn-wrap');
     if (data[0].sender_id === userId) sendMessageBtn.setAttribute('class', `btn-wrap petId_${data[0].pet_id} receiverId_${data[0].receiver_id} receiverName_${data[0].receiver_name}`);
-    else if (data[0].receiver_id === userId) sendMessageBtn.setAttribute('class', `btn-wrap petId_${data[0].pet_id} receiverId_${data[0].sender_id} receiverName_${data[0].sender_name}`);
+    else if (data[0].receiver_id === userId) sendMessageBtn.setAttribute('class', `btn-wrap petId_${data[0].pet_id} receiverId_${data[0].send_id} receiverName_${data[0].sender_name}`);
     sendMessageBtn.addEventListener('click', memberSendMessage);
   });
 }
@@ -637,7 +614,6 @@ function memberSendMessage() {
   const classNames = this.className.split(' ');
   const msgInput = app.get('.chat-wrap .msg-input');
   let message = msgInput.value;
-  const sendMessageBtn = app.get('.chat-wrap .btn-wrap');
   const senderId = Number.parseInt(window.localStorage.getItem('user-id'));
   const senderName = window.localStorage.getItem('name');
   const receiverId = Number.parseInt(classNames[2].replace('receiverId_', ''));
@@ -666,5 +642,4 @@ function memberSendMessage() {
       }
     });
   }
-  // console.log(message, `我${senderId}`, `我${senderName}`, petId, receiverId, receiverName);
 }

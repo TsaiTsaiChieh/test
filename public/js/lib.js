@@ -1,3 +1,5 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable max-len */
 app = {
   state: {
     auth: null, picture: null,
@@ -132,12 +134,12 @@ app.countryTable = function(country) {
   }
 };
 app.ageTable = function(age, kind) {
-  let age_kind;
-  if (age === 'A') age_kind = '成';
-  else age_kind = '幼';
-  if (kind === '貓') age_kind += '貓';
-  else if (kind === '狗') age_kind += '犬';
-  return age_kind;
+  let ageKind;
+  if (age === 'A') ageKind = '成';
+  else ageKind = '幼';
+  if (kind === '貓') ageKind += '貓';
+  else if (kind === '狗') ageKind += '犬';
+  return ageKind;
 };
 app.sexTable = function(sex) {
   switch (sex) {
@@ -162,11 +164,10 @@ app.neuterTable = function(neuter) {
   }
 };
 app.loadPetDetails = function(petId) {
-  const petDetails = app.get('pet-details');
-  const details_wrap = app.get('.details-wrap');
-  const img_wrap = app.get('.details-wrap .img-wrap');
-  // let info_wrap = app.get('.pet-details .info-wrap');
-  const info_wrap = app.createElement('div', {atrs: {className: 'info-wrap'}}, details_wrap);
+  const detailsＷrap = app.get('.details-wrap');
+  const imgWrap = app.get('.details-wrap .img-wrap');
+  // let infoWrap = app.get('.pet-details .info-wrap');
+  const infoWrap = app.createElement('div', {atrs: {className: 'info-wrap'}}, detailsＷrap);
   document.addEventListener('keyup', function() {
     if (event.keyCode === 27) {
       // Cancel the default action, if needed
@@ -182,13 +183,13 @@ app.loadPetDetails = function(petId) {
     for (let i = 0; i < img.length; i++) {
       img[i].remove();
     }
-    info_wrap.remove();
+    infoWrap.remove();
   });
   app.ajax('GET', 'api/adoption/details', `id=${petId}`, {}, function(req) {
     console.log(req.responseText);
 
     const data = JSON.parse(req.responseText);
-    // let titleWrap = app.createElement('div', { atrs: { className: 'title-wrap' } }, details_wrap);
+    // let titleWrap = app.createElement('div', { atrs: { className: 'title-wrap' } }, detailsＷrap);
     console.log('details:', data);
     if (data.title.length == 0) {
       const stayDay = app.dateConversion(data.opendate);
@@ -196,20 +197,20 @@ app.loadPetDetails = function(petId) {
     } else app.get('h1.pet-title').innerHTML = data.title;
 
     // pet-image
-    if (data.image[0] === '') app.createElement('img', {atrs: {src: './imgs/pet-null.jpg'}}, img_wrap);
+    if (data.image[0] === '') app.createElement('img', {atrs: {src: './imgs/pet-null.jpg'}}, imgWrap);
     else {
       for (let i = 0; i < data.image.length; i++) {
         if (data.db === 1) {
-          const imgLink = app.createElement('a', {atrs: {target: '_blank', href: `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${data.db_link}&AcceptNum=${data.link_id}&PageType=Adopt`}}, img_wrap);
+          const imgLink = app.createElement('a', {atrs: {target: '_blank', href: `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${data.db_link}&AcceptNum=${data.link_id}&PageType=Adopt`}}, imgWrap);
           app.createElement('img', {atrs: {src: data.image[i]}}, imgLink);
         } else if (data.db === 2) {
-          const imgLink = app.createElement('a', {atrs: {target: '_blank', href: `http://www.meetpets.org.tw/content/${data.db_link}`}}, img_wrap);
+          const imgLink = app.createElement('a', {atrs: {target: '_blank', href: `http://www.meetpets.org.tw/content/${data.db_link}`}}, imgWrap);
           app.createElement('img', {atrs: {src: data.image[i]}}, imgLink);
-        } else if (data.db === 3) app.createElement('img', {atrs: {src: `${app.s3}/pet-img/${data.image[i]}`}}, img_wrap);
+        } else if (data.db === 3) app.createElement('img', {atrs: {src: `${app.s3}/pet-img/${data.image[i]}`}}, imgWrap);
       }
     }
     // pet-name
-    const petNameItem = app.createElement('div', {atrs: {className: 'petName item'}}, info_wrap);
+    const petNameItem = app.createElement('div', {atrs: {className: 'petName item'}}, infoWrap);
     if (data.db === 1) {
       // app.get('.petName.item h4').innerHTML = '所屬收容所編號';
       // app.get('.petName.item p').innerHTML = data.db_link;
@@ -225,77 +226,77 @@ app.loadPetDetails = function(petId) {
     }
     // county
     // app.get('.county.item p').innerHTML = app.countryTable(data.county);
-    const countyItem = app.createElement('div', {atrs: {className: 'county item'}}, info_wrap);
+    const countyItem = app.createElement('div', {atrs: {className: 'county item'}}, infoWrap);
     app.createElement('h4', {atrs: {innerHTML: '地區'}}, countyItem);
     app.createElement('p', {atrs: {innerHTML: app.countryTable(data.county)}}, countyItem);
     // sex
     if (data.sex !== null) {
-      const sexItem = app.createElement('div', {atrs: {className: 'sex item'}}, info_wrap);
+      const sexItem = app.createElement('div', {atrs: {className: 'sex item'}}, infoWrap);
       app.createElement('h4', {atrs: {innerHTML: '性別'}}, sexItem);
       app.createElement('p', {atrs: {innerHTML: app.sexTable(data.sex)}}, sexItem);
     }
     // age
-    const ageItem = app.createElement('div', {atrs: {className: 'age item'}}, info_wrap);
+    const ageItem = app.createElement('div', {atrs: {className: 'age item'}}, infoWrap);
     app.createElement('h4', {atrs: {innerHTML: '年齡'}}, ageItem);
     app.createElement('p', {atrs: {innerHTML: app.ageTable(data.age, data.kind)}}, ageItem);
     // color
     if (data.color !== '' && data.color !== null) {
-      const colorItem = app.createElement('div', {atrs: {className: 'color item'}}, info_wrap);
+      const colorItem = app.createElement('div', {atrs: {className: 'color item'}}, infoWrap);
       app.createElement('h4', {atrs: {innerHTML: '花色'}}, colorItem);
       app.createElement('p', {atrs: {innerHTML: data.color}}, colorItem);
     }
     // neuter
-    const neuterItem = app.createElement('div', {atrs: {className: 'neuter item'}}, info_wrap);
+    const neuterItem = app.createElement('div', {atrs: {className: 'neuter item'}}, infoWrap);
     app.createElement('h4', {atrs: {innerHTML: '結紮'}}, neuterItem);
     app.createElement('p', {atrs: {innerHTML: app.neuterTable(data.neuter)}}, neuterItem);
     // bacterin
     if (data.bacterin !== null) {
-      const bacterinItem = app.createElement('div', {atrs: {className: 'bacterin item'}}, info_wrap);
+      const bacterinItem = app.createElement('div', {atrs: {className: 'bacterin item'}}, infoWrap);
       app.createElement('h4', {atrs: {innerHTML: '狂犬病疫苗'}}, bacterinItem);
       app.createElement('p', {atrs: {innerHTML: app.neuterTable(data.bacterin)}}, bacterinItem);
     }
     // microchip
     if (data.microchip !== null) {
-      const microchipItem = app.createElement('div', {atrs: {className: 'microchip item'}}, info_wrap);
+      const microchipItem = app.createElement('div', {atrs: {className: 'microchip item'}}, infoWrap);
       app.createElement('h4', {atrs: {innerHTML: '晶片號碼'}}, microchipItem);
       app.createElement('p', {atrs: {innerHTML: data.microchip}}, microchipItem);
     }
     // description
     if (data.description.length !== 0) {
-      const descriptionItem = app.createElement('div', {atrs: {className: 'description item'}}, info_wrap);
+      const descriptionItem = app.createElement('div', {atrs: {className: 'description item'}}, infoWrap);
       app.createElement('h4', {atrs: {innerHTML: '描述'}}, descriptionItem);
       app.createElement('p', {atrs: {innerHTML: data.description}}, descriptionItem);
     }
     // habit
     if (data.habit !== null) {
-      const habitItem = app.createElement('div', {atrs: {className: 'habit item'}}, info_wrap);
+      const habitItem = app.createElement('div', {atrs: {className: 'habit item'}}, infoWrap);
       app.createElement('h4', {atrs: {innerHTML: '習性'}}, habitItem);
       app.createElement('p', {atrs: {innerHTML: data.habit}}, habitItem);
     }
     // story
     if (data.story !== null) {
-      const storyItem = app.createElement('div', {atrs: {className: 'story item'}}, info_wrap);
+      const storyItem = app.createElement('div', {atrs: {className: 'story item'}}, infoWrap);
       app.createElement('h4', {atrs: {innerHTML: '故事'}}, storyItem);
       app.createElement('p', {atrs: {innerHTML: data.story}}, storyItem);
     }
     // limitation
     if (data.limitation !== null) {
-      const limitationItem = app.createElement('div', {atrs: {className: 'limitation item'}}, info_wrap);
+      const limitationItem = app.createElement('div', {atrs: {className: 'limitation item'}}, infoWrap);
       app.createElement('h4', {atrs: {innerHTML: '限制'}}, limitationItem);
       app.createElement('p', {atrs: {innerHTML: data.limitation}}, limitationItem);
     }
     // contactName
-    const contactNameItem = app.createElement('div', {atrs: {className: 'contactName item'}}, info_wrap);
+    const contactNameItem = app.createElement('div', {atrs: {className: 'contactName item'}}, infoWrap);
     app.createElement('h4', {atrs: {innerHTML: '聯絡人'}}, contactNameItem);
     app.createElement('p', {atrs: {innerHTML: data.contactName}}, contactNameItem);
     // contactMethod
-    const contactMethodItem = app.createElement('div', {atrs: {className: 'contactMethod item'}}, info_wrap);
+    const contactMethodItem = app.createElement('div', {atrs: {className: 'contactMethod item'}}, infoWrap);
     app.createElement('h4', {atrs: {innerHTML: '聯絡方式'}}, contactMethodItem);
     app.createElement('p', {atrs: {innerHTML: data.contactMethod}}, contactMethodItem);
     // link
     if (data.db !== 3) {
       if (data.db_link.length !== null) {
-        const linkItem = app.createElement('div', {atrs: {className: 'link item'}}, info_wrap);
+        const linkItem = app.createElement('div', {atrs: {className: 'link item'}}, infoWrap);
         app.createElement('h4', {atrs: {innerHTML: '連結'}}, linkItem);
         if (data.db === 1) app.createElement('a', {atrs: {innerHTML: '全國推廣動物認領養平台', target: '_blank', href: `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${data.db_link}&AcceptNum=${data.link_id}&PageType=Adopt`}}, linkItem);
         else if (data.db === 2) app.createElement('a', {atrs: {innerHTML: '台灣認養地圖', target: '_blank', href: `http://www.meetpets.org.tw/content/${data.db_link}`}}, linkItem);

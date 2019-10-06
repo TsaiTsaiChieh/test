@@ -3,61 +3,52 @@ const modules = require('../util/modules');
 const mysql = require('../util/db');
 const url = 'http://www.meetpets.org.tw';
 
-// 爬認養資訊
+// 爬台灣認養地圖資訊
 // 1. 先爬狗和貓的最後一頁
 // 2. 收集每頁毛孩標題的網址
 // 3. 根據各網址去撈毛孩的詳細資料，並打包好資料
-// 4. 把資料存進資料庫
+// 4. 把資料存進/更新資料庫
 async function crawledAdoptionMap(species) {
   return new Promise(async function(resolve, reject) {
     console.log(`Start to update ${species} information from Taiwan adoption map...`);
     const lastPage = await findKindLastPage(species);
     const urlArray = await getKindUrl(species, lastPage);
     const petData = await getPetData(species, urlArray);
-    insertData(petData);
+    saveData(petData);
     resolve(`Taiwan adoption map in ${species} update finish.`);
   });
 }
 
-function insertData(petData) {
-  return new Promise(function(resolve, reject) {
-    let loaded = 0;
-    petData.forEach(function(ele) {
-      mysql.con.getConnection(function(err, connection) {
-        if (err) {
-          modules.errorInsert(err, 23);
-          reject(new modules.Err(500, 25, `Connection Error: ${err}`));
-        } else {
-          connection.query('SELECT db_link FROM pet WHERE db_link = ? AND db = 2', ele.db_link, function(err, result) {
-            if (err) {
-              reject(new modules.Err(500, 25, `Query Error in pet Table: ${err}`));
-            } else {
-              loaded ++;
-              if (result.length === 0) {
-                connection.query('INSERT INTO pet SET ?', ele, function(err, result) {
-                  if (err) {
-                    modules.errorInsert(err, 48);
-                    reject(new modules.Err(500, 25, `Insert Error in pet Table: ${err}`));
-                  } else {
-                    resolve('Insert data in pet table successful.');
-                  }
-                });
-              } else if (result.length !== 0) {
-                connection.query('UPDATE pet SET ? WHERE db_link = ? AND db = 2', [ele, ele.db_link], function(err, result) {
-                  if (err) {
-                    modules.errorInsert(err, 48);
-                    reject(new modules.Err(500, 25, `Insert Error in pet Table: ${err}`));
-                  } else {
-                    resolve('Update data in pet table successful.');
-                  }
-                });
-              }
+function saveData(petData) {
+  let loaded = 0;
+  petData.forEach(function(ele) {
+    mysql.con.getConnection(function(err, connection) {
+      if (err) {
+        modules.errorInsert(err, 27);
+      } else {
+        connection.query('SELECT db_link FROM pet WHERE db_link = ? AND db = 2', ele.db_link, function(err, result) {
+          if (err) {
+            modules.errorInsert(err, 31);
+          } else {
+            loaded ++;
+            if (result.length === 0) {
+              connection.query('INSERT INTO pet SET ?', ele, function(err, result) {
+                if (err) {
+                  modules.errorInsert(err, 37);
+                }
+              });
+            } else if (result.length !== 0) {
+              connection.query('UPDATE pet SET ? WHERE db_link = ? AND db = 2', [ele, ele.db_link], function(err, result) {
+                if (err) {
+                  modules.errorInsert(err, 43);
+                }
+              });
             }
-            if (loaded === petData.length) console.log(`Taiwan adoption map in ${ele.kind} update finish.`);
-          });
-          connection.release();
-        }
-      });
+          }
+          if (loaded === petData.length) console.log(`Taiwan adoption map in ${ele.kind === '狗' ? 'dog' : 'cat'} update finish, a total of ${petData.length} data.`);
+        });
+        connection.release();
+      }
     });
   });
 }
@@ -100,10 +91,10 @@ function getPetData(species, urlArray) {
               if (loaded === urlArray.length) resolve(petData);
             })
             .catch(function(err) {
-              console.log(err);
-              reject(new modules.Err(400, 112, `Load the pet details in ${species} failed, the error is ${err}`));
+              modules.errorInsert(err, 49);
+              reject(new modules.Err(400, `Load the pet details in ${species} failed, the error is ${err}`));
             });
-      }, index * 500);
+      }, index * 100);
     });
   });
 }
@@ -111,6 +102,7 @@ function getPetData(species, urlArray) {
 function getKindUrl(species, lastPage) {
   return new Promise(function(resolve, reject) {
     const urlArray = [];
+    if (lastPage === 10);
     let loaded = -1; // Because the first page is zero
     for (let i = 0; i <= lastPage; i++) {
       modules.axios
@@ -126,7 +118,8 @@ function getKindUrl(species, lastPage) {
             if (loaded === lastPage) resolve(urlArray);
           })
           .catch(function(err) {
-            reject(new modules.Err(400, 24, `Get the Url in ${species} failed, the error is ${err}`));
+            modules.errorInsert(err, 49);
+            reject(new modules.Err(400, `Get the Url in ${species} failed, the error is ${err}`));
           });
     }
   });
@@ -142,18 +135,21 @@ function findKindLastPage(species) {
           resolve(lastPage);
         })
         .catch(function(err) {
-          reject(new modules.Err(400, 30, `Find the last page in ${species} failed, the error is ${err}`));
+          modules.errorInsert(err, 49);
+          reject(new modules.Err(400, `Find the last page in ${species} failed, the error is ${err}`));
         });
   });
 }
 
 function checkTitle(title) {
   let status = 0;
-  if (title.includes('已送養') || title.includes('已送出') || title.includes('暫停送養') || title.includes('已去新家') || title.includes('已出養') ||
-        title.includes('已認養') || title.includes('已領養') || title.includes('已被') || title.includes('已經找到') || title.includes('暫停送養') ||
-        title.includes('結案') || title.includes('目前已去') || title.includes('暫不開放') || title.includes('已被預定') || title.includes('已有人認養') ||
-        title.includes('結束') || title.includes('已找到') || title.includes('已經') || title.includes('已有緣')) {
+  if (title.includes('已送養') || title.includes('已送出') || title.includes('已去新家') || title.includes('已出養') ||
+      title.includes('已認養') || title.includes('已領養') || title.includes('已被') || title.includes('已經找到') ||
+      title.includes('結案') || title.includes('目前已去') || title.includes('已有人認養') || title.includes('結束') ||
+      title.includes('已找到') || title.includes('已經') || title.includes('已有緣')) {
     status = 1;
+  } else if (title.includes('暫不開放') || title.includes('暫停送養') || title.includes('已被預定')) {
+    status = 2;
   }
   return status;
 }
@@ -183,7 +179,7 @@ function countyTable(countyString) {
     金門縣: 22,
     連江縣: 23,
   };
-  let code;
+  let code = 0;
   Object.keys(countyCode).map(function(key) {
     if (countyString === key) {
       code = countyCode[key];
@@ -204,8 +200,7 @@ function neuterTable(neuterString) {
 }
 
 function ageTable(ageString) {
-  if (ageString.includes('年')) return 'A';
-  else return 'C';
+  return `${ageString.includes('年')?'A':'C'}`;
 }
 
 // Update orderly
@@ -213,5 +208,6 @@ async function updateAdoptionMap() {
   await crawledAdoptionMap('dog');
   await crawledAdoptionMap('cat');
 }
-updateAdoptionMap();
+
+// updateAdoptionMap();
 module.exports = {updateAdoptionMap};

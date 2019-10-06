@@ -9,13 +9,13 @@ function videoInfo() {
   return new Promise(function(resolve, reject) {
     client.get('video', function(err, data) {
       if (err) {
-        reject(new modules.Err(500, 9, `Redis Error: ${err}`));
+        reject(new modules.Err(500, `Redis Error: ${err}`));
       } else if (data) {
         resolve(JSON.parse(data));
       } else {
         mysql.con.query('SELECT * FROM video', function(err, result) {
           if (err) {
-            reject(new module.Err(500, 18, `Query Error in video Table: ${err}`));
+            reject(new module.Err(500, `Query Error in video Table: ${err}`));
           } else {
             body = {};
             if (result.length === 0) {

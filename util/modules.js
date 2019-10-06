@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 const express = require('express');
 const request = require('request');
@@ -9,7 +10,7 @@ const bodyparser = require('body-parser');
 const crypto = require('crypto');
 const multer = require('multer');
 const schedule = require('node-schedule');
-const mysql = require('mysql');
+const mysql = require('../util/db');
 const path = require('path');
 const aws = require('aws-sdk');
 const multer3 = require('multer-s3');
@@ -28,20 +29,18 @@ function errorInsert(err, line) {
     sqlMessage: err.sqlMessage,
     command: err.sql,
   };
-  mysql.con.query(`INSERT INTO crawlerErr SET ?`, error, function(err, result) {
+  mysql.con.query(`INSERT INTO crawlerError SET ?`, error, function(err, result) {
     if (err) console.log(err);
   });
 }
 /**
  * @param  {int} code
- * @param  {int} line
  * @param  {String} error
  */
 class Err extends Error {
-  constructor(code, line, error) {
-    super(code, line, error);
+  constructor(code, error) {
+    super(code, error);
     this.code = code;
-    this.line = line;
     this.error = error;
   }
 }

@@ -1,15 +1,6 @@
 /* eslint-disable require-jsdoc */
 /* eslint-disable max-len */
-// function bannerInit(kind) {
-//   app.ajax('GET', 'api/adoption/count', `kind=${kind}`, {}, function(req) {
-//     const total = JSON.parse(req.responseText).total;
-//     app.get(`.${kind} .counter-wrap h3.counter`).textContent = total;
-//   });
-//   app.get(`.${kind}-link`).href = `/adoption?kind=${kind}&paging=0`;
-// }
-scrollNumber();
-// bannerInit('cat');
-// bannerInit('dog');
+
 function scrollNumber() {
   const stats = document.querySelectorAll('.counter');
   stats.forEach((stat) => {
@@ -32,24 +23,16 @@ function scrollNumber() {
         stat.insertAdjacentHTML('beforeend', `<span>${res}</span>`);
       } else {
         for (let i = 0; i < res.length; i++) {
-          stat.insertAdjacentHTML(
-              'beforeend',
-              `<span data-value="${res[i]}"><span>&ndash;</span>${Array(parseInt(res[i]) + 1)
-                  .join(0)
-                  .split(0)
-                  .map((x, j) => `<span>${j}</span>`)
-                  .join('')}</span>`
-          );
+          stat.insertAdjacentHTML('beforeend',
+              `<span data-value="${res[i]}"><span>&ndash;</span>${Array(parseInt(res[i]) + 1).join(0).split(0).map((x, j) => `<span>${j}</span>`).join('')}</span>`);
         }
       }
     }
 
     const ticks = [...stat.querySelectorAll('span[data-value]')];
-
     const activate = () => {
       const top = stat.getBoundingClientRect().top;
       const offset = window.innerHeight * 3 / 4;
-
       setTimeout(() => {
         fresh = false;
       }, time);
@@ -61,6 +44,7 @@ function scrollNumber() {
             tick.style.transform = `translateY(-${dist * 100}%)`;
           }
         }, fresh ? time : 0);
+
         window.removeEventListener('scroll', activate);
       }
     };
@@ -69,4 +53,4 @@ function scrollNumber() {
   });
 }
 
-
+window.οnlοad = scrollNumber();

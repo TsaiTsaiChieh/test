@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 const express = require('express');
-const request = require('request');
+// const request = require('request');
 const cheerio = require('cheerio');
 const async = require('async');
 const xmlhttprequest = require('xmlhttprequest');
@@ -46,7 +46,7 @@ class Err extends Error {
 }
 module.exports = {
   express,
-  request,
+  // request,
   cheerio,
   async,
   xmlhttprequest,

@@ -23,7 +23,7 @@ app.use('/api/notice', noticeRouters);
 app.set('views', './views');
 app.set('view engine', 'pug');
 
-modules.schedule.scheduleJob('0 0 */1 * * *', function() { // 秒、分、時、日、月、周幾
+modules.schedule.scheduleJob('0 0 */3 * * *', function() { // 秒、分、時、日、月、周幾
   console.log(new Date());
   update.gov.crawledGovShelter();
   setTimeout(function() {

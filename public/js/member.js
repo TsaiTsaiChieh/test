@@ -567,14 +567,14 @@ function getMessageList() {
       app.createElement('div', {atrs: {className: 'time', innerHTML: ` at ${new Date(ele.createTime).toLocaleString()}`}}, timeWrap);
       const view = app.createElement('img', {atrs: {className: 'view', src: './imgs/view.png'}}, item);
       view.addEventListener('click', function() {
-        messageView(userId, ele.pet_id, ele.sender_id, ele.receiver_id);
+        messageView(userId, ele.pet_id, ele.sender_id);
       });
       app.createElement('div', {atrs: {className: `line line_${ele.id}`}}, itemList);
     });
   });
 }
-function messageView(userId, petId, senderId, receiverId) {
-  app.ajax('GET', 'api/user/getMessage', `petId=${petId}&sender_id=${senderId}&receiver_id=${receiverId}`, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+function messageView(userId, petId, senderId) {
+  app.ajax('GET', 'api/user/getMessage', `petId=${petId}`, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
     const data = JSON.parse(req.responseText).data;
     const chatWrap = app.get('.chat-wrap');
     chatWrap.style.display = 'flex';

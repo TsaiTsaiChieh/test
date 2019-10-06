@@ -282,11 +282,11 @@ function getMessageList(req, res) {
 
 function getMessage(req, res) {
   const {authorization} = req.headers;
-  const {petId, senderId, receiverId} = req.query;
+  const {petId} = req.query;
   if (authorization) {
     const token = authorization.replace('Bearer ', '');
     userModel
-        .getMessage(token, petId, senderId, receiverId)
+        .getMessage(token, petId)
         .then(function(body) {
           res.json(body);
         })

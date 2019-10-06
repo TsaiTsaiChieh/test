@@ -1,4 +1,4 @@
-
+/* eslint-disable max-len */
 // 註冊登入或 profile 按鈕
 // 因為要在調用 removeEventListener 確實抓到 loginEvent function
 function memberEvent() {
@@ -48,6 +48,7 @@ app.get('.login-page input.password').addEventListener('keyup', function() {
 });
 
 // for user page
+// eslint-disable-next-line no-unused-vars
 function signup() {
   const name = app.get('.signup-page .name').value;
   const email = app.get('.signup-page .email').value;
@@ -78,6 +79,7 @@ function signup() {
     });
   }
 }
+// eslint-disable-next-line no-unused-vars
 function login() {
   const email = app.get('.login-page .email').value;
   const password = app.get('.login-page .password').value;
@@ -90,8 +92,6 @@ function login() {
     app.get('.login-page .message').style.opacity = '1';
   } else {
     app.ajax('POST', 'api/user/login', {email, password, provider}, {}, function(req) {
-      console.log(req.responseText);
-
       if (req.status === 406) {
         app.get('.login-page .message').innerHTML = '帳號密碼錯誤';
         app.get('.login-page .message').style.opacity = '1';
@@ -105,8 +105,6 @@ function login() {
   }
 }
 function loginSuccessEvent(className, provider, req) {
-  console.log(req.responseText);
-
   const data = JSON.parse(req.responseText);
   app.get(`.${className} .message`).style.color = 'black';
   app.get(`.${className} .message`).innerHTML = '登入成功';
@@ -142,15 +140,11 @@ function userInit() {
 };
 userInit();
 // facebook login
-
+// eslint-disable-next-line no-unused-vars
 function checkLoginState() { // Called when a person is finished with the Login Button.
   FB.login(function(response) {
-    console.log('fb response::', response);
     statusChangeCallback(response);
   });
-  // FB.getLoginStatus(function (response) {   // See the onlogin handler
-
-  // });
 }
 function statusChangeCallback(response) { // Called with the results from FB.getLoginStatus().
   console.log('click');
@@ -159,7 +153,6 @@ function statusChangeCallback(response) { // Called with the results from FB.get
     // app.state.auth = response.authResponse;
     FB.api('/me?fields=name,email,picture.width(500)', function(response) {
       saveFBtoDB(response);
-      // console.log(response);
     });
   }
 }
@@ -177,9 +170,11 @@ window.fbAsyncInit = function() {
 };
 
 (function(d, s, id) { // Load the SDK asynchronously
-  let js; const fjs = d.getElementsByTagName(s)[0];
+  let js;
+  const fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
+  js = d.createElement(s);
+  js.id = id;
   js.src = 'https://connect.facebook.net/en_US/sdk.js';
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
@@ -188,14 +183,10 @@ function saveFBtoDB(response) {
   let {name, email, picture} = response;
   picture = picture.data.url;
   const provider = 'facebook';
-  if (email) // 確定有撈到電子郵件才進資料庫
-  {
-    console.log({email, name, picture, provider});
+  if (email) { // 確定有撈到電子郵件才進資料庫
     app.ajax('POST', 'api/user/login', {email, name, picture, provider}, {}, function(req) {
-      console.log(req.responseText);
       if (req.status === 500) {
         app.get('.login-page .message').innerHTML = '伺服器錯誤，請稍後再試';
-        // app.get('login-page .message').style.opacity = '1';
       } else loginSuccessEvent('login-page', 'facebook', req);
     });
   }

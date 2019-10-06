@@ -76,7 +76,6 @@ app.ajaxFormData = function(src, args, callback) {
   req.send(args);
 };
 app.setRequestHeaders = function(req, headers) {
-  // console.log(headers);
   for (const key in headers) {
     req.setRequestHeader(key, headers[key]);
   }
@@ -186,8 +185,6 @@ app.loadPetDetails = function(petId) {
     infoWrap.remove();
   });
   app.ajax('GET', 'api/adoption/details', `id=${petId}`, {}, function(req) {
-    console.log(req.responseText);
-
     const data = JSON.parse(req.responseText);
     // let titleWrap = app.createElement('div', { atrs: { className: 'title-wrap' } }, detailsＷrap);
     console.log('details:', data);

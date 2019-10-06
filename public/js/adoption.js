@@ -199,7 +199,6 @@ function sendMessage() {
       app.get('.sendMeg-wrap .error-msg').innerHTML =
           '伺服器錯誤，請稍後再試';
     } else {
-      // console.log(senderId, receiverId, petId, message, new Date());
       app.get('.sendMeg-wrap input.close-msg').click(); // 關閉視窗避免使用者重新傳遞訊息
       window.alert('已留言成功，請至我的留言區靜待送養人回覆');
     }

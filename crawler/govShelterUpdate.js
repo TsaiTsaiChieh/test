@@ -25,23 +25,23 @@ function saveData(petData) {
   mysql.con.getConnection(function(err, connection) {
     petData.forEach(function(ele) {
       if (err) {
-        modules.errorInsert(err, 28);
+        modules.errorInsert(modules.path.basename(__filename), err, 28);
       } else {
         connection.query('SELECT id,db_link FROM pet_ WHERE db_link = ? AND db = 1', ele.db_link, function(err, result) {
           if (err) {
-            modules.errorInsert(err, 32);
+            modules.errorInsert(modules.path.basename(__filename), err, 32);
           } else {
             loaded ++;
             if (result.length === 0) {
               connection.query('INSERT INTO pet SET ?', ele, function(err, result) {
                 if (err) {
-                  modules.errorInsert(err, 38);
+                  modules.errorInsert(modules.path.basename(__filename), err, 38);
                 }
               });
             } else if (result.length !== 0) {
               connection.query(`UPDATE pet SET ? WHERE db_link = ? AND db = 1`, [ele, ele.db_link], function(err, result) {
                 if (err) {
-                  modules.errorInsert(err, 44);
+                  modules.errorInsert(modules.path.basename(__filename), err, 44);
                 }
               });
             }
@@ -57,11 +57,11 @@ function saveData(petData) {
 function updateStatus(dbLink) {
   mysql.con.query('SELECT db_link FROM pet WHERE db = 1 AND status = 0', function(err, result) {
     if (err) {
-      modules.errorInsert(err, 60);
+      modules.errorInsert(modules.path.basename(__filename), err, 60);
     } else {
       mysql.con.getConnection(function(err, connection) {
         if (err) {
-          modules.errorInsert(err, 64);
+          modules.errorInsert(modules.path.basename(__filename), err, 64);
         } else {
           // isFound is database selection results to map each government data, so it is a boolean array
           const isFound = result.map((ele) => dbLink.includes(ele.db_link));
@@ -69,7 +69,7 @@ function updateStatus(dbLink) {
             if (!ele) {
               connection.query(`UPDATE pet SET status = 1 WHERE db_link = ?`, result[index].db_link, function(err, result) {
                 if (err) {
-                  modules.errorInsert(err, 72);
+                  modules.errorInsert(modules.path.basename(__filename), err, 72);
                 }
               });
             }
@@ -126,7 +126,7 @@ function getBatchData(page) {
           resolve(response.data);
         })
         .catch(function(err) {
-          modules.errorInsert(err, 129);
+          modules.errorInsert(modules.path.basename(__filename), err, 129);
           reject(new modules.Err(400, `Load the pet details in govment shelter failed, the error is ${err}`));
         });
   });

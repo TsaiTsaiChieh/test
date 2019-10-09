@@ -18,7 +18,7 @@ function signup(req, res) {
       })
       .catch(function(err) {
         res.status(err.code);
-        res.send(`${err.error}, the line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 function login(req, res) {
@@ -36,7 +36,7 @@ function login(req, res) {
       })
       .catch(function(err) {
         res.status(err.code);
-        res.send(`${err.error}, the line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 function profile(req, res) {
@@ -50,7 +50,7 @@ function profile(req, res) {
         })
         .catch(function(err) {
           res.status(err.code);
-          res.send(`${err.error}, the line number is ${err.line}`);
+          res.send(err.error);
         });
   } else {
     res.status(406);
@@ -106,7 +106,7 @@ function update(req, res) {
           })
           .catch(function(err) {
             res.status(err.code);
-            res.send(`${err.error}, the line number is ${err.line}`);
+            res.send(err.error);
           });
     }
   });
@@ -148,7 +148,7 @@ function postAdoption(req, res) {
           })
           .catch(function(err) {
             res.status(err.code);
-            res.send(`${err.error}, the line number is ${err.line}`);
+            res.send(err.error);
           });
     }
   });
@@ -179,7 +179,7 @@ function updateAdoption(req, res) {
             res.send(body);
           }).catch(function() {
             res.status(err.code);
-            res.send(`${err.error}, the line number is ${err.line}`);
+            res.send(err.error);
           });
     }
   });
@@ -196,7 +196,7 @@ function getAdoptionList(req, res) {
         })
         .catch(function(err) {
           res.status(err.code);
-          res.send(`${err.error}, the line number is ${err.line}`);
+          res.send(err.error);
         });
   } else {
     res.status(406);
@@ -213,7 +213,7 @@ function deleteAdoption(req, res) {
       })
       .catch(function(err) {
         res.status(err.code);
-        res.send(`${err.error}, the line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 // for attention function: addAttention, getAttentionList, deleteAttention
@@ -226,7 +226,7 @@ function addAttention(req, res) {
       })
       .catch(function(err) {
         res.status(err.code);
-        res.send(`${err.error}, the line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 
@@ -241,7 +241,7 @@ function getAttentionList(req, res) {
         })
         .catch(function(err) {
           res.status(err.code);
-          res.send(`${err.error}, the line number is ${err.line}`);
+          res.send(err.error);
         });
   } else {
     res.status(406);
@@ -257,7 +257,7 @@ function deleteAttention(req, res) {
         res.send(body);
       }).catch(function(err) {
         res.status(err.code);
-        res.send(`${err.error}, the line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 // for message function: getMessageList, sendMessage, getMessage
@@ -272,7 +272,7 @@ function getMessageList(req, res) {
         })
         .catch(function(err) {
           res.status(err.code);
-          res.send(`${err.error}, the line number is ${err.line}`);
+          res.send(err.error);
         });
   } else {
     res.status(406);
@@ -292,7 +292,7 @@ function getMessage(req, res) {
         })
         .catch(function(err) {
           res.status(err.code);
-          res.send(`${err.error}, the line number is ${err.line}`);
+          res.send(err.error);
         });
   } else {
     res.status(406);
@@ -308,7 +308,7 @@ function sendMessage(req, res) {
       })
       .catch(function(err) {
         res.status(err.code);
-        res.send(`${err.error}, the line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 

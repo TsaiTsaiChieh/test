@@ -9,7 +9,7 @@ function videoInfo(req, res) {
       })
       .catch(function(err) {
         res.status(err.status);
-        res.send(`${err.error}, line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 module.exports = {videoInfo};

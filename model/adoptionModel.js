@@ -11,11 +11,13 @@ function get(id) {
     mysql.con.query(`SELECT * FROM pet WHERE id = ? AND status = 0`, id, function(err, result) {
       if (err) {
         reject(new modules.Err(500, `Query Error in pet Table: ${err}`));
-      } else if (result.length === 0) {
-        reject(new modules.Err(404, 'Id not found in pet table'));
-      } else {
-        resolve(parseResult(result)[0]);
+        return;
       }
+      if (result.length === 0) {
+        reject(new modules.Err(404, 'Id not found in pet table'));
+        return;
+      }
+      resolve(parseResult(result)[0]);
     });
   });
 }
@@ -30,34 +32,35 @@ function list(req) {
     const filter = parseFilter(category, sex, region, order, age);
     if (filter.length === 0) {
       reject(new modules.Err(405, 'Wrong request is not allowed in pet table'));
+      return;
     }
     mysql.con.query(`SELECT COUNT(pet.id) AS total FROM pet ${filter}`, function(err, result) {
       const body = {};
       if (err) {
         reject(new modules.Err(500, `Query error in pet Table: ${err}`));
-      } else {
-        const maxPage = Math.floor(result[0].total / size);
-        if (paging < maxPage) body.paging = paging + 1;
-        mysql.con.query(`SELECT pet.* FROM pet ${filter} LIMIT ${offset},${size}`, function(err, result) {
-          if (err) {
-            reject(new modules.Err(500, `Query error in pet Table: ${err}`));
-          } else {
-            if (result.length == 0) {
-              body.data = [];
-            } else {
-              parseResult(result);
-              body.data = result;
-            }
-            resolve(body);
-          }
-        });
+        return;
       }
+      const maxPage = Math.floor(result[0].total / size);
+      if (paging < maxPage) body.paging = paging + 1;
+      mysql.con.query(`SELECT pet.* FROM pet ${filter} LIMIT ${offset},${size}`, function(err, result) {
+        if (err) {
+          reject(new modules.Err(500, `Query error in pet Table: ${err}`));
+          return;
+        }
+        if (result.length == 0) {
+          body.data = [];
+        } else {
+          parseResult(result);
+          body.data = result;
+        }
+        resolve(body);
+      });
     });
   });
 }
 
 function count(req) {
-  const {kind, sex, region, order, age} = req.query;
+  let {kind, sex, region, order, age} = req.query;
   if (kind === undefined) kind = '';
   return new Promise(function(resolve, reject) {
     const filter = parseFilter(kind, sex, region, order, age);

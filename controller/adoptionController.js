@@ -14,7 +14,7 @@ function get(req, res) {
         })
         .catch(function(err) {
           res.status(err.code);
-          res.send(`${err.error}, line number is ${err.line}`);
+          res.send(err.error);
         });
   }
 }
@@ -26,7 +26,7 @@ function list(req, res) {
       })
       .catch(function(err) {
         res.status(err.code);
-        res.send(`${err.error}, line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 function count(req, res) {
@@ -37,7 +37,7 @@ function count(req, res) {
       })
       .catch(function(err) {
         res.status(err.code);
-        res.send(`${err.error}, line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 function search(req, res) {

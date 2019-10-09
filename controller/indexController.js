@@ -9,7 +9,7 @@ function index(req, res) {
       })
       .catch(function(err) {
         res.status(err.code);
-        res.send(`${err.error}, line number is ${err.line}`);
+        res.send(err.error);
       });
 }
 

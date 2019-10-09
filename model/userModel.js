@@ -519,6 +519,8 @@ function sendMessage(req) {
     mysql.con.query(`INSERT INTO message SET ?`, insertSql, function(err, result) {
       if (err) {
         reject(new modules.Err(500, `Insert Error in message Table: ${err}`));
+        console.log(err);
+
         return;
       }
       resolve('Insert message table successful.');

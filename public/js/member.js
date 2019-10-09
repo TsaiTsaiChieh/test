@@ -546,6 +546,8 @@ function deleteAttention(petId) {
 
 function getMessageList() {
   app.ajax('GET', 'api/user/getMessageList', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+    console.log('data', req.responseText);
+
     const data = JSON.parse(req.responseText).data;
     const userId = Number.parseInt(window.localStorage.getItem('user-id'));
     const itemList = app.get('.message-wrap .item-list ');
@@ -567,7 +569,7 @@ function getMessageList() {
       app.createElement('div', {atrs: {className: 'time', innerHTML: ` at ${new Date(ele.createTime).toLocaleString()}`}}, timeWrap);
       const view = app.createElement('img', {atrs: {className: 'view', src: './imgs/view.png'}}, item);
       view.addEventListener('click', function() {
-        messageView(userId, ele.pet_id, ele.sender_id);
+        messageView(userId, ele.pet_id, ele.sender_id, ele.receiver_id);
       });
       app.createElement('div', {atrs: {className: `line line_${ele.id}`}}, itemList);
     });
@@ -575,7 +577,11 @@ function getMessageList() {
 }
 function messageView(userId, petId, senderId) {
   app.ajax('GET', 'api/user/getMessage', `petId=${petId}`, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+    console.log(req.responseText);
+
     const data = JSON.parse(req.responseText).data;
+    console.log('test:::::;', data[0]);
+
     const chatWrap = app.get('.chat-wrap');
     chatWrap.style.display = 'flex';
     const contentWrap = app.createElement('div', {atrs: {className: 'content-wrap'}}, app.get('.content-parent'));
@@ -606,7 +612,9 @@ function messageView(userId, petId, senderId) {
     });
     const sendMessageBtn = app.get('.chat-wrap .btn-wrap');
     if (data[0].sender_id === userId) sendMessageBtn.setAttribute('class', `btn-wrap petId_${data[0].pet_id} receiverId_${data[0].receiver_id} receiverName_${data[0].receiver_name}`);
-    else if (data[0].receiver_id === userId) sendMessageBtn.setAttribute('class', `btn-wrap petId_${data[0].pet_id} receiverId_${data[0].send_id} receiverName_${data[0].sender_name}`);
+    else if (data[0].receiver_id === userId) {
+      sendMessageBtn.setAttribute('class', `btn-wrap petId_${data[0].pet_id} receiverId_${data[0].sender_id} receiverName_${data[0].sender_name}`);
+    }
     sendMessageBtn.addEventListener('click', memberSendMessage);
   });
 }
@@ -626,6 +634,8 @@ function memberSendMessage() {
   } else if (message) {
     const createTime = new Date().getTime();
     app.ajax('POST', 'api/user/sendMessage', {senderId, receiverId, petId, message, senderName, receiverName, createTime}, {}, function(req) {
+      console.log(req.responseText);
+
       if (req.status === 500) app.get('.chat-wrap .error-msg').innerHTML = '伺服器錯誤，請稍後再試';
       else {
         msgInput.classList.remove('error');

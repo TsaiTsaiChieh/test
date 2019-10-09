@@ -24,23 +24,23 @@ function saveData(petData) {
   petData.forEach(function(ele) {
     mysql.con.getConnection(function(err, connection) {
       if (err) {
-        modules.errorInsert(err, 27);
+        modules.errorInsert(modules.path.basename(__filename), err, 27);
       } else {
         connection.query('SELECT db_link FROM pet WHERE db_link = ? AND db = 2', ele.db_link, function(err, result) {
           if (err) {
-            modules.errorInsert(err, 31);
+            modules.errorInsert(modules.path.basename(__filename), err, 31);
           } else {
             loaded ++;
             if (result.length === 0) {
               connection.query('INSERT INTO pet SET ?', ele, function(err, result) {
                 if (err) {
-                  modules.errorInsert(err, 37);
+                  modules.errorInsert(modules.path.basename(__filename), err, 37);
                 }
               });
             } else if (result.length !== 0) {
               connection.query('UPDATE pet SET ? WHERE db_link = ? AND db = 2', [ele, ele.db_link], function(err, result) {
                 if (err) {
-                  modules.errorInsert(err, 43);
+                  modules.errorInsert(modules.path.basename(__filename), err, 43);
                 }
               });
             }
@@ -91,7 +91,7 @@ function getPetData(species, urlArray) {
               if (loaded === urlArray.length) resolve(petData);
             })
             .catch(function(err) {
-              modules.errorInsert(err, 49);
+              modules.errorInsert(modules.path.basename(__filename), err, 49);
               reject(new modules.Err(400, `Load the pet details in ${species} failed, the error is ${err}`));
             });
       }, index * 100);
@@ -118,7 +118,7 @@ function getKindUrl(species, lastPage) {
             if (loaded === lastPage) resolve(urlArray);
           })
           .catch(function(err) {
-            modules.errorInsert(err, 49);
+            modules.errorInsert(modules.path.basename(__filename), err, 49);
             reject(new modules.Err(400, `Get the Url in ${species} failed, the error is ${err}`));
           });
     }
@@ -135,7 +135,7 @@ function findKindLastPage(species) {
           resolve(lastPage);
         })
         .catch(function(err) {
-          modules.errorInsert(err, 49);
+          modules.errorInsert(modules.path.basename(__filename), err, 49);
           reject(new modules.Err(400, `Find the last page in ${species} failed, the error is ${err}`));
         });
   });

@@ -14,12 +14,11 @@ const multer3 = require('multer-s3');
 const redis = require('redis');
 const axios = require('axios');
 
-function errorInsert(err, line) {
+function errorInsert(fileName, err, line) {
   error = {
-    fileName: path.basename(__filename),
     line,
     code: err.code,
-    errno: err.errno,
+    errno: Number.parseInt(err.errno),
     sqlMessage: err.sqlMessage,
     command: err.sql,
   };

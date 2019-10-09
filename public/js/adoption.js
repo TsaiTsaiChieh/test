@@ -206,6 +206,13 @@ function sendMessage() {
   );
 }
 
+function closeMessage() {
+  app.get('.mask').style.display = 'none';
+  app.get('.sendMeg-wrap').style.display = 'none';
+  app.get('button.msg-send').removeEventListener('click', sendMessage);
+  app.get('.sendMeg-wrap .msg-wrap textarea').value = '';
+}
+
 function addAttention() {
   const userId = Number.parseInt(window.localStorage.getItem('user-id'));
   if (!userId) {

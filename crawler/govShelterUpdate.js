@@ -27,7 +27,7 @@ function saveData(petData) {
       if (err) {
         modules.errorInsert(modules.path.basename(__filename), err, 28);
       } else {
-        connection.query('SELECT id,db_link FROM pet_ WHERE db_link = ? AND db = 1', ele.db_link, function(err, result) {
+        connection.query('SELECT id,db_link FROM pet WHERE db_link = ? AND db = 1', ele.db_link, function(err, result) {
           if (err) {
             modules.errorInsert(modules.path.basename(__filename), err, 32);
           } else {
@@ -131,4 +131,5 @@ function getBatchData(page) {
         });
   });
 }
+crawledGovShelter();
 module.exports = {crawledGovShelter};

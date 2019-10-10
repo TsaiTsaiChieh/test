@@ -23,13 +23,13 @@ app.use('/api/notice', noticeRouters);
 app.set('views', './views');
 app.set('view engine', 'pug');
 
-modules.schedule.scheduleJob('0 0 */3 * * *', function() { // 秒、分、時、日、月、周幾
-  console.log(new Date());
+modules.schedule.scheduleJob('0 0 */1 * * *', function() { // 秒、分、時、日、月、周幾
+  console.log(Date.now());
   update.gov.crawledGovShelter();
   setTimeout(function() {
-    console.log(new Date(Date.now()));
+    console.log(Date.now());
     update.map.updateAdoptionMap();
-  }, 60000); // 一分鐘
+  }, 60000); // 1 minute
 });
 
 app.listen(3000, () => console.log(`讓愛不流浪 on port ${PORT}`));

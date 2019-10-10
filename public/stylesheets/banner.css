@@ -7,11 +7,6 @@
     --main-color: #8FD3E8 !important;
     --light-gray: #F7F7F7 !important;
 }
-/* @import url("https://fonts.googleapis.com/css?family=Barlow+Condensed:300,400,700&display=swap");
-* {
-    font-family: MainText,"Microsoft JhengHei" !important;
-} */
-/* banner setting */
 
 .banner #carouselCaptions img{
     height: 500px;

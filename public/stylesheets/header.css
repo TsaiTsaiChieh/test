@@ -47,29 +47,40 @@ header h4 {
 header nav {
     background: var(--light-gray);
     height: auto;
-    padding: .5% 0;
+    /* padding: .5% 0; */
 }
 header nav ul{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     margin: 0 15%;
-    padding: 1% 0;
+    /* padding: 1% 0; */
 }
 header nav ul li{
     letter-spacing: .15em;
+    
 }
-header nav ul li a {
+header nav a {
+    flex-grow: 1;
+    text-decoration: none;
     font-size: 1.2em;
     color: black;
     line-height: 1.5;
     letter-spacing: .25em;
+    padding: 1% 0;
 }
-header nav ul li a:hover {
+/* header nav ul li a {
+    font-size: 1.2em;
+    color: black;
+    line-height: 1.5;
+    letter-spacing: .25em;
+} */
+header nav ul a:hover {
     text-decoration: none;
-    color: var(--main-color);
+    color: white;
     font-weight: bold;
     transition: .5s;
+    background: var(--main-color);
 }
 /* member setting */
 header .wrap {
@@ -252,7 +263,7 @@ header .wrap .member img {
         margin-bottom: 8%;
     }
     header nav ul{
-        padding: .3% 0;
+        /* padding: .3% 0; */
         margin: 0 20%;
     }
     header nav ul li{

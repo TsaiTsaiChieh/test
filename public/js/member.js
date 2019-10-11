@@ -3,6 +3,7 @@ const menu = window.location.search.replace('?', '');
 
 // Load member.pug 時，去拿 user 的資料
 app.ajax('GET', 'api/user/profile', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+  console.log(req.responseText, req.status);
   // token 無效或過期，要重新登入
   if (req.status !== 200) {
     window.localStorage.removeItem('auth');

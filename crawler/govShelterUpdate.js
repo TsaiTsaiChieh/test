@@ -131,5 +131,4 @@ function getBatchData(page) {
         });
   });
 }
-crawledGovShelter();
 module.exports = {crawledGovShelter};

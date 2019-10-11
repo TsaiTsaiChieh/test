@@ -5,20 +5,22 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const bodyparser = require('body-parser');
 const crypto = require('crypto');
-const multer = require('multer');
 const schedule = require('node-schedule');
 const mysql = require('../util/db');
 const path = require('path');
 const aws = require('aws-sdk');
+const multer = require('multer');
 const multer3 = require('multer-s3');
 const redis = require('redis');
 const axios = require('axios');
 
 function errorInsert(fileName, err, line) {
+  if (Number.isInteger(err.errno)) errno = err.error;
+  else errno = 0;
   error = {
     line,
     code: err.code,
-    errno: Number.parseInt(err.errno),
+    errno,
     sqlMessage: err.sqlMessage,
     command: err.sql,
   };
@@ -40,11 +42,11 @@ module.exports = {
   fs,
   bodyparser,
   crypto,
-  multer,
   schedule,
   path,
   errorInsert,
   aws,
+  multer,
   multer3,
   redis,
   Err,

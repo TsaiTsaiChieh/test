@@ -106,7 +106,7 @@ function parseFilter(kind, sex, region, order, age) {
     filter = filter.concat(`WHERE status = 0 AND kind='狗'`);
   }
   // sex
-  if (sex) filter = filter.concat(` AND sex='${sex}' OR sex='N'`); // 因為認養地圖無性別的資料
+  if (sex) filter = filter.concat(` AND (sex='${sex}' OR sex='N')`); // 因為認養地圖無性別的資料
   // age
   if (age) {
     age = age.split(',');
@@ -120,11 +120,12 @@ function parseFilter(kind, sex, region, order, age) {
     if (region.length === 1) {
       filter = filter.concat(` AND area.area = ${region}`);
     } else {
-      filter = filter.concat(' AND ');
+      filter = filter.concat(' AND (');
       region.forEach(function(element) {
         filter = filter.concat(`area.area = ${element} OR `);
       });
       filter = filter.substring(0, filter.length - 3);
+      filter = filter.concat(')');
     }
   }
   if (order) filter = filter.concat(' ORDER BY pet.id DESC');

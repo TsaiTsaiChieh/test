@@ -1,6 +1,6 @@
 # LNS-API-Doc
 ### Host Name
-tsaichieh.com
+TsaiChieh.com
 ### Response Object
 * `Pet Object`
 ---
@@ -147,5 +147,34 @@ Field | Type | Description
 {
     total: 7250,
     lastPage: 362
+}
+```
+---
+### Notice API
+* **End Point:** 
+ `/notice/videoInfo` 
+* **Method:** `GET`
+* **Request Example:**
+`https://[Host_Name]/api/notice/videoInfo`
+* **Success Response: 200**
+
+Field | Type | Description
+---------|----------|---------
+ data | `Array` | Array of video Object
+* **Success Response Example:**
+```js
+{
+    data: [
+        {
+            id: 1,
+            yt_id: "nEfwHbvaE4M",
+            kind: 2,
+            youtuber: "好味小姐 Lady Flavor",
+            tag: "",
+            title: "【養貓要知道EP1】如何得到一隻貓？撿到貓？貓中途領養？收容所認養？｜貓奴新手指南",
+            subtitle: [
+            "【方法2：跟中途領養貓咪】跟中途領養的優點：貓咪大多經過親人以及進入家庭前的訓練 愛媽養貓經驗豐富，有疑難雜症可以趕快請教 最適合新手<br> 【方法3：收容所認養貓咪】 尋找收容所貓咪的方式： 各地區收容所 上網搜尋全國動物收容管理系統 關注收容所網頁，參與收容所舉辦的送養活動<br> 跟收容所領養的步驟： 到收容所看貓 填寫自我評估表 簽領養切結書 負擔貓咪植入晶片及預防針 上網登記貓咪晶片資料"
+          ]
+        }
 }
 ```

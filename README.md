@@ -2,7 +2,7 @@
 This website is an animal adoption platform. Users can quickly find pets through multiple search conditions, or published pet adoption information. <br>
 Website URL: https://TsaiChieh.com
 ## Preview
-![](https://i.imgur.com/sri8cAh.gif)
+![](https://i.imgur.com/HZdHsPa.gif)
 
 ## Features
 #### Homepage:
@@ -21,10 +21,14 @@ Website URL: https://TsaiChieh.com
 * User can update their own profile <br>
 ![](https://i.imgur.com/rJ11c4C.gif)
 
-* User can publish the pet adoption information <br>
-![](https://i.imgur.com/mkami5W.gif)
-* Users can track the adoption status of pets
-* Users can leave messages to the adopter or original owner
+* User can update the pet adoption information <br>
+![](https://i.imgur.com/kodj8Hl.gif)
+
+* User can track the adoption status of pets <br>
+![](https://i.imgur.com/dNWGOek.gif)
+
+* User can leave messages to the adopter or original owner <br>
+![](https://i.imgur.com/m2YpGNo.gif)
 #### Notice
 * Notice Page provides some video links that a feeder should know and preparation before keeping a pet
 ## Technologies:

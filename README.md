@@ -1,5 +1,5 @@
 # 讓愛不流浪 | Love Never Stray
-This website is an animal adoption platform. Users can quickly find pets through multiple search conditions, or published pet adoption information.
+This website is an animal adoption platform. Users can quickly find pets through multiple search conditions, or published pet adoption information. <br>
 Website URL: https://TsaiChieh.com
 ## Preview
 ![](https://i.imgur.com/sri8cAh.gif)
@@ -17,8 +17,12 @@ Website URL: https://TsaiChieh.com
 #### Member:
 * Provide both native and FB Login <br>
 ![](https://i.imgur.com/ed6gses.gif)
-* User can update their own profile
-* User can publish pet adoption information
+
+* User can update their own profile <br>
+![](https://i.imgur.com/rJ11c4C.gif)
+
+* User can publish the pet adoption information <br>
+![](https://i.imgur.com/mkami5W.gif)
 * Users can track the adoption status of pets
 * Users can leave messages to the adopter or original owner
 #### Notice

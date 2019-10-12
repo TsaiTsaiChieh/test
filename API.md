@@ -3,24 +3,54 @@
 TsaiChieh.com
 ### Response Object
 * `Pet Object`
+
+Field | Type | Description
+---------|----------|---------
+id |
+db |
+statuts |
+db_link |
+link_id |
+user_id |
+kind |
+petName |
+microchip |
+sex |
+age |
+color |
+netuter |
+bacterin |
+county |
+foundplace |
+title |
+image |
+description |
+habit |
+story |
+opendate |
+limitation |
+contactName |
+contactMethod |
 ---
 ### Adoption List API
-* **End Point:** <br>
-`/adoption/:category`<br>
-`/adoption/all` for 全部<br>
-`/adoption/cat` for 貓<br>
-`/adoption/dog` for 狗
+* **End Point:** 
+`/adoption/:category?condition`<br>
 * **Method:** `GET`
 * **Query Parameters:**
 
 Field | Type | Description
 ---------|----------|---------
- category | String | Category for pet kind
+ category | String | Category for pet kind, options are `cat`, `dog` and `all`
+ age | Char | Age for pet, options are `A` and `C` 
+ sex | Char| Sex for pet, options are `M` and `F`
+ region | number | Region for pet, options are 1(北), 2(中), 3(南), 4(東), and 5(外島)
+ order | String | Time sequence of pets, the default (null) option is `asc`, otherwise, option is `desc`
  paging | String(Optional) | Paging for request next page
 * **Request Example:**<br>
- `https://[Host_Name]/api/adoption/all`<br>
- `https://[Host_Name]/api/adoption/cat`<br>
- `https://[Host_Name]/api/adoption/dog?paging=1`
+`https://[Host_Name]/api/adoption/all` for 全部<br>
+`https://[Host_Name]/api/adoption/dog?age=A` for 成犬<br>
+`https://[Host_Name]/api/adoption/dog?sex=M&age=C` for 幼公犬 <br>
+`https://[Host_Name]/api/adoption/cat?sex=F&region=1,2&age=A` for 在北中地區的成母貓 <br>
 * **Success Response: 200**
 
 Field | Type | Description

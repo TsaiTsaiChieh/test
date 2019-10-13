@@ -64,7 +64,6 @@ function queryString(sex, region, order, age, paging) {
 }
 
 app.ajax('GET', `api/adoption/${kind}`, queryString(sex, region, order, age, paging), {}, function(req) {
-  console.log(`/adoption/${kind}?${queryString(sex, region, order, age, paging)}`);
   const data = JSON.parse(req.responseText).data;
   const petList = app.get('.pet-list');
   for (let i = 0; i < data.length; i++) {

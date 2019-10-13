@@ -8,8 +8,10 @@ Website URL: https://TsaiChieh.com
 - [Technologies](#Technologies)
 - [Backend Architecture](#Backend-Architecture)
 - [Database Schema](#Database-Schema)
+- [API documentation](#API-documentation)
 - [Contact](#Contact)
 ## Preview
+
 ![](https://i.imgur.com/HZdHsPa.gif)
 
 ## Features
@@ -51,15 +53,15 @@ Website URL: https://TsaiChieh.com
 #### Notice
 * Notice Page provides some video links that a feeder should know and preparation before keeping a pet
 ## Technologies
-* Applied MVC design pattern for better code readability
-* Node-schedule for frequent database update
-* Web crawling for approximately 7,000 pet information
-* Error handling by assigning status code carefully
-* The server has set up on AWS EC2
-* Image compress via canvas before uploading to S3 server
-* Implemented database CRUD for user profile, adoption information, wishlist, and message function
-* Applied MySQL transaction to ensure the data consistency
-* Improved loading time using caching with Redis server
+* Applied **MVC** design pattern for better code readability
+* **Node-schedule** for frequent database update
+* **Web crawling** for approximately 8,000 pet information
+* Prevented SQL injection attacks by **preparing queries**
+* The server has set up on **AWS EC2**
+* Image compress via canvas before uploading to **AWS S3** server
+* Implemented database **CRUD** for user profile, adoption information, wishlist, and message function
+* Applied **MySQL transaction** to ensure the data consistency
+* Improved loading time using caching with **Redis** server
 ## Backend Architecture
 ![](https://i.imgur.com/pKPDqsw.png)
 
@@ -109,6 +111,8 @@ Website URL: https://TsaiChieh.com
 ### Key Concepts
 * RESTful APIs
 * Design Patterns: MVC
+## API documentation
+[API documation](https://github.com/TsaiTsaiChieh/pet_home/blob/master/API.md)
 ## Contact
 Tsai, Tsai-Chieh 蔡采潔 <br>
 jecic196@gmail.com

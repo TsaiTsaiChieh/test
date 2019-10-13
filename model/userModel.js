@@ -195,11 +195,11 @@ function profile(token) {
 }
 
 function update(information) {
-  const {userId, name, conectMethod, picture, password} = information;
+  const {userId, name, contactMethod, picture, password} = information;
   return new Promise(function(resolve, reject) {
     const updateSql = {};
     if (name) updateSql.name = name;
-    if (conectMethod) updateSql.contactMethod = conectMethod;
+    if (contactMethod) updateSql.contactMethod = contactMethod;
     if (picture) updateSql.picture = picture;
     if (password) updateSql.password = password;
     mysql.con.query(`UPDATE user SET ? WHERE id = ?`, [updateSql, userId], function(err, result) {
@@ -213,7 +213,6 @@ function update(information) {
 }
 // for adoption function: postAdoption, udateAdoption, getAdoptionList, deteletAdoption
 function postAdoption(req, petImgs) {
-  // console.log('model', petImgs);
   return new Promise(function(resolve, reject) {
     const image = [];
     petImgs.forEach(function(ele) {
@@ -390,7 +389,7 @@ function getAttentionList(token) {
       mysql.con.query('SELECT attention.*,pet.db,pet.image,pet.title,pet.opendate,pet.status,pet.sex from attention LEFT JOIN pet ON attention.pet_id = pet.id WHERE attention.user_id = ? ORDER BY attention.id DESC', result[0].id, function(err, result) {
         const body = {};
         if (err) {
-          reject(new modules.Err(500, `Query Error in user&pet Table: ${err}`));
+          reject(new modules.Err(500, `Query Error in attention&pet Table: ${err}`));
           return;
         }
         if (result.length === 0) {
@@ -519,8 +518,6 @@ function sendMessage(req) {
     mysql.con.query(`INSERT INTO message SET ?`, insertSql, function(err, result) {
       if (err) {
         reject(new modules.Err(500, `Insert Error in message Table: ${err}`));
-        console.log(err);
-
         return;
       }
       resolve('Insert message table successful.');

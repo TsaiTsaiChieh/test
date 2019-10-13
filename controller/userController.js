@@ -95,7 +95,7 @@ function update(req, res) {
       const information = {
         userId: Number.parseInt(req.body.userId),
         name: `${req.body.inputName ? req.body.inputName.replace(/\s+/g, ''):''}`,
-        conectMethod: req.body.inputContactMethod,
+        contactMethod: req.body.inputContactMethod,
         picture: inputPiture,
         password: `${req.body.password ? req.body.password.replace(/\s+/g, ''):''}`,
       };

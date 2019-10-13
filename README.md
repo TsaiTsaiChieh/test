@@ -3,16 +3,12 @@
 This website is an animal adoption platform. Users can quickly find pets through multiple search conditions, or published pet adoption information. <br>
 Website URL: https://TsaiChieh.com
 ## Table of Contents
-- [Preview](#Preview)
 - [Features](#Features)
 - [Technologies](#Technologies)
 - [Backend Architecture](#Backend-Architecture)
 - [Database Schema](#Database-Schema)
 - [API documentation](#API-documentation)
 - [Contact](#Contact)
-## Preview
-
-![](https://i.imgur.com/HZdHsPa.gif)
 
 ## Features
 #### Homepage:

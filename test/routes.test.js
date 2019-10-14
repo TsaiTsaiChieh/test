@@ -6,14 +6,14 @@ const modules = require('../util/modules');
 //   expect(response.data.data[0].yt_id).toBe('nEfwHbvaE4M');
 // });
 // video API
-// const yt_id = ['nEfwHbvaE4M', 'e22nNN8TwwM', 'qwKCpZZJBYw', 'Jv9N1_P4YI0', 'hGHU1GngS6Q',
-//   '7ENaBNc0ehg', 'XqHxM5bUs-w', 'JH2vEeIsh_o', 'fPmnno0tXaI', 'lXQk_t-xzL8'];
-// test('Fetch the video information', async function() {
-//   const response = await modules.axios.get('https://tsaichieh.com/api/notice/videoInfo');
-//   yt_id.forEach(function(ele, index) {
-//     expect(response.data.data[index].yt_id).toBe(ele);
-//   });
-// });
+const yt_id = ['nEfwHbvaE4M', 'e22nNN8TwwM', 'qwKCpZZJBYw', 'Jv9N1_P4YI0', 'hGHU1GngS6Q',
+  '7ENaBNc0ehg', 'XqHxM5bUs-w', 'JH2vEeIsh_o', 'fPmnno0tXaI', 'lXQk_t-xzL8'];
+test('Fetch the video information', async function() {
+  const response = await modules.axios.get('https://tsaichieh.com/api/notice/videoInfo');
+  yt_id.forEach(function(ele, index) {
+    expect(response.data.data[index].yt_id).toBe(ele);
+  });
+});
 
 /** *  User API ****/
 // signup
@@ -29,17 +29,15 @@ const modules = require('../util/modules');
 //   });
 // });
 // login
-test('Testing user login API', async function() {
-  // const user = {email: 'jecica196@gmail.com',provider: 'native'};
-  const response = await modules.axios.post('https://tsaichieh.com/api/user/login', {
-    email: 'jecica196@gmail.com',
-    password: '0000',
-    provider: 'native',
-  });
-  // console.log(response.data.user);
-
-  expect(response.data.user).objectContaining({provider: 'native', email: 'jecica196@gmail.com'});
-});
+// test('Testing user login API', async function() {
+//   // const user = {email: 'jecica196@gmail.com',provider: 'native'};
+//   const response = await modules.axios.post('https://tsaichieh.com/api/user/login', {
+//     email: 'jecica196@gmail.com',
+//     password: '0000',
+//     provider: 'native',
+//   });
+//   expect(response.data.user).objectContaining({provider: 'native', email: 'jecica196@gmail.com'});
+// });
 
 // const axios = modules.axios;
 // jest.spyOn(userModel, 'signup');

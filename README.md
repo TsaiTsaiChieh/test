@@ -59,8 +59,7 @@ Website URL: https://TsaiChieh.com
 * Applied **MySQL transaction** to ensure the data consistency
 * Improved loading time using caching with **Redis** server
 ## Backend Architecture
-![](https://i.imgur.com/pKPDqsw.png)
-
+![](https://i.imgur.com/tkJsXBm.jpg)
 <br>
 
 ## Database Schema
@@ -97,7 +96,7 @@ Website URL: https://TsaiChieh.com
 * HTML & CSS
 * Bootstrap
 * AJAX
-### Third Party
+### Third-party
 * Facebook Login API
 ### Tools
 * Git / GitHub

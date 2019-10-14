@@ -11,11 +11,11 @@ const mysql = require('mysql');
 //     database: private.mysqlSetting.database
 // });
 const mysqlCon = mysql.createPool({
-    connectionLimit: 10,
-    host: "localhost",
-    user: "root",
-    password: "0000",
-    database: "pet_home"
+  connectionLimit: 10,
+  host: 'localhost',
+  user: 'root',
+  password: '0000',
+  database: 'pet_home',
 });
 // mysqlCon.getConnection(function (err, connection) {
 
@@ -28,5 +28,5 @@ const mysqlCon = mysql.createPool({
 //     }
 // });
 module.exports = {
-    con: mysqlCon
+  con: mysqlCon,
 };

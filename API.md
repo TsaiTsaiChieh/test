@@ -248,6 +248,7 @@ Code | Response
 Field | Type | Description
 ---------|----------|---------
 Content-Type | String | Only accept application/json
+
 * **Request Body:**
 
 Field | Type | Description
@@ -431,11 +432,19 @@ contactMethod | String | (Optional) User's contact method
 
 Code | Response
 ---------|----------
+406 | Invalid token
+408 | Token expired
 500 | Update Error in user Table
 ---
 ### Post adoption
 * **End Point:** `/user/postAdoption` 
 * **Method:** `POST`
+* **Request Headers:**
+
+Field | Type | Description
+---------|----------|---------
+Authorization | String | Access token preceding Bearer . For example: `Bearer 3733dfc7c18372575de7183399ffc5894576047f992f3594bedf614229a43994`
+
 * **Request Body:**
 
 Field | Type | Description
@@ -487,11 +496,19 @@ microchip | String | (Optional) Pet microchip
 
 Code | Response
 ---------|----------
+406 | Invalid token
+408 | Token expired
 500 | S3 server error or insert error in pet Table
 ---
 ### Update adoption
 * **End Point:** `/user/updateAdoption` 
 * **Method:** `POST`
+* **Request Headers:**
+
+Field | Type | Description
+---------|----------|---------
+Authorization | String | Access token preceding Bearer . For example: `Bearer 3733dfc7c18372575de7183399ffc5894576047f992f3594bedf614229a43994`
+
 * **Request Body:**
 
 Field | Type | Description
@@ -545,6 +562,8 @@ microchip | String | (Optional) Pet microchip
 
 Code | Response
 ---------|----------
+406 | Invalid token
+408 | Token expired
 500 | S3 server error or insert error in pet Table
 ---
 ### Get adoption list
@@ -606,6 +625,12 @@ Code | Response
 ### Delete adoption
 * **End Point:** `/user/deleteAdoption` 
 * **Method:** `POST`
+* **Request Headers:**
+
+Field | Type | Description
+---------|----------|---------
+Authorization | String | Access token preceding Bearer . For example: `Bearer 3733dfc7c18372575de7183399ffc5894576047f992f3594bedf614229a43994`
+
 * **Request Body:**
 
 Field | Type | Description
@@ -629,11 +654,19 @@ petId | Number | Required. Pet id
 
 Code | Response
 ---------|----------
+406 | Invalid token
+408 | Token expired
 500 | S3 server error or delete error in pet Table
 ---
 ### Add attention
 * **End Point:** `/user/addAttention` 
 * **Method:** `POST`
+* **Request Headers:**
+
+Field | Type | Description
+---------|----------|---------
+Authorization | String | Access token preceding Bearer . For example: `Bearer 3733dfc7c18372575de7183399ffc5894576047f992f3594bedf614229a43994`
+
 * **Request Body:**
 
 Field | Type | Description
@@ -663,6 +696,8 @@ or
 
 Code | Response
 ---------|----------
+406 | Invalid token
+408 | Token expired
 500 | Insert or delete error in pet Table
 ---
 ### Get attention list
@@ -709,6 +744,12 @@ Code | Response
 ### Delete attention
 * **End Point:** `/user/deleteAttention` 
 * **Method:** `POST`
+* **Request Headers:**
+
+Field | Type | Description
+---------|----------|---------
+Authorization | String | Access token preceding Bearer . For example: `Bearer 3733dfc7c18372575de7183399ffc5894576047f992f3594bedf614229a43994`
+
 * **Request Body:**
 
 Field | Type | Description
@@ -734,11 +775,19 @@ petId | Number | Required. Pet id
 
 Code | Response
 ---------|----------
+406 | Invalid token
+408 | Token expired
 500 | Delete error in pet Table
 ---
 ### Send message
 * **End Point:** `/user/sendMessage` 
 * **Method:** `POST`
+* **Request Headers:**
+
+Field | Type | Description
+---------|----------|---------
+Authorization | String | Access token preceding Bearer . For example: `Bearer 3733dfc7c18372575de7183399ffc5894576047f992f3594bedf614229a43994`
+
 * **Request Body:**
 
 Field | Type | Description
@@ -774,6 +823,8 @@ createTime | String | Required. Time to leave the message, by new Date().getTime
 
 Code | Response
 ---------|----------
+406 | Invalid token
+408 | Token expired
 500 | Insert error in message Table
 ---
 ### Get message list

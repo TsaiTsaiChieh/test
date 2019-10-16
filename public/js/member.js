@@ -1,42 +1,33 @@
 /* eslint-disable max-len */
 const menu = window.location.search.replace('?', '');
 // Load member.pug 時，去拿 user 的資料
-app.ajax('GET', 'api/user/profile', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+function getProfile() {
+  app.ajax('GET', 'api/user/profile', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
   // token 無效或過期，要重新登入
-  app.checkStatus(req.status);
-  // if (req.status !== 200) {
-  //   window.localStorage.removeItem('auth');
-  //   window.localStorage.removeItem('picture');
-  //   window.localStorage.removeItem('provider');
-  //   window.localStorage.removeItem('user-id');
-  //   if (confirm('登入時間已逾期，請重新登入')) {
-  //     window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
-  //   } else {
-  //     window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
-  //   }
-  // }
-  const user = JSON.parse(req.responseText).user;
+    app.checkStatus(req.status);
+    const user = JSON.parse(req.responseText).user;
 
-  if (user.picture) {
-    app.get('.left-profile img').src = user.picture;
-  }
-  if (user.name) {
-    app.get('.left-name').innerHTML = user.name;
-    app.get('.personal-info input.name').placeholder = user.name;
-  }
-  if (user.contactMethod) {
-    app.get('.personal-info input.phone').placeholder = user.contactMethod;
-  }
-  if (user.picture) {
-    if (user.picture.substring(0, 4) === 'http') {
+    if (user.picture) {
       app.get('.left-profile img').src = user.picture;
-    } else app.get('.left-profile img').src = `${app.s3}/user-pic/${user.picture}`;
-  }
-  app.get('.login-info p').innerHTML = user.email;
-  app.get('.login-info #user-id').innerHTML = user.id;
+    }
+    if (user.name) {
+      app.get('.left-name').innerHTML = user.name;
+      app.get('.personal-info input.name').placeholder = user.name;
+    }
+    if (user.contactMethod) {
+      app.get('.personal-info input.phone').placeholder = user.contactMethod;
+    }
+    if (user.picture) {
+      if (user.picture.substring(0, 4) === 'http') {
+        app.get('.left-profile img').src = user.picture;
+      } else app.get('.left-profile img').src = `${app.s3}/user-pic/${user.picture}`;
+    }
+    app.get('.login-info p').innerHTML = user.email;
+    app.get('.login-info #user-id').innerHTML = user.id;
 
-  window.localStorage.setItem('name', user.name);
-});
+    window.localStorage.setItem('name', user.name);
+  });
+}
 function initMenu(menu) {
   const change = app.get('.menu .change');
   const adopt = app.get('.menu .adopt');
@@ -45,6 +36,7 @@ function initMenu(menu) {
   const attention = app.get('.menu .attention');
   if (menu === 'profile') {
     change.classList.add('active');
+    getProfile();
     app.get('.profile-wrap').style.display = 'flex';
   } else if (menu === 'adoption') {
     adopt.classList.add('active');

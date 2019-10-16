@@ -64,10 +64,11 @@ app.ajax = function(method, src, args, headers, callback) {
     req.send();
   }
 };
-app.ajaxFormData = function(src, args, callback) {
+app.ajaxFormData = function(src, args, headers, callback) {
   const req = new XMLHttpRequest();
   req.open('POST', src);
   // req.setRequestHeader("Content-Type", "multipart/form-data");
+  app.setRequestHeaders(req, headers);
   req.onreadystatechange = function() {
     req.onload = function() {
       callback(this);
@@ -301,3 +302,27 @@ app.loadPetDetails = function(petId) {
     }
   });
 };
+
+app.checkStatus = function(status) {
+  if (status !== 200) {
+    window.localStorage.removeItem('auth');
+    window.localStorage.removeItem('picture');
+    window.localStorage.removeItem('provider');
+    window.localStorage.removeItem('user-id');
+  }
+  if (status === 500) {
+    window.alert('伺服器錯誤，請再重試');
+    return;
+  }
+  if (status === 406 || status ===408) {
+    if (confirm('登入時間已逾期，請重新登入')) {
+      app.get('.login-page').style.display = 'block';
+      // window.location.href = './adoption?kind=all&paging=0'; // 否則 .html 會一直重新導向，測試完要拿掉註解
+      return;
+    } else {
+      window.location.href = './adoption?kind=all&paging=0';
+      return;
+    }
+  }
+}
+;

@@ -1,9 +1,13 @@
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
-const userModel = require('../model/userModel');
+const userInfoModel = require('../model/userInfoModel');
+const userMessageModel = require('../model/userMessageModel');
+const userAdoptModel = require('../model/userAdoptModel');
+const userAttentionModel = require('../model/userAttentionModel');
 const modules = require('../util/modules');
 const AWS = require('../private/awsConfig');
 const s3 = new AWS.S3();
+
 // for user function: signup, login, profile, update
 function signup(req, res) {
   const user = {
@@ -11,7 +15,7 @@ function signup(req, res) {
     email: req.body.email.replace(/\s+/g, ''),
     password: req.body.password.replace(/\s+/g, ''),
   };
-  userModel
+  userInfoModel
       .signup(user)
       .then(function(body) {
         res.json(body);
@@ -21,6 +25,7 @@ function signup(req, res) {
         res.send(err.error);
       });
 }
+
 function login(req, res) {
   const user = {
     email: req.body.email.replace(/\s+/g, ''),
@@ -29,7 +34,7 @@ function login(req, res) {
     name: req.body.name,
     picture: req.body.picture,
   };
-  userModel
+  userInfoModel
       .login(user)
       .then(function(body) {
         res.json(body);
@@ -39,23 +44,17 @@ function login(req, res) {
         res.send(err.error);
       });
 }
+
 function profile(req, res) {
-  const {authorization} = req.headers;
-  if (authorization) {
-    const token = authorization.replace('Bearer ', '');
-    userModel
-        .profile(token)
-        .then(function(body) {
-          res.json(body);
-        })
-        .catch(function(err) {
-          res.status(err.code);
-          res.send(err.error);
-        });
-  } else {
-    res.status(406);
-    res.send('Null token');
-  }
+  userInfoModel
+      .profile(req.userId) // get from middleware
+      .then(function(body) {
+        res.json(body);
+      })
+      .catch(function(err) {
+        res.status(err.code);
+        res.send(err.error);
+      });
 }
 function update(req, res) {
   // let upload = modules.multer({
@@ -99,7 +98,7 @@ function update(req, res) {
         picture: inputPiture,
         password: `${req.body.password ? req.body.password.replace(/\s+/g, ''):''}`,
       };
-      userModel
+      userInfoModel
           .update(information)
           .then(function(body) {
             res.send(body);
@@ -141,7 +140,7 @@ function postAdoption(req, res) {
       res.status(500);
       res.send('S3 server error, please try again later.');
     } else {
-      userModel
+      userAdoptModel
           .postAdoption(req.body, req.files.petImgs)
           .then(function(body) {
             res.send(body);
@@ -173,7 +172,7 @@ function updateAdoption(req, res) {
       res.status(500);
       res.send('S3 server error, please try again later.');
     } else {
-      userModel
+      userAdoptModel
           .updateAdoption(req.body, req.files.petImgs)
           .then(function(body) {
             res.send(body);
@@ -186,27 +185,27 @@ function updateAdoption(req, res) {
 }
 
 function getAdoptionList(req, res) {
-  const {authorization} = req.headers;
-  if (authorization) {
-    const token = authorization.replace('Bearer ', '');
-    userModel
-        .getAdoptionList(token)
-        .then(function(body) {
-          res.json(body);
-        })
-        .catch(function(err) {
-          res.status(err.code);
-          res.send(err.error);
-        });
-  } else {
-    res.status(406);
-    res.send('Null token');
-  }
+  // const {authorization} = req.headers;
+  // if (authorization) {
+  //   const token = authorization.replace('Bearer ', '');
+  userAdoptModel
+      .getAdoptionList(req.userId)
+      .then(function(body) {
+        res.json(body);
+      })
+      .catch(function(err) {
+        res.status(err.code);
+        res.send(err.error);
+      });
+  // } else {
+  //   res.status(406);
+  //   res.send('Null token');
+  // }
 }
 
 function deleteAdoption(req, res) {
   const {petId} = req.body;
-  userModel
+  userAdoptModel
       .deleteAdoption(petId)
       .then(function(body) {
         res.send(body);
@@ -219,7 +218,7 @@ function deleteAdoption(req, res) {
 // for attention function: addAttention, getAttentionList, deleteAttention
 function addAttention(req, res) {
   const {petId, userId} = req.body;
-  userModel
+  userAttentionModel
       .addAttention(petId, userId)
       .then(function(body) {
         res.send(body);
@@ -231,27 +230,27 @@ function addAttention(req, res) {
 }
 
 function getAttentionList(req, res) {
-  const {authorization} = req.headers;
-  if (authorization) {
-    const token = authorization.replace('Bearer ', '');
-    userModel
-        .getAttentionList(token)
-        .then(function(body) {
-          res.json(body);
-        })
-        .catch(function(err) {
-          res.status(err.code);
-          res.send(err.error);
-        });
-  } else {
-    res.status(406);
-    res.send('Null token');
-  }
+  // const {authorization} = req.headers;
+  // if (authorization) {
+  //   const token = authorization.replace('Bearer ', '');
+  userAttentionModel
+      .getAttentionList(req.userId)
+      .then(function(body) {
+        res.json(body);
+      })
+      .catch(function(err) {
+        res.status(err.code);
+        res.send(err.error);
+      });
+  // } else {
+  //   res.status(406);
+  //   res.send('Null token');
+  // }
 }
 
 function deleteAttention(req, res) {
   const {petId, userId} = req.body;
-  userModel
+  userAttentionModel
       .deleteAttention(petId, userId)
       .then(function(body) {
         res.send(body);
@@ -262,46 +261,46 @@ function deleteAttention(req, res) {
 }
 // for message function: getMessageList, sendMessage, getMessage
 function getMessageList(req, res) {
-  const {authorization} = req.headers;
-  if (authorization) {
-    const token = authorization.replace('Bearer ', '');
-    userModel
-        .getMessageList(token)
-        .then(function(body) {
-          res.json(body);
-        })
-        .catch(function(err) {
-          res.status(err.code);
-          res.send(err.error);
-        });
-  } else {
-    res.status(406);
-    res.send('Null token');
-  }
+  // const {authorization} = req.headers;
+  // if (authorization) {
+  //   const token = authorization.replace('Bearer ', '');
+  userMessageModel
+      .getMessageList(req.userId)
+      .then(function(body) {
+        res.json(body);
+      })
+      .catch(function(err) {
+        res.status(err.code);
+        res.send(err.error);
+      });
+  // } else {
+  //   res.status(406);
+  //   res.send('Null token');
+  // }
 }
 
 function getMessage(req, res) {
-  const {authorization} = req.headers;
-  const {petId} = req.query;
-  if (authorization) {
-    const token = authorization.replace('Bearer ', '');
-    userModel
-        .getMessage(token, petId)
-        .then(function(body) {
-          res.json(body);
-        })
-        .catch(function(err) {
-          res.status(err.code);
-          res.send(err.error);
-        });
-  } else {
-    res.status(406);
-    res.send('Null token');
-  }
+  // const {authorization} = req.headers;
+  // const {petId} = req.query;
+  // if (authorization) {
+  //   const token = authorization.replace('Bearer ', '');
+  userMessageModel
+      .getMessage(req.userId, req.query.petId)
+      .then(function(body) {
+        res.json(body);
+      })
+      .catch(function(err) {
+        res.status(err.code);
+        res.send(err.error);
+      });
+  // } else {
+  //   res.status(406);
+  //   res.send('Null token');
+  // }
 }
 
 function sendMessage(req, res) {
-  userModel
+  userMessageModel
       .sendMessage(req)
       .then(function(body) {
         res.send(body);

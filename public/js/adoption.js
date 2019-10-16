@@ -194,7 +194,7 @@ function sendMessage() {
   const message = app.get('.sendMeg-wrap .msg-wrap textarea').value;
   const senderId = Number.parseInt(window.localStorage.getItem('user-id'));
   const senderName = window.localStorage.getItem('name');
-  app.ajax('POST', 'api/user/sendMessage', {senderId, receiverId, petId, message, senderName, receiverName, createTime: new Date().getTime()}, {}, function(req) {
+  app.ajax('POST', 'api/user/sendMessage', {senderId, receiverId, petId, message, senderName, receiverName, createTime: new Date().getTime()}, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
     if (req.status === 500) {
       app.get('.sendMeg-wrap .error-msg').innerHTML =
           '伺服器錯誤，請稍後再試';
@@ -225,7 +225,7 @@ function addAttention() {
     const userId = window.localStorage.getItem('user-id');
     if (classNames.length >= 3) {
       // 因為有 active
-      app.ajax('POST', 'api/user/deleteAttention', {petId, userId}, {}, function(req) {
+      app.ajax('POST', 'api/user/deleteAttention', {petId, userId}, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
         if (req.status === 200) {
           app.get(`button.attention.petId_${petId}`).innerHTML = '加入關注';
           app.get(`button.attention.petId_${petId}`).classList.remove('active');
@@ -233,9 +233,8 @@ function addAttention() {
       }
       );
     } else {
-      app.ajax('POST', 'api/user/addAttention', {petId, userId}, {}, function(
-          req
-      ) {
+      app.ajax('POST', 'api/user/addAttention', {petId, userId}, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+        app.checkStatus(req.status);
         if (req.status === 200) {
           app.get(`button.attention.petId_${petId}`).innerHTML = '取消關注';
           app.get(`button.attention.petId_${petId}`).classList.add('active');
@@ -258,8 +257,7 @@ function initAttentionBtn() {
             const attentioBtn = app.get(`button.attention.petId_${ele.pet_id}`);
             if (attentioBtn) {
               app.get(`button.attention.petId_${ele.pet_id}`).classList.add('active');
-              app.get(`button.attention.petId_${ele.pet_id}`).innerHTML =
-              '取消關注';
+              app.get(`button.attention.petId_${ele.pet_id}`).innerHTML = '取消關注';
             }
           });
         }

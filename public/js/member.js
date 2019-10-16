@@ -1,21 +1,20 @@
 /* eslint-disable max-len */
 const menu = window.location.search.replace('?', '');
-
 // Load member.pug 時，去拿 user 的資料
 app.ajax('GET', 'api/user/profile', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
-  console.log(req.responseText, req.status);
   // token 無效或過期，要重新登入
-  if (req.status !== 200) {
-    window.localStorage.removeItem('auth');
-    window.localStorage.removeItem('picture');
-    window.localStorage.removeItem('provider');
-    window.localStorage.removeItem('user-id');
-    if (confirm('登入時間已逾期，請重新登入')) {
-      window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
-    } else {
-      window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
-    }
-  }
+  app.checkStatus(req.status);
+  // if (req.status !== 200) {
+  //   window.localStorage.removeItem('auth');
+  //   window.localStorage.removeItem('picture');
+  //   window.localStorage.removeItem('provider');
+  //   window.localStorage.removeItem('user-id');
+  //   if (confirm('登入時間已逾期，請重新登入')) {
+  //     window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
+  //   } else {
+  //     window.location.href = './'; // 否則 .html 會一直重新導向，測試完要拿掉註解
+  //   }
+  // }
   const user = JSON.parse(req.responseText).user;
 
   if (user.picture) {
@@ -115,7 +114,8 @@ function updateProfile() {
     if (uploadImg) {
       fileAppend.then(function(formData) {
         app.get('.lds-dual-ring-2').style.display = 'flex';
-        app.ajaxFormData('api/user/update', formData, function(req) {
+        app.ajaxFormData('api/user/profile', formData, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+          app.checkStatus(req.status);
           if (req.status === 500) {
             app.get('.lds-dual-ring-2').style.display = 'none';
           } else {
@@ -126,7 +126,8 @@ function updateProfile() {
       });
     } else {
       app.get('.lds-dual-ring-2').style.display = 'flex';
-      app.ajaxFormData('api/user/update', formData, function(req) {
+      app.ajaxFormData('api/user/profile', formData, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+        app.checkStatus(req.status);
         if (req.status === 500) {
           app.get('.lds-dual-ring-2').style.display = 'none';
         } else {
@@ -201,7 +202,8 @@ function adoptionPost() {
     app.get('.warning-msg').style.display = 'none';
     app.get('.adoption-wrap .lds-dual-ring-2').style.display = 'flex';
     fileAppend.then(function(formData) {
-      app.ajaxFormData('api/user/postAdoption', formData, function(req) {
+      app.ajaxFormData('api/user/postAdoption', formData, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+        app.checkStatus(req.status);
         if (req.status === 500) {
           app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
           app.get('.adoption-wrap. lds-dual-ring-2').style.display = 'none';
@@ -283,6 +285,7 @@ function compressFile(file) {
 
 function getAdoptionList() {
   app.ajax('GET', 'api/user/getAdoptionList', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+    app.checkStatus(req.status);
     const data = JSON.parse(req.responseText).data;
     const itemList = app.get('.edit-wrap .item-list ');
     if (data.length === 0) app.createElement('div', {atrs: {className: 'null-msg', innerHTML: '目前無任何送養的紀錄喔！'}}, itemList);
@@ -324,7 +327,8 @@ function statusText(status) {
 }
 function deleteAdoption(petId) {
   if (confirm('確定要刪除嗎？會將自己以及其他人的關注和留言都刪除喔！')) {
-    app.ajax('POST', 'api/user/deleteAdoption', {petId}, {}, function(req) {
+    app.ajax('POST', 'api/user/deleteAdoption', {petId}, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+      app.checkStatus(req.status);
       const msg = app.get('.edit-wrap .msg');
       msg.style.display = 'block';
       if (req.status === 500) msg.innerHTML = '伺服器錯誤，請稍後再試';
@@ -444,7 +448,8 @@ function updateAdoption(petId) {
       app.get('.adoption-wrap .lds-dual-ring-2').style.display = 'flex';
       app.get('.warning-msg').style.display = 'none';
       fileAppend.then(function(formData) {
-        app.ajaxFormData('api/user/updateAdoption', formData, function(req) {
+        app.ajaxFormData('api/user/updateAdoption', formData, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+          app.checkStatus(req.status);
           if (req.status === 500) {
             app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
           } else window.location.href = './member?edit';
@@ -455,7 +460,8 @@ function updateAdoption(petId) {
     if (flag) {
       app.get('.adoption-wrap .lds-dual-ring-2').style.display = 'flex';
       app.get('.warning-msg').style.display = 'none';
-      app.ajaxFormData('api/user/updateAdoption', formData, function(req) {
+      app.ajaxFormData('api/user/updateAdoption', formData, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+        app.checkStatus(req.status);
         if (req.status === 500) {
           app.get('.warning-msg').innerHTML = '伺服器錯誤，請稍後再試';
           app.get('.lds-dual-ring-2').style.display = 'none';
@@ -491,6 +497,7 @@ function getAdoptionForm() {
 }
 function getAttentionList() {
   app.ajax('GET', 'api/user/getAttentionList', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+    app.checkStatus(req.status);
     const data = JSON.parse(req.responseText).data;
 
     const itemList = app.get('.attention-wrap .item-list');
@@ -530,7 +537,8 @@ function getAttentionList() {
 function deleteAttention(petId) {
   if (confirm('確定要刪除嗎？')) {
     const userId = Number.parseInt(window.localStorage.getItem('user-id'));
-    app.ajax('POST', 'api/user/deleteAttention', {petId, userId}, {}, function(req) {
+    app.ajax('POST', 'api/user/deleteAttention', {petId, userId}, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+      app.checkStatus(req.status);
       const msg = app.get('.attention-wrap .msg');
       msg.style.display = 'block';
       if (req.status === 500) msg.innerHTML = '伺服器錯誤，請稍後再試';
@@ -547,8 +555,8 @@ function deleteAttention(petId) {
 
 function getMessageList() {
   app.ajax('GET', 'api/user/getMessageList', '', {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+    app.checkStatus(req.status);
     console.log('data', req.responseText);
-
     const data = JSON.parse(req.responseText).data;
     const userId = Number.parseInt(window.localStorage.getItem('user-id'));
     const itemList = app.get('.message-wrap .item-list ');
@@ -578,11 +586,8 @@ function getMessageList() {
 }
 function messageView(userId, petId, senderId) {
   app.ajax('GET', 'api/user/getMessage', `petId=${petId}`, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
-    console.log(req.responseText);
-
+    app.checkStatus(req.status);
     const data = JSON.parse(req.responseText).data;
-    console.log('test:::::;', data[0]);
-
     const chatWrap = app.get('.chat-wrap');
     chatWrap.style.display = 'flex';
     const contentWrap = app.createElement('div', {atrs: {className: 'content-wrap'}}, app.get('.content-parent'));
@@ -634,9 +639,8 @@ function memberSendMessage() {
     msgInput.classList.add('error');
   } else if (message) {
     const createTime = new Date().getTime();
-    app.ajax('POST', 'api/user/sendMessage', {senderId, receiverId, petId, message, senderName, receiverName, createTime}, {}, function(req) {
-      console.log(req.responseText);
-
+    app.ajax('POST', 'api/user/sendMessage', {senderId, receiverId, petId, message, senderName, receiverName, createTime}, {'Authorization': `Bearer ${window.localStorage.getItem('auth')}`}, function(req) {
+      app.checkStatus(req.status);
       if (req.status === 500) app.get('.chat-wrap .error-msg').innerHTML = '伺服器錯誤，請稍後再試';
       else {
         msgInput.classList.remove('error');

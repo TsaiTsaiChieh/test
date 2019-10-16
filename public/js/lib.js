@@ -315,12 +315,12 @@ app.checkStatus = function(status) {
     return;
   }
   if (status === 406 || status ===408) {
-    if (confirm('登入時間已逾期，請重新登入')) {
+    if (confirm('登入時間已逾期，請重新登入！！')) {
       app.get('.login-page').style.display = 'block';
       // window.location.href = './adoption?kind=all&paging=0'; // 否則 .html 會一直重新導向，測試完要拿掉註解
       return;
     } else {
-      window.location.href = './adoption?kind=all&paging=0';
+      // window.location.href = './adoption?kind=all&paging=0';
       return;
     }
   }

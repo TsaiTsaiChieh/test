@@ -15,55 +15,15 @@ test('Fetch the video information', async function() {
   });
 });
 
-/** *  User API ****/
 // signup
-// test('Testing user duplication registration in signup API', function() {
-//   modules.axios.post('https://tsaichieh.com/api/user/signup', {
-//     name: '測試名字',
-//     email: 'jecica196@gmail.com',
-//     password: '0000',
-//   }).then(function() {
-//   }).catch(function(err) {
-//     // Email duplication registration
-//     expect(err.code).toBe(406);
-//   });
-// });
-// login
-// test('Testing user login API', async function() {
-//   // const user = {email: 'jecica196@gmail.com',provider: 'native'};
-//   const response = await modules.axios.post('https://tsaichieh.com/api/user/login', {
-//     email: 'jecica196@gmail.com',
-//     password: '0000',
-//     provider: 'native',
-//   });
-//   expect(response.data.user).objectContaining({provider: 'native', email: 'jecica196@gmail.com'});
-// });
-
-// const axios = modules.axios;
-// jest.spyOn(userModel, 'signup');
-// test('Testing user signup API', function() {
-//   const user = [{
-//     name: '測試名字',
-//     email: 'tttt@gmail.com'}];
-//   const resp = {data: user};
-//   axios.post.mockImplementation(resp);
-//   return axios.post('https://tsaichieh.com/api/user/signup')
-//       .then(function(data) {
-//         console.log(data);
-//       })
-//       .catch(function(err) {
-//         console.log(err);
-//       });
-// });
-
-// const userModel = {
-//   signup: function() {
-//     modules.axios.post('https://tsaichieh.com/api/user/signup', {
-//       name: '測試名字',
-//       email: 'ttttt@gmail.com',
-//       password: '0000',
-//     }).then(function(data) {
-//       return data;
-//     });
-//   },
-// };
+test('Testing user duplication registration in signup API', function() {
+  modules.axios.post('https://tsaichieh.com/api/user/signup', {
+    name: '測試名字',
+    email: 'jecica196@gmail.com',
+    password: '0000',
+  }).then(function() {
+  }).catch(function(err) {
+    // Email duplication registration
+    expect(err.code).toBe(406);
+  });
+});

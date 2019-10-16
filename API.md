@@ -17,7 +17,7 @@ TsaiChieh.com
     - [Login](#Login)
     - [Details](#Details)
     - [Profile](#Profile)
-    - [Update](#Update)
+    - [Profile Update](#Update)
     - [Post adoption](#Post-adoption)
     - [Get adoption list](#Get-adoption-list)
     - [Delete adoption](#Delete-adoption)
@@ -393,13 +393,14 @@ Code | Response
 500 | Query Error in user&token table
 ---
 ### Update
-* **End Point:** `/user/update`
+* **End Point:** `/user/profile`
 * **Method:** `POST`
 * **Request Headers:**
 
 Field | Type | Description
 ---------|----------|---------
 Content-Type | String | Only accept application/json
+Authorization | String | Access token preceding Bearer . For example: `Bearer 3733dfc7c18372575de7183399ffc5894576047f992f3594bedf614229a43994`
 * **Request Body:**
 
 Field | Type | Description

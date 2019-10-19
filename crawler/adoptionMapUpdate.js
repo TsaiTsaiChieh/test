@@ -92,6 +92,7 @@ function getPetData(species, urlArray) {
             })
             .catch(function(err) {
               modules.errorInsert(modules.path.basename(__filename), err, 49);
+              console.log(err);
               reject(new modules.Err(400, `Load the pet details in ${species} failed, the error is ${err}`));
             });
       }, index * 100);

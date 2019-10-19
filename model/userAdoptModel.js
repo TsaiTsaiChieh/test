@@ -2,7 +2,7 @@
 /* eslint-disable require-jsdoc */
 const modules = require('../util/modules');
 const mysql = require('../util/db');
-const AWS = require('../private/awsConfig');
+const AWS = require('../util/aws');
 const s3 = new AWS.S3();
 
 // for adoption function: postAdoption, udateAdoption, getAdoptionList, deteletAdoption

@@ -2,8 +2,7 @@
 /* eslint-disable require-jsdoc */
 const mysql = require('../util/db');
 const modules = require('../util/modules');
-const REDIS_PORT = process.env.PORT || 6379;
-const client = modules.redis.createClient(REDIS_PORT);
+const client = modules.redis.createClient(process.env.REDIS_PORT);
 const size = 20; // 一頁要 show 幾個
 
 function get(id) {

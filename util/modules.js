@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
+const dotenv = require('dotenv').config();
 const express = require('express');
 const cheerio = require('cheerio');
 const fs = require('fs');
@@ -14,6 +15,7 @@ const multer3 = require('multer-s3');
 const redis = require('redis');
 const axios = require('axios');
 
+
 function errorInsert(fileName, err, line) {
   if (Number.isInteger(err.errno)) errno = err.error;
   else errno = 0;
@@ -22,8 +24,8 @@ function errorInsert(fileName, err, line) {
     code: err.code,
     errno,
     sqlMessage: err.sqlMessage,
-    command: err.sql,
   };
+  if (err.sql) error['command'] = err.sql.substring(0, 255);
   mysql.con.query(`INSERT INTO crawlerError SET ?`, error, function(err, result) {
     if (err) console.log(err);
   });
@@ -37,6 +39,7 @@ class Err extends Error {
   }
 }
 module.exports = {
+  dotenv,
   express,
   cheerio,
   fs,

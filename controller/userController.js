@@ -5,7 +5,7 @@ const userMessageModel = require('../model/userMessageModel');
 const userAdoptModel = require('../model/userAdoptModel');
 const userAttentionModel = require('../model/userAttentionModel');
 const modules = require('../util/modules');
-const AWS = require('../private/awsConfig');
+const AWS = require('../util/aws');
 const s3 = new AWS.S3();
 
 // for user function: signup, login, profile, update

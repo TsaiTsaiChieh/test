@@ -2,8 +2,7 @@
 /* eslint-disable require-jsdoc */
 const modules = require('../util/modules');
 const mysql = require('../util/db');
-const REDIS_PORT = process.env.PORT || 6379;
-const client = modules.redis.createClient(REDIS_PORT);
+const client = modules.redis.createClient(process.env.REDIS_PORT);
 
 function videoInfo() {
   return new Promise(function(resolve, reject) {

@@ -1,11 +1,13 @@
 const modules = require('./util/modules');
 const app = modules.express();
+const PORT = process.env.PORT;
 const update = {
   gov: require('./crawler/govShelterUpdate'),
   map: require('./crawler/adoptionMapUpdate'),
 };
 
-app.use(modules.bodyparser.json()); // 否則 Ajax Post 值傳不到後端
+// 否則 Ajax Post 值傳不到後端
+app.use(modules.bodyparser.json());
 app.use(modules.bodyparser.urlencoded({extended: true}));
 
 app.use(modules.express.static('public'));
@@ -13,8 +15,6 @@ const mainRouter = require('./routes');
 const adoptionRouters = require('./routes/adoption');
 const userRouters = require('./routes/user');
 const noticeRouters = require('./routes/notice');
-const PORT = process.env.PORT;
-
 
 app.use(mainRouter);
 app.use('/api/adoption', adoptionRouters);

@@ -2,7 +2,7 @@
 const modules = require('../util/modules');
 const mysql = require('../util/db');
 const url = 'http://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL';
-// 爬台灣認養地圖資訊
+// 爬政府收容所資訊
 // 1. 先爬收容所毛孩所有資料
 // 2. 重新包裝原始資料
 // 3. 把資料存進/更新資料庫
@@ -84,12 +84,14 @@ function updateStatus(dbLink) {
 function repackage(rawData) {
   const petData = [];
   rawData.forEach(function(ele) {
-    petData.push({db: 1, status: 0, db_link: ele.animal_id, link_id: ele.animal_subid, kind: ele.animal_kind,
-      sex: ele.animal_sex, age: `${ele.animal_age === 'ADULT' ? 'A' : 'C'}`, color: ele.animal_colour,
-      neuter: ele.animal_sterilization, bacterin: ele.animal_bacterin, county: ele.animal_area_pkid,
-      foundplace: ele.animal_foundplace, title: ele.animal_title, image: JSON.stringify([ele.album_file]),
-      description: JSON.stringify(ele.animal_remark), opendate: opendateTransform(ele.animal_createtime),
-      contactName: ele.shelter_name, contactMethod: ele.shelter_tel});
+    if (ele.animal_subid && ele.animal_id) { // 因為政府收容所一定要有這兩項資料才能鏈結
+      petData.push({db: 1, status: 0, db_link: ele.animal_id, link_id: ele.animal_subid, kind: ele.animal_kind,
+        sex: ele.animal_sex, age: `${ele.animal_age === 'ADULT' ? 'A' : 'C'}`, color: ele.animal_colour,
+        neuter: ele.animal_sterilization, bacterin: ele.animal_bacterin, county: ele.animal_area_pkid,
+        foundplace: ele.animal_foundplace, title: ele.animal_title, image: JSON.stringify([ele.album_file]),
+        description: JSON.stringify(ele.animal_remark), opendate: opendateTransform(ele.animal_createtime),
+        contactName: ele.shelter_name, contactMethod: ele.shelter_tel});
+    }
   });
   return petData;
 }
@@ -103,7 +105,6 @@ function getPetData() {
     // Skip like index, we do not know the number of pets, so the second condition in for loop is empty.
     for (let page = 0; ; page++) {
       const responseData = await getBatchData(page);
-      //   resolve(responseData);
       if (responseData.length === 0) {
         resolve(data);
         break;
@@ -113,6 +114,7 @@ function getPetData() {
         });
       }
     }
+    reject(new modules.Err(400, `getPetData function failed`));
   });
 }
 

@@ -128,6 +128,7 @@ function parseFilter(kind, sex, region, order, age) {
     }
   }
   if (order) filter = filter.concat(' ORDER BY pet.id DESC');
+
   return filter;
 }
 

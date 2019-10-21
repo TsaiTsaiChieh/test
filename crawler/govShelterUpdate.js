@@ -67,7 +67,7 @@ function updateStatus(dbLink) {
           const isFound = result.map((ele) => dbLink.includes(ele.db_link));
           isFound.forEach(function(ele, index) {
             if (!ele) {
-              connection.query(`UPDATE pet SET status = 1 WHERE db_link = ?`, result[index].db_link, function(err, result) {
+              connection.query(`UPDATE pet SET status = 1 WHERE db_link = ? AND db = 1`, result[index].db_link, function(err, result) {
                 if (err) {
                   modules.errorInsert(modules.path.basename(__filename), err, 72);
                 }

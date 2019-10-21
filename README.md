@@ -63,7 +63,7 @@ Website URL: https://TsaiChieh.com
 <br>
 
 ## Database Schema
-![](https://i.imgur.com/Bc5DsNa.png)
+![](https://i.imgur.com/kHdxcj3.png)
 
 <br>
 

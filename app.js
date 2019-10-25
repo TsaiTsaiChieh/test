@@ -1,10 +1,6 @@
 const modules = require('./util/modules');
 const app = modules.express();
 const PORT = process.env.PORT;
-const update = {
-  gov: require('./crawler/govShelterUpdate'),
-  map: require('./crawler/adoptionMapUpdate'),
-};
 
 // 否則 Ajax Post 值傳不到後端
 app.use(modules.bodyparser.json());
@@ -22,14 +18,5 @@ app.use('/api/user', userRouters);
 app.use('/api/notice', noticeRouters);
 app.set('views', './views');
 app.set('view engine', 'pug');
-
-modules.schedule.scheduleJob('0 0 */1 * * *', function() { // 秒、分、時、日、月、周幾
-  console.log(Date.now());
-  update.gov.crawledGovShelter();
-  setTimeout(function() {
-    console.log(Date.now());
-    update.map.updateAdoptionMap();
-  }, 60000); // 1 minute
-});
 
 app.listen(PORT, () => console.log(`讓愛不流浪 on port ${PORT}`));

@@ -133,5 +133,4 @@ function parseResult(result) {
 
 module.exports = {
   postAdoption, updateAdoption, getAdoptionList, deleteAdoption,
-
 };

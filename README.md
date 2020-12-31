@@ -69,7 +69,7 @@ Website URL: https://TsaiChieh.com
 
 ## Technology Stack
 ### Programming Language
-* JavaScritp
+* JavaScript
 ### Backend
 * NodeJS
 * ExpressJS

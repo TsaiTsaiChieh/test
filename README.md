@@ -40,9 +40,11 @@ Website URL: https://TsaiChieh.com
 ![](https://i.imgur.com/kodj8Hl.gif)
 
 * User can track the adoption status of pets <br>
+
 ![](https://i.imgur.com/dNWGOek.gif)
 
 * User can leave messages to the adopter or original owner <br>
+
 ![](https://i.imgur.com/m2YpGNo.gif)
 
 

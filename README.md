@@ -112,4 +112,4 @@ Website URL: https://TsaiChieh.com
 [API documation](https://github.com/TsaiTsaiChieh/pet_home/blob/master/API.md)
 ## Contact
 Tsai, Tsai-Chieh 蔡采潔 <br>
-jecic196@gmail.com
+jecica196@gmail.com
